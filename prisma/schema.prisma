@@ -7,9 +7,253 @@
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
+
+
 }
 
 datasource db {
   provider = "postgresql"
+
+
 }
+
+model User {
+  id              String   @id @default(uuid())
+  email           String   @unique
+  name            String?
+  // Password is NULL if they sign up with LinkedIn/Google
+  password        String?  // Encrypted. Nullable for OAuth users
+  phoneNumber     String?
+  profileImageUrl String?
+  // Tracks how they signed up
+  authProviderId  String?  // The unique ID from LinkedIn/Google (e.g. LINKEDIN_123)
+  // The Role determines if they are a Student, Mentor, or Admin
+  role            String   @default("student") // values: admin, mentor, student
+  isDeleted       Boolean  @default(false)
+  isVerified      Boolean  @default(false)
+  isBlocked       Boolean  @default(false)
+  timezone        String   @default("UTC") // e.g. "Asia/Kolkata", "America/New_York"
+  createdAt       DateTime @default(now())
+
+  @@map("users")
+  mentor Mentor?
+
+}
+
+enum Role {
+  admin
+  mentor
+  student
+}
+
+// model MentorEmbedding {
+//   mentorId         String  @id
+//   mentor           Mentor @relation(fields: [mentorId], references: [id])
+//   profileEmbedding Unsupported("vector(1536)")
+//   @@map("mentor_embeddings")
+// }
+model Mentor {
+  id                        String   @id @default(uuid())
+  userId                    String   @unique // @unique enforces the one-to-one with User
+  user                      User     @relation(fields: [userId], references: [id])
+
+  headline                  String?
+  shortBio                  String?
+  domainId                  String?  // Add relation once domains table is defined
+
+  isVerified                Boolean  @default(false)
+  isSuspended               Boolean  @default(false)
+  isPublic                  Boolean  @default(true)
+
+  // Stripe
+  stripeAccountId           String?
+  stripeOnboardingComplete  Boolean  @default(false)
+
+  // AI
+
+  // Cache columns
+  averageRating             Decimal  @default(0.00) @db.Decimal(3, 2)
+  reviewCount               Int      @default(0)
+
+  // Booking settings
+  bookingLeadTimeHours      Int      @default(24)
+  bookingFutureLimitDays    Int      @default(30)
+  maxSessionsDaily          Int      @default(4)
+  bufferTimeMinutes         Int      @default(15)
+
+  cancellationCutoffHours   Int      @default(24)
+
+  // Notifications
+  notificationSettings      Json?
+
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt         // <-- added
+// Back-relations
+  domain          Domain?          @relation(fields: [domainId], references: [id])
+  socialLinks     SocialLink[]
+  mentorLanguages MentorLanguage[]
+  mentorSkills    MentorSkill[]
+  experiences     Experience[]
+  education       Education[]
+  achievements    Achievement[]
+  // embedding  MentorEmbedding?
+
+  @@map("mentors")
+}
+
+
+// ==========================================
+// DOMAINS
+// ==========================================
+
+model Domain {
+  id         String   @id @default(uuid())
+  domainName String
+
+  mentors    Mentor[]
+
+  @@map("domains")
+}
+
+// ==========================================
+// SOCIAL LINKS
+// ==========================================
+
+enum SocialPlatform {
+  linkedin
+  github
+  twitter
+  instagram
+  facebook
+  website
+  behance
+  dribbble
+  youtube
+  other
+}
+
+model SocialLink {
+  id         String         @id @default(uuid())
+  mentorId   String
+  mentor     Mentor         @relation(fields: [mentorId], references: [id])
+  platform   SocialPlatform
+  url        String
+
+  @@unique([mentorId, platform])
+  @@map("social_links")
+}
+
+// ==========================================
+// LANGUAGES
+// ==========================================
+
+model Language {
+  id              String           @id @default(uuid())
+  name            String
+  code            String
+
+  mentorLanguages MentorLanguage[]
+
+  @@map("languages")
+}
+
+model MentorLanguage {
+  mentorId    String
+  languageId  String
+  proficiency String // Native, Fluent, Conversational
+
+  mentor      Mentor   @relation(fields: [mentorId], references: [id])
+  language    Language @relation(fields: [languageId], references: [id])
+
+  @@id([mentorId, languageId])
+  @@map("mentor_languages")
+}
+
+// ==========================================
+// SKILLS
+// ==========================================
+
+enum SkillStatus {
+  active
+  pending_review
+  rejected
+}
+
+model Skill {
+  id           String        @id @default(uuid())
+  name         String        @unique
+  status       SkillStatus   @default(active)
+
+  mentorSkills MentorSkill[]
+
+  @@map("skills")
+}
+
+model MentorSkill {
+  mentorId        String
+  skillId         String
+  yearsExperience Int?
+
+  mentor          Mentor @relation(fields: [mentorId], references: [id])
+  skill           Skill  @relation(fields: [skillId], references: [id])
+
+  @@id([mentorId, skillId])
+  @@map("mentor_skills")
+}
+
+// ==========================================
+// EXPERIENCE, EDUCATION & ACHIEVEMENTS
+// ==========================================
+
+model Experience {
+  id          String    @id @default(uuid())
+  mentorId    String
+  mentor      Mentor    @relation(fields: [mentorId], references: [id])
+  role        String?
+  company     String?
+  startDate   DateTime? @db.Date
+  endDate     DateTime? @db.Date // NULL if currently working
+  isCurrent   Boolean   @default(false)
+  description String?
+
+  @@map("experiences")
+}
+
+model Education {
+  id          String    @id @default(uuid())
+  mentorId    String
+  mentor      Mentor    @relation(fields: [mentorId], references: [id])
+  school      String?
+  degree      String?
+  startDate   DateTime? @db.Date
+  endDate     DateTime? @db.Date
+  grade       String?
+  description String?
+
+  @@map("education")
+}
+
+enum AchievementType {
+  award
+  certification
+  competition
+  publication
+  speaking
+  hackathon_win
+  scholarship
+  work_recognition
+  other
+}
+
+model Achievement {
+  id       String          @id @default(uuid())
+  mentorId String
+  mentor   Mentor          @relation(fields: [mentorId], references: [id])
+  title    String?
+  type     AchievementType
+  year     Int?
+
+  @@map("achievements")
+}
+
 
