@@ -20,21 +20,21 @@ datasource db {
 model User {
   id              String   @id @default(uuid())
   email           String   @unique
-  name            String?
+  name            String
   // Password is NULL if they sign up with LinkedIn/Google
   password        String?  // Encrypted. Nullable for OAuth users
-  phoneNumber     String?
+  phoneNumber     String
   profileImageUrl String?
   // Tracks how they signed up
   authProviderId  String?  // The unique ID from LinkedIn/Google (e.g. LINKEDIN_123)
   // The Role determines if they are a Student, Mentor, or Admin
-  role            String   @default("student") // values: admin, mentor, student
+  role            Role   @default(student) // values: admin, mentor, student
   isDeleted       Boolean  @default(false)
   isVerified      Boolean  @default(false)
   isBlocked       Boolean  @default(false)
-  timezone        String   @default("UTC") // e.g. "Asia/Kolkata", "America/New_York"
+  timezone        String?   @default("UTC") // e.g. "Asia/Kolkata", "America/New_York"
   createdAt       DateTime @default(now())
-
+  updatedAt       DateTime @updatedAt
   @@map("users")
   mentor Mentor?
 
