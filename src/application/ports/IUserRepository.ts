@@ -1,4 +1,6 @@
+import { signupUserDTO } from "@application/dto/user/signupUser.dto";
 import { User } from "@domain/entities/user";
+
 export interface IUserRepository {
-  create(user: User): Promise<User | null>;
+  create(user: signupUserDTO): Promise<Omit<User, "password">>;
 }
