@@ -6,7 +6,7 @@ import { PrismaClient } from "generated/prisma/client";
 export class UserRepository implements IUserRepository {
   constructor(private _prisma: PrismaClient) {}
   create = async (user: signupUserDTO): Promise<Omit<User, "password">> => {
-    console.log(user);
+    console.log("repo", user);
     const record = await this._prisma.user.create({
       data: {
         name: user.name,
@@ -24,7 +24,10 @@ export class UserRepository implements IUserRepository {
     // 3. Return the clean object
     return userWithoutPassword;
   };
+
+  findByEmail = async (email: string): Promise<User | false> => {
+    const user = await this._prisma.user.findFirst({ where: { email } });
+    console.log(user);
+    return user ? new User(user) : false;
+  };
 }
-
-
-
