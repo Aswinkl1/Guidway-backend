@@ -1,5 +1,5 @@
-
+import { signupUserDTO } from "@application/dto/user/signupUser.dto";
 
 export interface ISignUpUsecase {
-  execute(data: any): any;
+  execute(data: signupUserDTO): any;
 }
