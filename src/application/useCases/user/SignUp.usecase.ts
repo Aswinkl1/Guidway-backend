@@ -7,14 +7,12 @@ export class SignUpUser implements ISignUpUsecase {
   constructor(private _userRepository: IUserRepository) {}
 
   execute = async (data: signupUserDTO) => {
-    console.log(data);
     const exists = await this._userRepository.findByEmail(data.email);
-    if (!exists) {
+    if (exists) {
+      console.log("yoo");
       throw new UserAlreadyExistsError(data.email);
     }
-    console.log("before passing", data);
     const rec = await this._userRepository.create(data);
-    console.log("Rec", rec);
     return {
       message: "account created succesfully",
       rec,
