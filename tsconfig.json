@@ -13,7 +13,8 @@
       "@domain/*": ["domain/*"],
       "@application/*": ["application/*"],
       "@infrastructure/*": ["infrastructure/*"],
-      "@presentation/*": ["presentation/*"]
+      "@presentation/*": ["presentation/*"],
+      "@config/*": ["config/*"]
     }
   },
   "include": ["src", "prisma.config.ts"],
