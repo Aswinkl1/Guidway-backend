@@ -1,15 +1,50 @@
+export interface UserProps {
+  id: string;
+  email: string;
+  name: string;
+  password: string | null;
+  phoneNumber: string;
+  profileImageUrl: string | null;
+  authProviderId: string | null;
+  role: "admin" | "mentor" | "student";
+  isDeleted: boolean;
+  isVerified: boolean;
+  isBlocked: boolean;
+  timezone: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export class User {
-  constructor(
-    public id: number,
-    public name: string,
-    public password: string | null,
-    public phoneNumber: number,
-    public authProviderId: string | null,
-    public role: "student" | "mentor" | "admin",
-    public isDeleted: boolean,
-    public isVerified: boolean,
-    public isBlocked: boolean,
-    public timezone: string,
-    public createdAt: Date,
-  ) {}
+  public id: string;
+  public email: string;
+  public name: string;
+  public password: string | null;
+  public phoneNumber: string;
+  public profileImageUrl: string | null;
+  public authProviderId: string | null;
+  public role: "admin" | "mentor" | "student";
+  public isDeleted: boolean;
+  public isVerified: boolean;
+  public isBlocked: boolean;
+  public timezone: string | null;
+  public createdAt: Date;
+  public updatedAt: Date;
+
+  constructor(public data: UserProps) {
+    this.id = data.id;
+    this.email = data.email;
+    this.name = data.name;
+    this.password = data.password;
+    this.phoneNumber = data.phoneNumber;
+    this.profileImageUrl = data.profileImageUrl;
+    this.authProviderId = data.authProviderId;
+    this.role = data.role;
+    this.isDeleted = data.isDeleted ?? false;
+    this.isVerified = data.isVerified ?? false;
+    this.isBlocked = data.isBlocked ?? false;
+    this.timezone = data.timezone;
+    this.createdAt = data.createdAt;
+    this.updatedAt = data.updatedAt;
+  }
 }
