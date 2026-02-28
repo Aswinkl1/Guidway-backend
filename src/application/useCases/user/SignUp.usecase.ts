@@ -1,6 +1,7 @@
 import { signupUserDTO } from "@application/dto/user/signupUser.dto";
 import { ITokenRepository } from "@application/ports/repository/ITokenRepository";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
+import { IEmailService } from "@application/ports/services/IEmailService";
 import { IHashService } from "@application/ports/services/IHashService";
 import { ITokenService } from "@application/ports/services/ITokenService";
 import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
@@ -12,6 +13,7 @@ export class SignUpUser implements ISignUpUsecase {
     private _hashService: IHashService,
     private _tokenService: ITokenService,
     private _tokenRepository: ITokenRepository,
+    private _emailService: IEmailService,
   ) {}
 
   execute = async (data: signupUserDTO) => {
@@ -26,7 +28,12 @@ export class SignUpUser implements ISignUpUsecase {
     const verificationToken = this._tokenService.getSecureToken();
 
     await this._tokenRepository.saveToken(verificationToken, savedUser.id, 180);
-    
+
+    await this._emailService.sendVerificationEmail(
+      savedUser.email,
+      verificationToken,
+    );
+
     return {
       message: "account created succesfully",
       savedUser,
