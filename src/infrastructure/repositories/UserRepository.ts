@@ -16,6 +16,7 @@ export class UserRepository implements IUserRepository {
         email: user.email,
       },
     });
+
     const newUser = new User(record);
 
     // 2. Strip the password out at runtime using JavaScript destructuring
