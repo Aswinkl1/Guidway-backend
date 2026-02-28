@@ -10,3 +10,5 @@ redisClient.on("connect", () =>
 export const connectRedis = async () => {
   await redisClient.connect();
 };
+
+export type AppRedisClientType = typeof redisClient;

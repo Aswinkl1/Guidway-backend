@@ -1,6 +1,8 @@
 import { signupUserDTO } from "@application/dto/user/signupUser.dto";
+import { ITokenRepository } from "@application/ports/repository/ITokenRepository";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { IHashService } from "@application/ports/services/IHashService";
+import { ITokenService } from "@application/ports/services/ITokenService";
 import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import { UserAlreadyExistsError } from "@domain/errors/UserError";
 
@@ -8,6 +10,8 @@ export class SignUpUser implements ISignUpUsecase {
   constructor(
     private _userRepository: IUserRepository,
     private _hashService: IHashService,
+    private _tokenService: ITokenService,
+    private _tokenRepository: ITokenRepository,
   ) {}
 
   execute = async (data: signupUserDTO) => {
@@ -17,10 +21,15 @@ export class SignUpUser implements ISignUpUsecase {
     }
 
     data.password = await this._hashService.hash(data.password);
-    const rec = await this._userRepository.create(data);
+    const savedUser = await this._userRepository.create(data);
+
+    const verificationToken = this._tokenService.getSecureToken();
+
+    await this._tokenRepository.saveToken(verificationToken, savedUser.id, 180);
+    
     return {
       message: "account created succesfully",
-      rec,
+      savedUser,
     };
   };
 }
