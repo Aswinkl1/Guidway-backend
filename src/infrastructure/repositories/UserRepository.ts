@@ -1,5 +1,5 @@
 import { signupUserDTO } from "@application/dto/user/signupUser.dto";
-import { IUserRepository } from "@application/ports/IUserRepository";
+import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { User } from "@domain/entities/user";
 import { PrismaClient } from "generated/prisma/client";
 
@@ -25,9 +25,9 @@ export class UserRepository implements IUserRepository {
     return userWithoutPassword;
   };
 
-  findByEmail = async (email: string): Promise<User | false> => {
+  findByEmail = async (email: string): Promise<User | null> => {
     const user = await this._prisma.user.findUnique({ where: { email } });
     console.log(user);
-    return user ? new User(user) : false;
+    return user ? new User(user) : null;
   };
 }
