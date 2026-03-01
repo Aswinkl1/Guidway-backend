@@ -1,4 +1,6 @@
+import { loginSignupSchema } from "@application/dto/user/loginUser.dto";
 import { signupUserSchema } from "@application/dto/user/signupUser.dto";
+import { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
 import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
 import { NextFunction, Request, Response } from "express";
@@ -8,6 +10,7 @@ export class AuthController {
   constructor(
     private readonly signUpUsecase: ISignUpUsecase,
     private readonly _verifyEmailUsecase: IVerifyEmailUsecase,
+    private readonly _loginUsecase: ILoginUsecase,
   ) {}
 
   userSignUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -47,5 +50,22 @@ export class AuthController {
     } catch (error) {
       next(error);
     }
+  };
+
+  userLogin = async (req: Request, res: Response, next: NextFunction) => {
+    // try {
+    const parsed = loginSignupSchema.safeParse(req.body);
+    if (!parsed.success) {
+      console.log("error");
+      return;
+    }
+    console.log("parsed", parsed);
+
+    const rec = await this._loginUsecase.execute(parsed.data);
+    console.log("jd");
+    res.status(200).json({ status: "success", rec });
+    // } catch (error) {
+    // next(error);
+    // }
   };
 }
