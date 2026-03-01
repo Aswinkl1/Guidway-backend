@@ -5,6 +5,7 @@ import { PrismaClient } from "generated/prisma/client";
 
 export class UserRepository implements IUserRepository {
   constructor(private _prisma: PrismaClient) {}
+
   create = async (user: signupUserDTO): Promise<Omit<User, "password">> => {
     console.log("repo", user);
     const record = await this._prisma.user.create({
@@ -30,5 +31,24 @@ export class UserRepository implements IUserRepository {
     const user = await this._prisma.user.findUnique({ where: { email } });
     console.log(user);
     return user ? new User(user) : null;
+  };
+
+  update = async (
+    userId: string,
+    user: Partial<User>,
+  ): Promise<Omit<User, "password">> => {
+    // update the user with the id
+    const record = await this._prisma.user.update({
+      where: { id: userId },
+      data: user,
+    });
+
+    const newUser = new User(record);
+
+    // 2. Strip the password out at runtime using JavaScript destructuring
+    const { password, ...userWithoutPassword } = newUser;
+
+    // 3. Return the clean object
+    return userWithoutPassword;
   };
 }

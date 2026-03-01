@@ -27,7 +27,11 @@ export class SignUpUser implements ISignUpUsecase {
 
     const verificationToken = this._tokenService.getSecureToken();
 
-    await this._tokenRepository.saveToken(verificationToken, savedUser.id, 180);
+    await this._tokenRepository.saveToken(
+      verificationToken,
+      savedUser.id,
+      86400,
+    );
 
     await this._emailService.sendVerificationEmail(
       savedUser.email,
