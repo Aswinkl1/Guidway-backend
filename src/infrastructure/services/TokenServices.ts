@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { ITokenService } from "@application/ports/services/ITokenService";
 import jwt from "jsonwebtoken";
+import { JWTTokenPaylod } from "@application/types/JWTTokenPayload.type";
 export class TokenService implements ITokenService {
   constructor(
     private accessSecret: string,
@@ -32,10 +33,10 @@ export class TokenService implements ITokenService {
     return crypto.createHash("sha256").update(token).digest("hex");
   }
 
-  verifyAccessToken(token: string): { userId: string; role: string } {
+  verifyAccessToken(token: string): JWTTokenPaylod {
     try {
       const decode = jwt.verify(token, this.accessSecret) as any;
-      return { userId: decode.sub, role: decode.role };
+      return { id: decode.sub, role: decode.role };
     } catch (error) {
       throw new Error("invalid token ");
     }

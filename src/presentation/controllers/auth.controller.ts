@@ -1,16 +1,20 @@
+import { forgetPasswordSchema } from "@application/dto/user/forgetPassword.dto";
 import { loginSignupSchema } from "@application/dto/user/loginUser.dto";
 import { signupUserSchema } from "@application/dto/user/signupUser.dto";
+import { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
 import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
 import { NextFunction, Request, Response } from "express";
-import { ZodError } from "zod";
+import { error } from "node:console";
+import { success, ZodError } from "zod";
 
 export class AuthController {
   constructor(
     private readonly signUpUsecase: ISignUpUsecase,
     private readonly _verifyEmailUsecase: IVerifyEmailUsecase,
     private readonly _loginUsecase: ILoginUsecase,
+    private readonly _forgetPasswordUsecase: IForgetPasswordUsecase,
   ) {}
 
   userSignUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -61,11 +65,35 @@ export class AuthController {
     }
     console.log("parsed", parsed);
 
-    const rec = await this._loginUsecase.execute(parsed.data);
-    console.log("jd");
-    res.status(200).json({ status: "success", rec });
+    const { user, accessToken, refreshToken } =
+      await this._loginUsecase.execute(parsed.data);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
+    });
+    res.status(200).json({ status: "success", data: { user, accessToken } });
     // } catch (error) {
     // next(error);
     // }
+  };
+
+  mock = async (req: Request, res: Response) => {
+    console.log(req.cookies);
+    res.send("heleleleo");
+  };
+
+  forgetPassword = async (req: Request, res: Response) => {
+    console.log(req.body);
+    const parsed = forgetPasswordSchema.safeParse(req.body);
+    if (!parsed.success) {
+      console.log("zod error");
+      throw new Error("email is not provided");
+    }
+    console.log(parsed.data);
+    const { email } = await this._forgetPasswordUsecase.execute(parsed.data);
+
+    res.status(200).json({ success: "true", email });
   };
 }
