@@ -2,9 +2,11 @@ import { resetPasswordDTO } from "@application/dto/user/resetPassword.dto";
 import { ITokenRepository } from "@application/ports/repository/ITokenRepository";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { IHashService } from "@application/ports/services/IHashService";
+import { ITokenService } from "@application/ports/services/ITokenService";
 import { IResetPassswordUsecase } from "@application/ports/usecase/IResetPassword.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { inject, injectable } from "inversify";
+
 @injectable()
 export class ResetPasswordUsecase implements IResetPassswordUsecase {
   constructor(
@@ -13,10 +15,14 @@ export class ResetPasswordUsecase implements IResetPassswordUsecase {
     @inject(TYPES.HashService) private readonly _hashService: IHashService,
     @inject(TYPES.UserRepository)
     private readonly _userRepository: IUserRepository,
+    @inject(TYPES.TokenService)
+    private readonly _tokenService: ITokenService,
   ) {}
   execute = async (dto: resetPasswordDTO): Promise<void> => {
-    // check if the token exist in the db
-    const userId = await this._tokenRepository.getUserIdByToken(dto.token);
+    // hash the token
+    const hashedToken = this._tokenService.hashToken(dto.token);
+    // check if the hash exist in the db
+    const userId = await this._tokenRepository.getUserIdByToken(hashedToken);
 
     // if not then thorow an errro invalid token
     if (!userId) {

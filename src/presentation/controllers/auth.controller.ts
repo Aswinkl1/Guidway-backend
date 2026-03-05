@@ -113,10 +113,9 @@ export class AuthController implements IAuthController {
     if (!parsed.success) {
       throw new Error("error in reset password");
     }
-
     // give this data to the reset usecase
     await this._resetPasswordUSecase.execute(parsed.data);
     // return a response
-    return res.status(200).json({ message: "password changed successfully" });
+    res.status(200).json({ message: "password changed successfully" });
   };
 }

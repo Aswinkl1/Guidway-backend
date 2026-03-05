@@ -22,6 +22,6 @@ router.get(
 );
 
 router.post("/forget-password", authController.forgetPassword);
-// router.patch("/reset-password")
+router.patch("/reset-password", authController.resetPassword);
 
 export default router;
