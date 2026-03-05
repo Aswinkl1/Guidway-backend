@@ -5,11 +5,10 @@ import { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPasswo
 import { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
 import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
+import { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import { NextFunction, Request, Response } from "express";
-import { error } from "node:console";
-import { success, ZodError } from "zod";
 
-export class AuthController {
+export class AuthController implements IAuthController {
   constructor(
     private readonly signUpUsecase: ISignUpUsecase,
     private readonly _verifyEmailUsecase: IVerifyEmailUsecase,
