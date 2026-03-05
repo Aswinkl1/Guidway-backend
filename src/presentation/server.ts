@@ -12,7 +12,6 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(`/${EnvConfig.API_VERSION}`, route);
-console.log(EnvConfig.API_VERSION);
 
 app.use(errorHandler);
 export default app;

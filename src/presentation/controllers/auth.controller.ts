@@ -1,10 +1,13 @@
 import { forgetPasswordSchema } from "@application/dto/user/forgetPassword.dto";
 import { loginSignupSchema } from "@application/dto/user/loginUser.dto";
+import { resetPasswordSchema } from "@application/dto/user/resetPassword.dto";
 import { signupUserSchema } from "@application/dto/user/signupUser.dto";
 import { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
+import { IResetPassswordUsecase } from "@application/ports/usecase/IResetPassword.usecase";
 import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
+
 import { TYPES } from "@config/DI-container/TYPES";
 import { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import { NextFunction, Request, Response } from "express";
@@ -19,6 +22,8 @@ export class AuthController implements IAuthController {
     @inject(TYPES.LoginUseCase) private readonly _loginUsecase: ILoginUsecase,
     @inject(TYPES.ForgetPasswordUseCase)
     private readonly _forgetPasswordUsecase: IForgetPasswordUsecase,
+    @inject(TYPES.ResetPasswordUseCase)
+    private readonly _resetPasswordUSecase: IResetPassswordUsecase,
   ) {}
 
   userSignUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -99,5 +104,19 @@ export class AuthController implements IAuthController {
     const { email } = await this._forgetPasswordUsecase.execute(parsed.data);
 
     res.status(200).json({ success: "true", email });
+  };
+
+  resetPassword = async (req: Request, res: Response) => {
+    // verify the req body {token,password}
+    const parsed = resetPasswordSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+      throw new Error("error in reset password");
+    }
+
+    // give this data to the reset usecase
+    await this._resetPasswordUSecase.execute(parsed.data);
+    // return a response
+    return res.status(200).json({ message: "password changed successfully" });
   };
 }
