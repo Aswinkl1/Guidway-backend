@@ -1,9 +1,14 @@
 import { ITokenRepository } from "@application/ports/repository/ITokenRepository";
+import { TYPES } from "@config/DI-container/TYPES";
 import { AppRedisClientType } from "@infrastructure/database/redisClient";
+import { inject, injectable } from "inversify";
 import { RedisClientType } from "redis";
 
+@injectable()
 export class TokenRepository implements ITokenRepository {
-  constructor(private _redisClient: AppRedisClientType) {}
+  constructor(
+    @inject(TYPES.RedisClient) private _redisClient: AppRedisClientType,
+  ) {}
   async saveToken(
     token: string,
     userId: string,

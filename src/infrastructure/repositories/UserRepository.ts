@@ -1,10 +1,12 @@
 import { signupUserDTO } from "@application/dto/user/signupUser.dto";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
+import { TYPES } from "@config/DI-container/TYPES";
 import { User } from "@domain/entities/user";
 import { PrismaClient } from "generated/prisma/client";
-
+import { inject, injectable } from "inversify";
+@injectable()
 export class UserRepository implements IUserRepository {
-  constructor(private _prisma: PrismaClient) {}
+  constructor(@inject(TYPES.PrismaClient) private _prisma: PrismaClient) {}
 
   create = async (user: signupUserDTO): Promise<Omit<User, "password">> => {
     console.log("repo", user);

@@ -1,11 +1,13 @@
 import { ITokenRepository } from "@application/ports/repository/ITokenRepository";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
-
+import { TYPES } from "@config/DI-container/TYPES";
+import { inject, injectable } from "inversify";
+@injectable()
 export class VerifyEmailUseCase implements IVerifyEmailUsecase {
   constructor(
-    private _userRepository: IUserRepository,
-    private _tokenRepository: ITokenRepository,
+    @inject(TYPES.UserRepository) private _userRepository: IUserRepository,
+    @inject(TYPES.TokenRepository) private _tokenRepository: ITokenRepository,
   ) {}
   async execute(dto: string): Promise<{ message: string }> {
     // find if the token is exits in the repository

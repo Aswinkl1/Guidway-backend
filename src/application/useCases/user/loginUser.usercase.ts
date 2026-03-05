@@ -4,14 +4,17 @@ import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { IHashService } from "@application/ports/services/IHashService";
 import { ITokenService } from "@application/ports/services/ITokenService";
 import { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
+import { TYPES } from "@config/DI-container/TYPES";
 import { User } from "@domain/entities/user";
 import { UserNotFoundError } from "@domain/errors/UserError";
-
+import { inject, injectable } from "inversify";
+@injectable()
 export class LoginUsecase implements ILoginUsecase {
   constructor(
+    @inject(TYPES.UserRepository)
     private readonly _userRepository: IUserRepository,
-    private readonly _hashService: IHashService,
-    private readonly _tokenService: ITokenService,
+    @inject(TYPES.HashService) private readonly _hashService: IHashService,
+    @inject(TYPES.TokenService) private readonly _tokenService: ITokenService,
   ) {}
   execute = async (dto: loginUserDTO): Promise<LoginResponceDTO> => {
     // check if the email exists

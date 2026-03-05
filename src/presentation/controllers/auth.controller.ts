@@ -5,14 +5,19 @@ import { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPasswo
 import { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
 import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
+import { TYPES } from "@config/DI-container/TYPES";
 import { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import { NextFunction, Request, Response } from "express";
+import { inject, injectable } from "inversify";
 
+@injectable()
 export class AuthController implements IAuthController {
   constructor(
-    private readonly signUpUsecase: ISignUpUsecase,
+    @inject(TYPES.SignUpUseCase) private readonly signUpUsecase: ISignUpUsecase,
+    @inject(TYPES.VerifyEmailUseCase)
     private readonly _verifyEmailUsecase: IVerifyEmailUsecase,
-    private readonly _loginUsecase: ILoginUsecase,
+    @inject(TYPES.LoginUseCase) private readonly _loginUsecase: ILoginUsecase,
+    @inject(TYPES.ForgetPasswordUseCase)
     private readonly _forgetPasswordUsecase: IForgetPasswordUsecase,
   ) {}
 

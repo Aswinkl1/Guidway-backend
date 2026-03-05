@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { tokenService } from "@config/DI-container/service.container";
+import { container } from "@config/DI-container/container";
+import { TYPES } from "@config/DI-container/TYPES";
+import { ITokenService } from "@application/ports/services/ITokenService";
+const tokenService = container.get<ITokenService>(TYPES.TokenService);
 const isAuthenticate = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {

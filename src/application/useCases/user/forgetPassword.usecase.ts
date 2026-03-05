@@ -4,13 +4,16 @@ import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { IEmailService } from "@application/ports/services/IEmailService";
 import { ITokenService } from "@application/ports/services/ITokenService";
 import { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
+import { TYPES } from "@config/DI-container/TYPES";
+import { injectable, inject } from "inversify";
 
-export class ForgetPassword implements IForgetPasswordUsecase {
+@injectable()
+export class ForgetPasswordUsecase implements IForgetPasswordUsecase {
   constructor(
-    private _userRepository: IUserRepository,
-    private _emailService: IEmailService,
-    private _tokenService: ITokenService,
-    private _tokenRepository: ITokenRepository,
+    @inject(TYPES.UserRepository) private _userRepository: IUserRepository,
+    @inject(TYPES.EmailService) private _emailService: IEmailService,
+    @inject(TYPES.TokenService) private _tokenService: ITokenService,
+    @inject(TYPES.TokenRepository) private _tokenRepository: ITokenRepository,
   ) {}
   execute = async (dto: forgetPasswordDTO): Promise<{ email: string }> => {
     const user = await this._userRepository.findByEmail(dto.email);

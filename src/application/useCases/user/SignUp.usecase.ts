@@ -5,15 +5,17 @@ import { IEmailService } from "@application/ports/services/IEmailService";
 import { IHashService } from "@application/ports/services/IHashService";
 import { ITokenService } from "@application/ports/services/ITokenService";
 import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
+import { TYPES } from "@config/DI-container/TYPES";
 import { UserAlreadyExistsError } from "@domain/errors/UserError";
-
+import { inject, injectable } from "inversify";
+injectable();
 export class SignUpUser implements ISignUpUsecase {
   constructor(
-    private _userRepository: IUserRepository,
-    private _hashService: IHashService,
-    private _tokenService: ITokenService,
-    private _tokenRepository: ITokenRepository,
-    private _emailService: IEmailService,
+    @inject(TYPES.UserRepository) private _userRepository: IUserRepository,
+    @inject(TYPES.HashService) private _hashService: IHashService,
+    @inject(TYPES.TokenService) private _tokenService: ITokenService,
+    @inject(TYPES.TokenRepository) private _tokenRepository: ITokenRepository,
+    @inject(TYPES.EmailService) private _emailService: IEmailService,
   ) {}
 
   execute = async (data: signupUserDTO) => {

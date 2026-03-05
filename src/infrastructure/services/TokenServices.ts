@@ -2,11 +2,16 @@ import crypto from "crypto";
 import { ITokenService } from "@application/ports/services/ITokenService";
 import jwt from "jsonwebtoken";
 import { JWTTokenPaylod } from "@application/types/JWTTokenPayload.type";
+import { TYPES } from "@config/DI-container/TYPES";
+import { inject, injectable } from "inversify";
+@injectable()
 export class TokenService implements ITokenService {
-  constructor(
-    private accessSecret: string,
-    private accessExpiresIn: string,
-  ) {
+  private accessSecret: string;
+  private accessExpiresIn: string;
+  constructor() {
+    ((this.accessSecret = process.env.JWT_ACCESSTOKEN_SECRET!),
+      (this.accessExpiresIn =
+        process.env.JWT_ACCESSTOKEN_EXPIRES_IN ?? "15min"));
     if (!this.accessSecret) {
       throw new Error("jwt secrets are not provided");
     }

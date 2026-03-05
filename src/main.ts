@@ -1,8 +1,8 @@
+import "reflect-metadata";
 import { connectRedis } from "@infrastructure/database/redisClient.js";
 import app from "./presentation/server.js";
 import { config } from "dotenv";
 import { connectPrisma } from "@infrastructure/database/prisma.js";
-
 const start = async () => {
   try {
     connectPrisma();
