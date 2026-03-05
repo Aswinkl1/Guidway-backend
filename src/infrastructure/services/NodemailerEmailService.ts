@@ -1,4 +1,5 @@
 import { IEmailService } from "@application/ports/services/IEmailService";
+import { EnvConfig } from "@config/env";
 import nodemailer from "nodemailer";
 export class NodemailerEmailService implements IEmailService {
   private transporter: nodemailer.Transporter;
@@ -6,13 +7,13 @@ export class NodemailerEmailService implements IEmailService {
     this.transporter = nodemailer.createTransport({
       service: "Gmail",
       auth: {
-        user: process.env.NODEMAIL_EMAIL,
-        pass: process.env.NODEMAIL_PASSWORD,
+        user: EnvConfig.NODEMAIL_EMAIL,
+        pass: EnvConfig.NODEMAIL_PASSWORD,
       },
     });
   }
   async sendVerificationEmail(toAddress: string, token: string): Promise<void> {
-    const verificationLink = `${process.env.BASE_URL}/${process.env.API_VERSION}/verify?token=${token}`;
+    const verificationLink = `${EnvConfig.BASE_URL}/${EnvConfig.API_VERSION}/verify?token=${token}`;
     try {
       // 2. Send the message
       const info = await this.transporter.sendMail({

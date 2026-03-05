@@ -4,17 +4,14 @@ import jwt from "jsonwebtoken";
 import { JWTTokenPaylod } from "@application/types/JWTTokenPayload.type";
 import { TYPES } from "@config/DI-container/TYPES";
 import { inject, injectable } from "inversify";
+import { EnvConfig } from "@config/env";
 @injectable()
 export class TokenService implements ITokenService {
   private accessSecret: string;
   private accessExpiresIn: string;
   constructor() {
-    ((this.accessSecret = process.env.JWT_ACCESSTOKEN_SECRET!),
-      (this.accessExpiresIn =
-        process.env.JWT_ACCESSTOKEN_EXPIRES_IN ?? "15min"));
-    if (!this.accessSecret) {
-      throw new Error("jwt secrets are not provided");
-    }
+    this.accessSecret = EnvConfig.JWT_ACCESSTOKEN_SECRET;
+    this.accessExpiresIn = EnvConfig.JWT_ACCESSTOKEN_EXPIRES_IN;
   }
   getSecureToken(): string {
     return crypto.randomBytes(32).toString("hex");
