@@ -9,6 +9,7 @@ import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
 
 import { TYPES } from "@config/DI-container/TYPES";
+import { createSuccess } from "@presentation/helper/response.util";
 import { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import { NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
@@ -37,9 +38,9 @@ export class AuthController implements IAuthController {
       console.log("parced", parsed);
       const rec = await this.signUpUsecase.execute(parsed.data);
 
-      console.log(rec);
+      const response = createSuccess("signup succesfull", rec);
 
-      res.status(200).json({ message: "success", rec });
+      res.status(200).json(response);
     } catch (error: any) {
       next(error);
     }
@@ -59,7 +60,9 @@ export class AuthController implements IAuthController {
       const user = await this._verifyEmailUsecase.execute(token);
       // send the responce back
 
-      res.status(200).json({ message: "email verifyed succesfull", user });
+      res
+        .status(200)
+        .json(createSuccess("email verification succesfull", user));
     } catch (error) {
       next(error);
     }
@@ -82,7 +85,11 @@ export class AuthController implements IAuthController {
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
     });
-    res.status(200).json({ status: "success", data: { user, accessToken } });
+    res
+      .status(200)
+      .json(
+        createSuccess("login succesfull", { user: user.data, accessToken }),
+      );
     // } catch (error) {
     // next(error);
     // }
@@ -103,7 +110,7 @@ export class AuthController implements IAuthController {
     console.log(parsed.data);
     const { email } = await this._forgetPasswordUsecase.execute(parsed.data);
 
-    res.status(200).json({ success: "true", email });
+    res.status(200).json(createSuccess("check you email", email));
   };
 
   resetPassword = async (req: Request, res: Response) => {
@@ -116,6 +123,6 @@ export class AuthController implements IAuthController {
     // give this data to the reset usecase
     await this._resetPasswordUSecase.execute(parsed.data);
     // return a response
-    res.status(200).json({ message: "password changed successfully" });
+    res.status(200).json(createSuccess("password changed succesfull", ""));
   };
 }
