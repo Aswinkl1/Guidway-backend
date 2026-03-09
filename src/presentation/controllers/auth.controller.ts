@@ -9,6 +9,7 @@ import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
 
 import { TYPES } from "@config/DI-container/TYPES";
+import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
 import { createSuccess } from "@presentation/helper/response.util";
 import { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import { NextFunction, Request, Response } from "express";
@@ -70,10 +71,10 @@ export class AuthController implements IAuthController {
 
   userLogin = async (req: Request, res: Response, next: NextFunction) => {
     // try {
+    console.log(req.body);
     const parsed = loginSignupSchema.safeParse(req.body);
     if (!parsed.success) {
-      console.log("error");
-      return;
+      throw new CustomZodValidationError(parsed.error);
     }
     console.log("parsed", parsed);
 

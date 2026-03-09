@@ -1,5 +1,6 @@
 import { LoginResponceDTO } from "@application/dto/Responce/loginResponce.dto";
 import { loginUserDTO } from "@application/dto/user/loginUser.dto";
+import { InvalidCredentialsError } from "@application/errors/InvalidCredentialsError";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { IHashService } from "@application/ports/services/IHashService";
 import { ITokenService } from "@application/ports/services/ITokenService";
@@ -22,11 +23,13 @@ export class LoginUsecase implements ILoginUsecase {
 
     // if not usernot found error
     if (!user) {
-      throw new UserNotFoundError(dto.email);
+      throw new InvalidCredentialsError("Invalid email or password");
     }
 
     if (user.password == null) {
-      throw new Error("user uses goodgle auth");
+      throw new InvalidCredentialsError(
+        "This account was created using Google. Please sign in with Google",
+      );
     }
 
     // check if the password matches
@@ -36,9 +39,9 @@ export class LoginUsecase implements ILoginUsecase {
     );
     // if not password doest match
     if (!isMatch) {
-      throw new Error("password doesn't match ");
+      throw new InvalidCredentialsError("Invalid email or password");
     }
-    console.log("user is here", user);
+
     const accessToken = this._tokenService.generateAccessToken({
       userId: user.id,
       role: user.role,
