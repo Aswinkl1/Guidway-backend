@@ -6,7 +6,7 @@ export interface UserProps {
   phoneNumber: string;
   profileImageUrl: string | null;
   authProviderId: string | null;
-  role: "admin" | "mentor" | "student";
+  role: "admin" | "mentor" | "mentee";
   isDeleted: boolean;
   isVerified: boolean;
   isBlocked: boolean;
@@ -23,7 +23,7 @@ export class User {
   public phoneNumber: string;
   public profileImageUrl: string | null;
   public authProviderId: string | null;
-  public role: "admin" | "mentor" | "student";
+  public role: "admin" | "mentor" | "mentee";
   public isDeleted: boolean;
   public isVerified: boolean;
   public isBlocked: boolean;

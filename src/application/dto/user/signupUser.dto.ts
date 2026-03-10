@@ -1,5 +1,5 @@
 import { z } from "zod";
-const roles = ["admin", "student", "mentor"] as const;
+const roles = ["admin", "mentee", "mentor"] as const;
 export const signupUserSchema = z.object({
   email: z.email("Please enter a valid email address."),
   name: z

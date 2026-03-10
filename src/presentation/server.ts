@@ -5,8 +5,11 @@ import route from "./routes";
 import { errorHandler } from "./middleware/errorHandler";
 import cookieParser from "cookie-parser";
 import { EnvConfig } from "@config/env";
+import morgan from "morgan";
+
 const app = express();
 
+app.use(morgan("dev"));
 app.use(helmet());
 app.use(
   cors({

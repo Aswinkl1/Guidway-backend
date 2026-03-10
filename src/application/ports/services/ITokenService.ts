@@ -6,4 +6,6 @@ export interface ITokenService {
   generateRefreshToken(): { token: string; hash: string };
   hashToken(token: string): string;
   verifyAccessToken(token: string): JWTTokenPaylod;
+  getVerifyToken(userId: string): string;
+  verifyVerificationToken(token: string): { id: string };
 }

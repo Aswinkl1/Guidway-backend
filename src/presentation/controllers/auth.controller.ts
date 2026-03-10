@@ -33,8 +33,7 @@ export class AuthController implements IAuthController {
       console.log(req.body);
       const parsed = signupUserSchema.safeParse(req.body);
       if (!parsed.success) {
-        console.log("not success");
-        return;
+        throw new CustomZodValidationError(parsed.error);
       }
       console.log("parced", parsed);
       const rec = await this.signUpUsecase.execute(parsed.data);

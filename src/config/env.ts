@@ -10,6 +10,10 @@ const envSchema = z.object({
     .string()
     .min(1, "JWT_ACCESS_SECRET is required in .env"),
   JWT_ACCESSTOKEN_EXPIRES_IN: z.string().default("15m"),
+  JWT_VERIFYTOKEN_SECRET: z
+    .string()
+    .min(1, "JWT_ACCESS_SECRET is required in .env"),
+  JWT_VERIFYTOKEN_EXPIRES_IN: z.string().default("15m"),
 
   BASE_URL: z.url("BASE_URL must be a valid URL"),
   API_VERSION: z.string().default("/api/v1"),
@@ -58,5 +62,12 @@ export class EnvConfig {
 
   static get JWT_ACCESSTOKEN_EXPIRES_IN(): string {
     return parsedEnv.JWT_ACCESSTOKEN_EXPIRES_IN;
+  }
+  static get JWT_VERIFYTOKEN_SECRET(): string {
+    return parsedEnv.JWT_VERIFYTOKEN_SECRET;
+  }
+
+  static get JWT_VERIFYTOKEN_EXPIRES_IN(): string {
+    return parsedEnv.JWT_VERIFYTOKEN_EXPIRES_IN;
   }
 }

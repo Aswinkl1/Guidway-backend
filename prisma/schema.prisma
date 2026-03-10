@@ -28,7 +28,7 @@ model User {
   // Tracks how they signed up
   authProviderId  String?  // The unique ID from LinkedIn/Google (e.g. LINKEDIN_123)
   // The Role determines if they are a Student, Mentor, or Admin
-  role            Role   @default(student) // values: admin, mentor, student
+  role            Role   @default(mentee) // values: admin, mentor, student
   isDeleted       Boolean  @default(false)
   isVerified      Boolean  @default(false)
   isBlocked       Boolean  @default(false)
@@ -43,7 +43,7 @@ model User {
 enum Role {
   admin
   mentor
-  student
+  mentee
 }
 
 // model MentorEmbedding {

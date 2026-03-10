@@ -9,9 +9,13 @@ import { EnvConfig } from "@config/env";
 export class TokenService implements ITokenService {
   private accessSecret: string;
   private accessExpiresIn: string;
+  private verifyExpiresIn: string;
+  private verifySecret: string;
   constructor() {
     this.accessSecret = EnvConfig.JWT_ACCESSTOKEN_SECRET;
     this.accessExpiresIn = EnvConfig.JWT_ACCESSTOKEN_EXPIRES_IN;
+    this.verifyExpiresIn = EnvConfig.JWT_VERIFYTOKEN_EXPIRES_IN;
+    this.verifySecret = EnvConfig.JWT_VERIFYTOKEN_SECRET;
   }
   getSecureToken(): string {
     return crypto.randomBytes(32).toString("hex");
@@ -41,6 +45,21 @@ export class TokenService implements ITokenService {
       return { id: decode.sub, role: decode.role };
     } catch (error) {
       throw new Error("invalid token ");
+    }
+  }
+
+  getVerifyToken(userId: string): string {
+    return jwt.sign({ sub: userId }, this.verifySecret, {
+      expiresIn: this.verifyExpiresIn,
+    } as jwt.SignOptions);
+  }
+
+  verifyVerificationToken(token: string): { id: string } {
+    try {
+      const decode = jwt.verify(token, this.accessSecret) as any;
+      return { id: decode.userId };
+    } catch (error) {
+      throw new Error("invalid token");
     }
   }
 }

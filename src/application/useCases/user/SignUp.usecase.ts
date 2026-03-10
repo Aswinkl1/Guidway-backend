@@ -27,7 +27,7 @@ export class SignUpUser implements ISignUpUsecase {
     data.password = await this._hashService.hash(data.password);
     const savedUser = await this._userRepository.create(data);
 
-    const verificationToken = this._tokenService.getSecureToken();
+    const verificationToken = this._tokenService.getVerifyToken(savedUser.id);
 
     await this._tokenRepository.saveToken(
       verificationToken,
@@ -42,7 +42,6 @@ export class SignUpUser implements ISignUpUsecase {
 
     return {
       message: "account created succesfully",
-      savedUser,
     };
   };
 }
