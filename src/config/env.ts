@@ -16,6 +16,7 @@ const envSchema = z.object({
   JWT_VERIFYTOKEN_EXPIRES_IN: z.string().default("15m"),
 
   BASE_URL: z.url("BASE_URL must be a valid URL"),
+  CLIENT_BASE_URL: z.url("CLIENT_BASE_URL must be a valid URL"),
   API_VERSION: z.string().default("/api/v1"),
   NODEMAIL_EMAIL: z.email("NODEMAIL_EMAIL must be a valid email address"),
   NODEMAIL_PASSWORD: z.string().min(1, "NODEMAIL_PASSWORD is required"),
@@ -69,5 +70,9 @@ export class EnvConfig {
 
   static get JWT_VERIFYTOKEN_EXPIRES_IN(): string {
     return parsedEnv.JWT_VERIFYTOKEN_EXPIRES_IN;
+  }
+
+  static get CLIENT_BASE_URL(): string {
+    return parsedEnv.CLIENT_BASE_URL;
   }
 }

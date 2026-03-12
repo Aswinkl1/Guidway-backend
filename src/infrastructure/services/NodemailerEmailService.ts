@@ -13,7 +13,7 @@ export class NodemailerEmailService implements IEmailService {
     });
   }
   async sendVerificationEmail(toAddress: string, token: string): Promise<void> {
-    const verificationLink = `${EnvConfig.BASE_URL}/${EnvConfig.API_VERSION}/verify?token=${token}`;
+    const verificationLink = `${EnvConfig.CLIENT_BASE_URL}/auth/verify?token=${token}`;
     try {
       // 2. Send the message
       const info = await this.transporter.sendMail({
