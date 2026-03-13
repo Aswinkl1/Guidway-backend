@@ -1,4 +1,5 @@
 import { resetPasswordDTO } from "@application/dto/user/resetPassword.dto";
+import { InvalidTokenError } from "@application/errors/InvalidTokenError";
 import { ITokenRepository } from "@application/ports/repository/ITokenRepository";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { IHashService } from "@application/ports/services/IHashService";
@@ -20,13 +21,14 @@ export class ResetPasswordUsecase implements IResetPassswordUsecase {
   ) {}
   execute = async (dto: resetPasswordDTO): Promise<void> => {
     // hash the token
+    console.log("hdhid");
     const hashedToken = this._tokenService.hashToken(dto.token);
     // check if the hash exist in the db
     const userId = await this._tokenRepository.getUserIdByToken(hashedToken);
-
+    console.log(userId);
     // if not then thorow an errro invalid token
     if (!userId) {
-      throw new Error("token expired or invalid");
+      throw new InvalidTokenError("invalid or expired token");
     }
     // hash the password
     const hashedPassword = await this._hashService.hash(dto.password);
@@ -35,6 +37,6 @@ export class ResetPasswordUsecase implements IResetPassswordUsecase {
       password: hashedPassword,
     });
     // delete the token
-    await this._tokenRepository.deleteToken(dto.token);
+    await this._tokenRepository.deleteToken(hashedToken);
   };
 }
