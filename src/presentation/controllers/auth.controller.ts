@@ -105,7 +105,7 @@ export class AuthController implements IAuthController {
     const parsed = forgetPasswordSchema.safeParse(req.body);
     if (!parsed.success) {
       console.log("zod error");
-      throw new Error("email is not provided");
+      throw new CustomZodValidationError(parsed.error);
     }
     console.log(parsed.data);
     const { email } = await this._forgetPasswordUsecase.execute(parsed.data);
@@ -118,7 +118,7 @@ export class AuthController implements IAuthController {
     const parsed = resetPasswordSchema.safeParse(req.body);
 
     if (!parsed.success) {
-      throw new Error("error in reset password");
+      throw new CustomZodValidationError(parsed.error);
     }
     // give this data to the reset usecase
     await this._resetPasswordUSecase.execute(parsed.data);

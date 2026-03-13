@@ -1,6 +1,9 @@
 import { IEmailService } from "@application/ports/services/IEmailService";
+import { emailServiceProb } from "@application/types/EmailPaylod.type";
 import { EnvConfig } from "@config/env";
 import nodemailer from "nodemailer";
+import { da } from "zod/locales";
+
 export class NodemailerEmailService implements IEmailService {
   private transporter: nodemailer.Transporter;
   constructor() {
@@ -29,11 +32,27 @@ export class NodemailerEmailService implements IEmailService {
           </a>
         `,
       });
-
       console.log("Message sent: %s", info.messageId);
     } catch (err) {
       console.error("Error while sending mail", err);
       throw new Error("Failed to send verification email.");
+    }
+  }
+
+  async sendMail(data: emailServiceProb): Promise<void> {
+    try {
+      const info = await this.transporter.sendMail({
+        from: `"Mentor Marketplace" <${EnvConfig.NODEMAIL_EMAIL}>`,
+        to: data.to,
+        subject: data.subject,
+        text: data.fallback,
+        html: data.html,
+      });
+
+      console.log("message send ", info.messageId);
+    } catch (error) {
+      console.log(`Error while sending email ${error}`);
+      throw new Error("Failed to send email");
     }
   }
 }
