@@ -1,6 +1,6 @@
 import { resetPasswordDTO } from "@application/dto/user/resetPassword.dto";
 import { InvalidTokenError } from "@application/errors/InvalidTokenError";
-import { ITokenRepository } from "@application/ports/repository/ITokenRepository";
+import { ITokenCache } from "@application/ports/repository/ITokenRepository";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { IHashService } from "@application/ports/services/IHashService";
 import { ITokenService } from "@application/ports/services/ITokenService";
@@ -12,7 +12,7 @@ import { inject, injectable } from "inversify";
 export class ResetPasswordUsecase implements IResetPassswordUsecase {
   constructor(
     @inject(TYPES.TokenRepository)
-    private readonly _tokenRepository: ITokenRepository,
+    private readonly _tokenRepository: ITokenCache,
     @inject(TYPES.HashService) private readonly _hashService: IHashService,
     @inject(TYPES.UserRepository)
     private readonly _userRepository: IUserRepository,

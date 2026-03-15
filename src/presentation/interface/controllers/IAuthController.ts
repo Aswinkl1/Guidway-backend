@@ -11,4 +11,5 @@ export interface IAuthController {
     next: NextFunction,
   ): Promise<void>;
   resetPassword(req: Request, res: Response): Promise<void>;
+  refreshToken(req: Request, res: Response): Promise<void>;
 }

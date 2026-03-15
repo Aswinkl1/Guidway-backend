@@ -1,5 +1,5 @@
 import { signupUserDTO } from "@application/dto/user/signupUser.dto";
-import { ITokenRepository } from "@application/ports/repository/ITokenRepository";
+import { ITokenCache } from "@application/ports/repository/ITokenRepository";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { IEmailService } from "@application/ports/services/IEmailService";
 import { IHashService } from "@application/ports/services/IHashService";
@@ -14,7 +14,7 @@ export class SignUpUser implements ISignUpUsecase {
     @inject(TYPES.UserRepository) private _userRepository: IUserRepository,
     @inject(TYPES.HashService) private _hashService: IHashService,
     @inject(TYPES.TokenService) private _tokenService: ITokenService,
-    @inject(TYPES.TokenRepository) private _tokenRepository: ITokenRepository,
+    @inject(TYPES.TokenRepository) private _tokenRepository: ITokenCache,
     @inject(TYPES.EmailService) private _emailService: IEmailService,
   ) {}
 

@@ -1,4 +1,5 @@
 import { signupUserDTO } from "@application/dto/user/signupUser.dto";
+import { NotFoundError } from "@application/errors/NotFoundError";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { TYPES } from "@config/DI-container/TYPES";
 import { User } from "@domain/entities/user";
@@ -7,6 +8,15 @@ import { inject, injectable } from "inversify";
 @injectable()
 export class UserRepository implements IUserRepository {
   constructor(@inject(TYPES.PrismaClient) private _prisma: PrismaClient) {}
+  async findById(id: string): Promise<User | null> {
+    // TODO:figure out a way to remove the passwor while getting data even from db
+    const user = await this._prisma.user.findUnique({ where: { id } });
+    if (!user) {
+      throw new NotFoundError("user not found");
+    }
+    const newUser = new User(user);
+    return newUser ?? null;
+  }
 
   create = async (user: signupUserDTO): Promise<Omit<User, "password">> => {
     console.log("repo", user);

@@ -1,11 +1,7 @@
 import { promises } from "node:dns";
 
-export interface ITokenRepository {
-  saveToken(
-    token: string,
-    userId: string,
-    expiresInSecond: number,
-  ): Promise<string>;
-  getUserIdByToken(token: string): Promise<string | null>;
+export interface ITokenCache {
+  saveToken(token: string, data: any, expiresInSecond: number): Promise<void>;
+  getUserIdByToken(token: string): Promise<any | null>;
   deleteToken(token: string): Promise<void>;
 }

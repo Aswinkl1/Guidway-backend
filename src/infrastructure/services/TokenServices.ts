@@ -17,6 +17,15 @@ export class TokenService implements ITokenService {
     this.verifyExpiresIn = EnvConfig.JWT_VERIFYTOKEN_EXPIRES_IN;
     this.verifySecret = EnvConfig.JWT_VERIFYTOKEN_SECRET;
   }
+
+  verifyRefreshToken(token: string): JWTTokenPaylod {
+    try {
+      const decode = jwt.verify(token, this.accessSecret) as any;
+      return { id: decode.sub, role: decode.role };
+    } catch (error) {
+      throw new Error("invalid token ");
+    }
+  }
   getSecureToken(): string {
     return crypto.randomBytes(32).toString("hex");
   }
@@ -29,10 +38,16 @@ export class TokenService implements ITokenService {
     );
   }
 
-  generateRefreshToken(): { token: string; hash: string } {
-    const token = this.getSecureToken();
-    const hash = this.hashToken(token);
-    return { token, hash };
+  generateRefreshToken(payload: { userId: string; role: string }): {
+    token: string;
+  } {
+    const token = jwt.sign(
+      { sub: payload.userId, role: payload.role },
+      this.accessSecret,
+      { expiresIn: "7d" } as jwt.SignOptions,
+    );
+
+    return { token };
   }
 
   hashToken(token: string): string {

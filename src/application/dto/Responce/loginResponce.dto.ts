@@ -8,7 +8,7 @@ export interface AuthUserDTO {
 }
 
 export interface LoginResponceDTO {
-  user: User;
+  role: "mentor" | "mentee" | "admin";
   accessToken: string;
   refreshToken: string;
 }

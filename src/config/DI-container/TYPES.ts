@@ -1,8 +1,11 @@
 export const TYPES = {
+  // cache
+  CacheService: Symbol.for("CacheService"),
+
   //repository
   UserRepository: Symbol.for("UserRepository"),
   TokenRepository: Symbol.for("TokenRepository"),
-
+  PrismaTokenRepository: Symbol.for("PrismaTokenRepository"),
   //services
   EmailService: Symbol.for("EmailService"),
   HashService: Symbol.for("HashService"),

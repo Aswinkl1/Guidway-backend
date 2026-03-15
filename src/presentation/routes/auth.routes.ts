@@ -11,7 +11,7 @@ const router = Router();
 router.post("/signup", authController.userSignUp);
 
 router.get("/verify", authController.verifyUser);
-// router.post("refresh");
+router.post("/refresh", authController.refreshToken);
 router.post("/login", authController.userLogin);
 
 router.get(

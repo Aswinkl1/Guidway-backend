@@ -17,6 +17,11 @@ const isAuthenticate = (req: Request, res: Response, next: NextFunction) => {
   }
 
   const payload = tokenService.verifyAccessToken(token);
+  // TODO : check that if this user id is in redis if it does then restrict the user
+  //constext : if the admin blocks the user the user still has access
+  // to his acesstoken to we store the id of the users who are blocked by the admin in the redis
+  // if the id is found on the redis then restrict the user
+  //
   console.log(payload);
   if (!payload) {
     throw new Error("user not Authenticated");

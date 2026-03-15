@@ -1,5 +1,5 @@
 import { forgetPasswordDTO } from "@application/dto/user/forgetPassword.dto";
-import { ITokenRepository } from "@application/ports/repository/ITokenRepository";
+import { ITokenCache } from "@application/ports/repository/ITokenRepository";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { IEmailService } from "@application/ports/services/IEmailService";
 import { ITokenService } from "@application/ports/services/ITokenService";
@@ -15,7 +15,7 @@ export class ForgetPasswordUsecase implements IForgetPasswordUsecase {
     @inject(TYPES.UserRepository) private _userRepository: IUserRepository,
     @inject(TYPES.EmailService) private _emailService: IEmailService,
     @inject(TYPES.TokenService) private _tokenService: ITokenService,
-    @inject(TYPES.TokenRepository) private _tokenRepository: ITokenRepository,
+    @inject(TYPES.TokenRepository) private _tokenRepository: ITokenCache,
   ) {}
   execute = async (dto: forgetPasswordDTO): Promise<{ email: string }> => {
     const user = await this._userRepository.findByEmail(dto.email);

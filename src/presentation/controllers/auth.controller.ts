@@ -1,9 +1,11 @@
 import { forgetPasswordSchema } from "@application/dto/user/forgetPassword.dto";
 import { loginSignupSchema } from "@application/dto/user/loginUser.dto";
+import { refreshTokenSchema } from "@application/dto/user/refreshToken.dto";
 import { resetPasswordSchema } from "@application/dto/user/resetPassword.dto";
 import { signupUserSchema } from "@application/dto/user/signupUser.dto";
 import { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
+import { IRefreshTokenUsecase } from "@application/ports/usecase/IRefreshToken.usecase";
 import { IResetPassswordUsecase } from "@application/ports/usecase/IResetPassword.usecase";
 import { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
@@ -12,7 +14,7 @@ import { TYPES } from "@config/DI-container/TYPES";
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
 import { createSuccess } from "@presentation/helper/response.util";
 import { IAuthController } from "@presentation/interface/controllers/IAuthController";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, response, Response } from "express";
 import { inject, injectable } from "inversify";
 
 @injectable()
@@ -26,6 +28,8 @@ export class AuthController implements IAuthController {
     private readonly _forgetPasswordUsecase: IForgetPasswordUsecase,
     @inject(TYPES.ResetPasswordUseCase)
     private readonly _resetPasswordUSecase: IResetPassswordUsecase,
+    @inject(TYPES.RefreshTokenUseCase)
+    private readonly _refreshTokenUsecase: IRefreshTokenUsecase,
   ) {}
 
   userSignUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -70,14 +74,16 @@ export class AuthController implements IAuthController {
 
   userLogin = async (req: Request, res: Response, next: NextFunction) => {
     // try {
-    console.log(req.body);
+    // console.log(req.body);
+    const useragent = req.headers["user-agent"];
+    console.log(useragent);
     const parsed = loginSignupSchema.safeParse(req.body);
     if (!parsed.success) {
       throw new CustomZodValidationError(parsed.error);
     }
     console.log("parsed", parsed);
 
-    const { user, accessToken, refreshToken } =
+    const { role, accessToken, refreshToken } =
       await this._loginUsecase.execute(parsed.data);
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -87,12 +93,7 @@ export class AuthController implements IAuthController {
     });
     res
       .status(200)
-      .json(
-        createSuccess("login succesfull", { user: user.data, accessToken }),
-      );
-    // } catch (error) {
-    // next(error);
-    // }
+      .json(createSuccess("login succesfull", { role, accessToken }));
   };
 
   mock = async (req: Request, res: Response) => {
@@ -124,5 +125,22 @@ export class AuthController implements IAuthController {
     await this._resetPasswordUSecase.execute(parsed.data);
     // return a response
     res.status(200).json(createSuccess("password changed succesfull", ""));
+  };
+
+  refreshToken = async (req: Request, res: Response) => {
+    const token = req.cookies["refreshToken"];
+
+    // const parsed = refreshTokenSchema.safeParse(token);
+
+    // if (!parsed.success) {
+    //   throw new CustomZodValidationError(parsed.error);
+    // }
+
+    const { accessToken, role } =
+      await this._refreshTokenUsecase.execute(token);
+
+    res
+      .status(200)
+      .json(createSuccess("req successfull", { role, accessToken }));
   };
 }

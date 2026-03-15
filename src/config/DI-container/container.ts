@@ -4,7 +4,7 @@ import { TYPES } from "./TYPES";
 
 // Types
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
-import type { ITokenRepository } from "@application/ports/repository/ITokenRepository";
+import type { ITokenCache } from "@application/ports/repository/ITokenRepository";
 import type { IEmailService } from "@application/ports/services/IEmailService";
 import type { IHashService } from "@application/ports/services/IHashService";
 import type { ITokenService } from "@application/ports/services/ITokenService";
@@ -18,7 +18,7 @@ import type { IAuthController } from "@presentation/interface/controllers/IAuthC
 
 //
 import { UserRepository } from "@infrastructure/repositories/UserRepository";
-import { TokenRepository } from "@infrastructure/repositories/TokenRepository";
+import { TokenCache } from "@infrastructure/cache/TokenCache";
 import { NodemailerEmailService } from "@infrastructure/services/NodemailerEmailService";
 import { ArgonPasswordHasher } from "@infrastructure/services/ArgonHashService";
 import { TokenService } from "@infrastructure/services/TokenServices";
@@ -36,17 +36,35 @@ import {
   AppRedisClientType,
   redisClient,
 } from "@infrastructure/database/redisClient";
+import { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
+import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
+import { CacheService } from "@infrastructure/cache/Cache";
+import { ICacheService } from "@application/ports/cache/ICache";
 console.log("container ");
+
 //Repository
 const container = new Container();
+
+//cache
+
+container
+  .bind<ICacheService>(TYPES.CacheService)
+  .to(CacheService)
+  .inSingletonScope();
+
 container
   .bind<IUserRepository>(TYPES.UserRepository)
   .to(UserRepository)
   .inSingletonScope();
 
 container
-  .bind<ITokenRepository>(TYPES.TokenRepository)
-  .to(TokenRepository)
+  .bind<ITokenCache>(TYPES.TokenRepository)
+  .to(TokenCache)
+  .inSingletonScope();
+
+container
+  .bind<IPrismaRepository>(TYPES.PrismaTokenRepository)
+  .to(PrismaTokenRespository)
   .inSingletonScope();
 
 //usecase
