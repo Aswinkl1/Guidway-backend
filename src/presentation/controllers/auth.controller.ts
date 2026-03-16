@@ -75,8 +75,7 @@ export class AuthController implements IAuthController {
   userLogin = async (req: Request, res: Response, next: NextFunction) => {
     // try {
     // console.log(req.body);
-    const useragent = req.headers["user-agent"];
-    console.log(useragent);
+    console.log(req.headers["authorization"]);
     const parsed = loginSignupSchema.safeParse(req.body);
     if (!parsed.success) {
       throw new CustomZodValidationError(parsed.error);
@@ -129,7 +128,7 @@ export class AuthController implements IAuthController {
 
   refreshToken = async (req: Request, res: Response) => {
     const token = req.cookies["refreshToken"];
-
+    console.log("refresh token", token);
     // const parsed = refreshTokenSchema.safeParse(token);
 
     // if (!parsed.success) {

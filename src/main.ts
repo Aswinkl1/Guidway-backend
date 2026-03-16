@@ -8,7 +8,7 @@ const start = async () => {
     connectPrisma();
     connectRedis();
     app.listen(EnvConfig.PORT, () =>
-      console.log("server is running on port 3000"),
+      console.log(`server is running on port ${EnvConfig.PORT}`),
     );
   } catch (error) {
     console.log("error while staring server", error);

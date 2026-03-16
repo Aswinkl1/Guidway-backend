@@ -11,15 +11,10 @@ const router = Router();
 router.post("/signup", authController.userSignUp);
 
 router.get("/verify", authController.verifyUser);
-router.post("/refresh", authController.refreshToken);
+router.get("/refresh", authController.refreshToken);
 router.post("/login", authController.userLogin);
 
-router.get(
-  "/",
-  isAuthenticate,
-  authorizedRoles("student"),
-  authController.mock,
-);
+router.get("/", isAuthenticate, authorizedRoles("mentee"), authController.mock);
 
 router.post("/forget-password", authController.forgetPassword);
 router.patch("/reset-password", authController.resetPassword);

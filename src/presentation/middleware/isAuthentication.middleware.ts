@@ -29,7 +29,7 @@ const isAuthenticate = (req: Request, res: Response, next: NextFunction) => {
 
   if (
     payload.role == "admin" ||
-    payload.role == "student" ||
+    payload.role == "mentee" ||
     payload.role == "mentor"
   ) {
     req.user = payload;

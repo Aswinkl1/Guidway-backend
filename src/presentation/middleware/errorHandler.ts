@@ -11,7 +11,7 @@ const errorCodeToHttpStatusMap: Record<ErrorCode, number> = {
   [DomainErrorCode.FORBIDDEN]: 403,
   [DomainErrorCode.NOT_FOUND]: 404,
   [DomainErrorCode.ALREADY_EXISTS]: 409,
-  [AppErrorCode.INVALID_CREDENTIALS]: 401,
+  [AppErrorCode.INVALID_CREDENTIALS]: 400,
 };
 export const errorHandler = async (
   err: Error,

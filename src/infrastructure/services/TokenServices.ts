@@ -5,6 +5,7 @@ import { JWTTokenPaylod } from "@application/types/JWTTokenPayload.type";
 import { TYPES } from "@config/DI-container/TYPES";
 import { inject, injectable } from "inversify";
 import { EnvConfig } from "@config/env";
+import { UnAuthenticatedError } from "@application/errors/UnAuthenticatedError";
 @injectable()
 export class TokenService implements ITokenService {
   private accessSecret: string;
@@ -23,7 +24,7 @@ export class TokenService implements ITokenService {
       const decode = jwt.verify(token, this.accessSecret) as any;
       return { id: decode.sub, role: decode.role };
     } catch (error) {
-      throw new Error("invalid token ");
+      throw new UnAuthenticatedError("token expired");
     }
   }
   getSecureToken(): string {
@@ -59,7 +60,7 @@ export class TokenService implements ITokenService {
       const decode = jwt.verify(token, this.accessSecret) as any;
       return { id: decode.sub, role: decode.role };
     } catch (error) {
-      throw new Error("invalid token ");
+      throw new UnAuthenticatedError("token expired");
     }
   }
 

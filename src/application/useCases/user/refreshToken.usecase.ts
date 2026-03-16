@@ -25,7 +25,7 @@ export class RefreshTokenUsecase implements IRefreshTokenUsecase {
 
       // check if the user is blocked
       const user = await this._userRepo.findById(payload.id);
-
+      console.log("refresh ethii too");
       if (!user) {
         throw new NotFoundError("user not found");
       }

@@ -1,6 +1,6 @@
 export type UserJWTTokenPaylod = {
   id: string;
-  role: "student";
+  role: "mentee";
 };
 
 export type MentroJWTTokenPaylod = {
