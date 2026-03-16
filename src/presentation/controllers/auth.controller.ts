@@ -1,5 +1,5 @@
 import { forgetPasswordSchema } from "@application/dto/user/forgetPassword.dto";
-import { loginSignupSchema } from "@application/dto/user/loginUser.dto";
+import { loginSchema } from "@application/dto/user/loginUser.dto";
 import { refreshTokenSchema } from "@application/dto/user/refreshToken.dto";
 import { resetPasswordSchema } from "@application/dto/user/resetPassword.dto";
 import { signupUserSchema } from "@application/dto/user/signupUser.dto";
@@ -73,17 +73,9 @@ export class AuthController implements IAuthController {
   };
 
   userLogin = async (req: Request, res: Response, next: NextFunction) => {
-    // try {
-    // console.log(req.body);
-    console.log(req.headers["authorization"]);
-    const parsed = loginSignupSchema.safeParse(req.body);
-    if (!parsed.success) {
-      throw new CustomZodValidationError(parsed.error);
-    }
-    console.log("parsed", parsed);
-
+    const data = req.body;
     const { role, accessToken, refreshToken } =
-      await this._loginUsecase.execute(parsed.data);
+      await this._loginUsecase.execute(data);
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -128,12 +120,6 @@ export class AuthController implements IAuthController {
 
   refreshToken = async (req: Request, res: Response) => {
     const token = req.cookies["refreshToken"];
-    console.log("refresh token", token);
-    // const parsed = refreshTokenSchema.safeParse(token);
-
-    // if (!parsed.success) {
-    //   throw new CustomZodValidationError(parsed.error);
-    // }
 
     const { accessToken, role } =
       await this._refreshTokenUsecase.execute(token);
