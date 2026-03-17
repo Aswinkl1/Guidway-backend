@@ -40,9 +40,14 @@ import { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRep
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 import { CacheService } from "@infrastructure/cache/Cache";
 import { ICacheService } from "@application/ports/cache/ICache";
+import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
+import { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
+import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
+import { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
+import { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdminLogin.usecase";
+import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 console.log("container ");
 
-//Repository
 const container = new Container();
 
 //cache
@@ -51,6 +56,8 @@ container
   .bind<ICacheService>(TYPES.CacheService)
   .to(CacheService)
   .inSingletonScope();
+
+//Repository
 
 container
   .bind<IUserRepository>(TYPES.UserRepository)
@@ -68,6 +75,7 @@ container
   .inSingletonScope();
 
 //usecase
+
 container
   .bind<IForgetPasswordUsecase>(TYPES.ForgetPasswordUseCase)
   .to(ForgetPasswordUsecase)
@@ -98,6 +106,16 @@ container
   .to(VerifyEmailUseCase)
   .inSingletonScope();
 
+container
+  .bind<IGetUsersUsecase>(TYPES.GetUserUsecase)
+  .to(GetUsersUsecase)
+  .inSingletonScope();
+
+container
+  .bind<IAdminLoginUsecase>(TYPES.AdminLoginUseCase)
+  .to(AdminLoginUsecase)
+  .inSingletonScope();
+
 // services
 container
   .bind<IEmailService>(TYPES.EmailService)
@@ -116,6 +134,10 @@ container
 container
   .bind<IAuthController>(TYPES.AuthController)
   .to(AuthController)
+  .inSingletonScope();
+container
+  .bind<IUserManagementController>(TYPES.UserManagementController)
+  .to(UserManagementController)
   .inSingletonScope();
 
 // db client

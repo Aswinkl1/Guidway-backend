@@ -1,7 +1,6 @@
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
 import { Request, Response, NextFunction } from "express";
 import { ZodType } from "zod";
-import { ZodSchema } from "zod/v3";
 
 type RequestSource = "body" | "query" | "params";
 const validatetor = (schema: ZodType, source: RequestSource) => {
@@ -11,7 +10,12 @@ const validatetor = (schema: ZodType, source: RequestSource) => {
     if (!parsed.success) {
       throw new CustomZodValidationError(parsed.error);
     }
-    req[source] = parsed.data;
+    // req.validated[source] = parsed.data;
+    req.validated = {
+      body: parsed.data as Record<string, unknown>,
+      query: parsed.data as Record<string, unknown>,
+      params: parsed.data as Record<string, unknown>,
+    };
     next();
   };
 };

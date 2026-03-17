@@ -1,13 +1,50 @@
+import { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
 import { signupUserDTO } from "@application/dto/user/signupUser.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { TYPES } from "@config/DI-container/TYPES";
 import { User } from "@domain/entities/user";
-import { PrismaClient } from "generated/prisma/client";
+import { Prisma, PrismaClient } from "generated/prisma/client";
 import { inject, injectable } from "inversify";
 @injectable()
 export class UserRepository implements IUserRepository {
   constructor(@inject(TYPES.PrismaClient) private _prisma: PrismaClient) {}
+  async findAll(filter: getUsersDTO): Promise<any[]> {
+    const { search, page, limit, isBlocked, isVerified } = filter;
+    const where: Prisma.UserWhereInput = {};
+
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: "insensitive" } },
+        { email: { contains: search, mode: "insensitive" } },
+      ];
+    }
+
+    if (isBlocked !== undefined) {
+      where.isBlocked = isBlocked;
+    }
+
+    if (isVerified !== undefined) {
+      where.isVerified = isVerified;
+    }
+
+    return await this._prisma.user.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        isBlocked: true,
+        isVerified: true,
+        profileImageUrl: true,
+      },
+    });
+  }
+
   async findById(id: string): Promise<User | null> {
     // TODO:figure out a way to remove the passwor while getting data even from db
     const user = await this._prisma.user.findUnique({ where: { id } });

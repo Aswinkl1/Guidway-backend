@@ -25,4 +25,9 @@ router.get("/", isAuthenticate, authorizedRoles("mentee"), authController.mock);
 router.post("/forget-password", authController.forgetPassword);
 router.patch("/reset-password", authController.resetPassword);
 
+router.post(
+  "/admin/login",
+  validatetor(loginSchema, "body"),
+  authController.adminLogin,
+);
 export default router;

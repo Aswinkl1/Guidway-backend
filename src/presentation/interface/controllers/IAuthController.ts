@@ -12,4 +12,5 @@ export interface IAuthController {
   ): Promise<void>;
   resetPassword(req: Request, res: Response): Promise<void>;
   refreshToken(req: Request, res: Response): Promise<void>;
+  adminLogin(req: Request, res: Response, next: NextFunction): Promise<void>;
 }

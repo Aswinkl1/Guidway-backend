@@ -18,10 +18,11 @@ export const TYPES = {
   ResetPasswordUseCase: Symbol.for("ResetPasswordUseCase"),
   SignUpUseCase: Symbol.for("SignUpUseCase"),
   VerifyEmailUseCase: Symbol.for("VerifyEmailUseCase"),
-
+  GetUserUsecase: Symbol.for("GetUserUsecase"),
   //controller
   AuthController: Symbol.for("AuthController"),
-
+  UserManagementController: Symbol.for("UserManagementController"),
+  AdminLoginUseCase: Symbol.for("AdminLoginUseCase"),
   // Infrastructure Clients
   PrismaClient: Symbol.for("PrismaClient"),
   RedisClient: Symbol.for("RedisClient"),
