@@ -2,6 +2,7 @@ import { type Request, type Response, type NextFunction } from 'express';
 import { container } from '@config/DI-container/container';
 import { TYPES } from '@config/DI-container/TYPES';
 import { type ITokenService } from '@application/ports/services/ITokenService';
+import { Role } from '@domain/entities/user';
 const tokenService = container.get<ITokenService>(TYPES.TokenService);
 const isAuthenticate = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
@@ -27,7 +28,7 @@ const isAuthenticate = (req: Request, res: Response, next: NextFunction): void =
     throw new Error('user not Authenticated');
   }
 
-  if (payload.role == 'admin' || payload.role == 'mentee' || payload.role == 'mentor') {
+  if (payload.role == Role.ADMIN || payload.role == Role.MENTEE || payload.role == Role.MENTOR) {
     req.user = payload;
     next();
   }

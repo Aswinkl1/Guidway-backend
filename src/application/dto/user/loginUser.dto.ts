@@ -1,3 +1,4 @@
+import { type Role } from '@domain/entities/user';
 import z from 'zod';
 
 export const loginInputSchema = z.object({
@@ -21,7 +22,7 @@ export type loginUserInputDTO = z.infer<typeof loginInputSchema>;
 // }
 
 export interface loginOutputDTO {
-  role: 'mentor' | 'mentee' | 'admin';
+  role: Role;
   accessToken: string;
   refreshToken: string;
 }

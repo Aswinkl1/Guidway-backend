@@ -1,5 +1,4 @@
-import { LoginResponceDTO } from '@application/dto/Responce/loginResponce.dto';
-import { loginUserInputDTO } from '@application/dto/user/loginUser.dto';
+import { loginOutputDTO, loginUserInputDTO } from '@application/dto/user/loginUser.dto';
 import { ForbiddenError } from '@application/errors/ForbidenError';
 import { InvalidCredentialsError } from '@application/errors/InvalidCredentialsError';
 import { IUserRepository } from '@application/ports/repository/IUserRepository';
@@ -7,6 +6,7 @@ import { IHashService } from '@application/ports/services/IHashService';
 import { ITokenService } from '@application/ports/services/ITokenService';
 import { IAdminLoginUsecase } from '@application/ports/usecase/admin/IAdminLogin.usecase';
 import { TYPES } from '@config/DI-container/TYPES';
+import { Role } from '@domain/entities/user';
 import { inject } from 'inversify';
 
 export class AdminLoginUsecase implements IAdminLoginUsecase {
@@ -19,14 +19,14 @@ export class AdminLoginUsecase implements IAdminLoginUsecase {
     private readonly _tokenService: ITokenService,
   ) {}
 
-  async execute(dto: loginUserInputDTO): Promise<LoginResponceDTO> {
+  async execute(dto: loginUserInputDTO): Promise<loginOutputDTO> {
     const user = await this._userRepository.findByEmail(dto.email);
 
     if (!user) {
       throw new InvalidCredentialsError('Email or password is incorrect');
     }
 
-    if (user.role !== 'admin') {
+    if (user.role !== Role.ADMIN) {
       throw new ForbiddenError('You do not have permission to perform this action');
     }
 

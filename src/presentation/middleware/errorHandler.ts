@@ -1,18 +1,10 @@
 import { AppError } from '@application/errors/AppError.abstract';
-import { AppErrorCode } from '@application/errors/AppErrorCode';
 import { DomainError } from '@domain/errors/DomainError.abstract';
-import { DomainErrorCode } from '@domain/errors/DomainErrorCode';
+import HTTPSTATUS from '@presentation/constants/httpStatus';
+import { getHttpStatusForErrorCode } from '@presentation/constants/httpStatusForErrorCode';
 import { createError } from '@presentation/helper/response.util';
 import { type NextFunction, type Request, type Response } from 'express';
-type ErrorCode = DomainErrorCode | AppErrorCode;
-const errorCodeToHttpStatusMap: Record<ErrorCode, number> = {
-  [DomainErrorCode.BAD_REQUEST]: 400,
-  [DomainErrorCode.UNAUTHORIZED]: 401,
-  [DomainErrorCode.FORBIDDEN]: 403,
-  [DomainErrorCode.NOT_FOUND]: 404,
-  [DomainErrorCode.ALREADY_EXISTS]: 409,
-  [AppErrorCode.INVALID_CREDENTIALS]: 400,
-};
+
 export const errorHandler = async (
   err: Error,
   _req: Request,
@@ -20,7 +12,7 @@ export const errorHandler = async (
   _next: NextFunction,
 ): Promise<void> => {
   if (err instanceof DomainError || err instanceof AppError) {
-    const statusCode = errorCodeToHttpStatusMap[err.code] || 400;
+    const statusCode = getHttpStatusForErrorCode(err.code);
 
     res.status(statusCode).json(createError(err.message, err.serialize()));
     return;
@@ -29,7 +21,7 @@ export const errorHandler = async (
   console.error('🔥 UNEXPECTED SYSTEM ERROR:', err);
 
   res
-    .status(500)
+    .status(HTTPSTATUS.INTERNAL_SERVER_ERROR)
     .json(
       createError('Something went wrong on our end. Please try again later.', [
         { message: err.message },

@@ -3,8 +3,8 @@ import { IUserRepository } from '@application/ports/repository/IUserRepository';
 import { ITokenService } from '@application/ports/services/ITokenService';
 import { IRefreshTokenUsecase } from '@application/ports/usecase/IRefreshToken.usecase';
 import { TYPES } from '@config/DI-container/TYPES';
+import { Role } from '@domain/entities/user';
 
-import { Role } from 'generated/prisma/enums';
 import { inject, injectable } from 'inversify';
 
 @injectable()

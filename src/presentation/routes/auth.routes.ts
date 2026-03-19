@@ -1,6 +1,7 @@
 import { loginInputSchema } from '@application/dto/user/loginUser.dto';
 import { container } from '@config/DI-container/container';
 import { TYPES } from '@config/DI-container/TYPES';
+import { Role } from '@domain/entities/user';
 import { type IAuthController } from '@presentation/interface/controllers/IAuthController';
 import { authorizedRoles } from '@presentation/middleware/authorization.middleware';
 import { isAuthenticate } from '@presentation/middleware/isAuthentication.middleware';
@@ -16,7 +17,7 @@ router.get('/verify', authController.verifyUser);
 router.get('/refresh', authController.refreshToken);
 router.post('/login', validatetor(loginInputSchema, 'body'), authController.userLogin);
 
-router.get('/', isAuthenticate, authorizedRoles('mentee'), authController.mock);
+router.get('/', isAuthenticate, authorizedRoles(Role.MENTEE), authController.mock);
 
 router.post('/forget-password', authController.forgetPassword);
 router.patch('/reset-password', authController.resetPassword);

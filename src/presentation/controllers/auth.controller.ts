@@ -11,6 +11,7 @@ import { ISignUpUsecase } from '@application/ports/usecase/ISignUpUsecase';
 import { IVerifyEmailUsecase } from '@application/ports/usecase/IVerifyEmail.usecase';
 
 import { TYPES } from '@config/DI-container/TYPES';
+import HTTPSTATUS from '@presentation/constants/httpStatus';
 import { CustomZodValidationError } from '@presentation/errors/customZodValidationError';
 import { createSuccess } from '@presentation/helper/response.util';
 import { IAuthController } from '@presentation/interface/controllers/IAuthController';
@@ -45,7 +46,7 @@ export class AuthController implements IAuthController {
 
     const response = createSuccess('signup succesfull', rec);
 
-    res.status(200).json(response);
+    res.status(HTTPSTATUS.CREATED).json(response);
   };
 
   verifyUser = async (req: Request, res: Response): Promise<void> => {
@@ -61,7 +62,7 @@ export class AuthController implements IAuthController {
     const user = await this._verifyEmailUsecase.execute(token);
     // send the responce back
 
-    res.status(200).json(createSuccess('email verification succesfull', user));
+    res.status(HTTPSTATUS.OK).json(createSuccess('email verification succesfull', user));
   };
 
   userLogin = async (req: Request, res: Response): Promise<void> => {
@@ -73,7 +74,7 @@ export class AuthController implements IAuthController {
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
     });
-    res.status(200).json(createSuccess('login succesfull', { role, accessToken }));
+    res.status(HTTPSTATUS.OK).json(createSuccess('login succesfull', { role, accessToken }));
   };
 
   mock = async (req: Request, res: Response): Promise<void> => {
@@ -91,7 +92,7 @@ export class AuthController implements IAuthController {
     console.log(parsed.data);
     const { email } = await this._forgetPasswordUsecase.execute(parsed.data);
 
-    res.status(200).json(createSuccess('check you email', email));
+    res.status(HTTPSTATUS.OK).json(createSuccess('check you email', email));
   };
 
   resetPassword = async (req: Request, res: Response): Promise<void> => {
@@ -104,7 +105,7 @@ export class AuthController implements IAuthController {
     // give this data to the reset usecase
     await this._resetPasswordUSecase.execute(parsed.data);
     // return a response
-    res.status(200).json(createSuccess('password changed succesfull', ''));
+    res.status(HTTPSTATUS.OK).json(createSuccess('password changed succesfull', ''));
   };
 
   refreshToken = async (req: Request, res: Response): Promise<void> => {
@@ -112,7 +113,7 @@ export class AuthController implements IAuthController {
 
     const { accessToken, role } = await this._refreshTokenUsecase.execute(token);
 
-    res.status(200).json(createSuccess('req successfull', { role, accessToken }));
+    res.status(HTTPSTATUS.OK).json(createSuccess('req successfull', { role, accessToken }));
   };
 
   adminLogin = async (req: Request, res: Response): Promise<void> => {
@@ -124,6 +125,6 @@ export class AuthController implements IAuthController {
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
     });
-    res.status(200).json(createSuccess('admin login succesfull', { role, accessToken }));
+    res.status(HTTPSTATUS.OK).json(createSuccess('admin login succesfull', { role, accessToken }));
   };
 }
