@@ -1,10 +1,10 @@
-import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
-import { Request, Response, NextFunction } from "express";
-import { ZodType } from "zod";
+import { CustomZodValidationError } from '@presentation/errors/customZodValidationError';
+import { type Request, type Response, type NextFunction } from 'express';
+import { type ZodType } from 'zod';
 
-type RequestSource = "body" | "query" | "params";
+type RequestSource = 'body' | 'query' | 'params';
 const validatetor = (schema: ZodType, source: RequestSource) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     const data = req[source];
     const parsed = schema.safeParse(data);
     if (!parsed.success) {

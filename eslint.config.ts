@@ -24,6 +24,13 @@ export default defineConfig(
       'n/no-process-exit': 'error',
       'n/no-missing-import': 'off', // ← add this
       'n/no-unpublished-import': 'off', // ← add this
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports', // forces `import type`
+          fixStyle: 'inline-type-imports', // auto fix style
+        },
+      ],
     },
   },
   {

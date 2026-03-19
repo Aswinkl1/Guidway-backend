@@ -1,29 +1,24 @@
-import { z } from "zod";
-import "dotenv/config";
+import { z } from 'zod';
+import 'dotenv/config';
 const envSchema = z.object({
-  DATABASE_URL: z.url("DATABASE_URL must be a valid connection string"),
-  NODE_ENV: z
-    .enum(["development", "production", "test"])
-    .default("development"),
+  DATABASE_URL: z.url('DATABASE_URL must be a valid connection string'),
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().default(3000),
-  JWT_ACCESSTOKEN_SECRET: z
-    .string()
-    .min(1, "JWT_ACCESS_SECRET is required in .env"),
-  JWT_ACCESSTOKEN_EXPIRES_IN: z.string().default("15m"),
-  JWT_VERIFYTOKEN_SECRET: z
-    .string()
-    .min(1, "JWT_ACCESS_SECRET is required in .env"),
-  JWT_VERIFYTOKEN_EXPIRES_IN: z.string().default("15m"),
+  JWT_ACCESSTOKEN_SECRET: z.string().min(1, 'JWT_ACCESS_SECRET is required in .env'),
+  JWT_ACCESSTOKEN_EXPIRES_IN: z.string().default('15m'),
+  JWT_VERIFYTOKEN_SECRET: z.string().min(1, 'JWT_ACCESS_SECRET is required in .env'),
+  JWT_VERIFYTOKEN_EXPIRES_IN: z.string().default('15m'),
 
-  BASE_URL: z.url("BASE_URL must be a valid URL"),
-  CLIENT_BASE_URL: z.url("CLIENT_BASE_URL must be a valid URL"),
-  API_VERSION: z.string().default("/api/v1"),
-  NODEMAIL_EMAIL: z.email("NODEMAIL_EMAIL must be a valid email address"),
-  NODEMAIL_PASSWORD: z.string().min(1, "NODEMAIL_PASSWORD is required"),
+  BASE_URL: z.url('BASE_URL must be a valid URL'),
+  CLIENT_BASE_URL: z.url('CLIENT_BASE_URL must be a valid URL'),
+  API_VERSION: z.string().default('/api/v1'),
+  NODEMAIL_EMAIL: z.email('NODEMAIL_EMAIL must be a valid email address'),
+  NODEMAIL_PASSWORD: z.string().min(1, 'NODEMAIL_PASSWORD is required'),
 });
 
 const parsedEnv = envSchema.parse(process.env);
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class EnvConfig {
   // --- Core Server ---
   static get NODE_ENV(): string {

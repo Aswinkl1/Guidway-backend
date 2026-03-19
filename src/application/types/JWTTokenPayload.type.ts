@@ -1,21 +1,18 @@
-export type UserJWTTokenPaylod = {
+export interface UserJWTTokenPaylod {
   id: string;
-  role: "mentee";
-};
+  role: 'mentee';
+}
 
-export type MentroJWTTokenPaylod = {
+export interface MentroJWTTokenPaylod {
   id: string;
-  role: "mentor";
-};
+  role: 'mentor';
+}
 
-export type AdminJWTTokenPaylod = {
+export interface AdminJWTTokenPaylod {
   id: string;
-  role: "admin";
-};
+  role: 'admin';
+}
 
-export type JWTTokenPaylod =
-  | UserJWTTokenPaylod
-  | AdminJWTTokenPaylod
-  | MentroJWTTokenPaylod;
+export type JWTTokenPaylod = UserJWTTokenPaylod | AdminJWTTokenPaylod | MentroJWTTokenPaylod;
 
-export type JWTTokenPaylodRoleField = JWTTokenPaylod["role"];
+export type JWTTokenPaylodRoleField = JWTTokenPaylod['role'];

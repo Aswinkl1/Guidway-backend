@@ -1,4 +1,4 @@
-import { AppErrorCode } from "./AppErrorCode";
+import { type AppErrorCode } from './AppErrorCode';
 
 export abstract class AppError extends Error {
   constructor(

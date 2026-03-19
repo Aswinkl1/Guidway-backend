@@ -1,9 +1,5 @@
-import { Request, Response, NextFunction } from "express";
+import { type Request, type Response } from 'express';
 
 export interface IUserManagementController {
-  getAllUsers: (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => Promise<void>;
+  getAllUsers: (req: Request, res: Response) => Promise<void>;
 }

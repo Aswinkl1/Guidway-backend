@@ -1,11 +1,11 @@
-import crypto from "crypto";
-import { ITokenService } from "@application/ports/services/ITokenService";
-import jwt from "jsonwebtoken";
-import { JWTTokenPaylod } from "@application/types/JWTTokenPayload.type";
-import { TYPES } from "@config/DI-container/TYPES";
-import { inject, injectable } from "inversify";
-import { EnvConfig } from "@config/env";
-import { UnAuthenticatedError } from "@application/errors/UnAuthenticatedError";
+import crypto from 'crypto';
+import { ITokenService } from '@application/ports/services/ITokenService';
+import jwt from 'jsonwebtoken';
+import { JWTTokenPaylod } from '@application/types/JWTTokenPayload.type';
+import { injectable } from 'inversify';
+import { EnvConfig } from '@config/env';
+import { UnAuthenticatedError } from '@application/errors/UnAuthenticatedError';
+
 @injectable()
 export class TokenService implements ITokenService {
   private accessSecret: string;
@@ -21,46 +21,55 @@ export class TokenService implements ITokenService {
 
   verifyRefreshToken(token: string): JWTTokenPaylod {
     try {
-      const decode = jwt.verify(token, this.accessSecret) as any;
+      const decode = jwt.verify(token, this.accessSecret) as {
+        sub: string;
+        role: JWTTokenPaylod['role'];
+      };
       return { id: decode.sub, role: decode.role };
-    } catch (error) {
-      throw new UnAuthenticatedError("token expired");
+    } catch {
+      throw new UnAuthenticatedError('token expired');
     }
   }
   getSecureToken(): string {
-    return crypto.randomBytes(32).toString("hex");
+    return crypto.randomBytes(32).toString('hex');
   }
 
   generateAccessToken(payload: { userId: string; role: string }): string {
-    return jwt.sign(
-      { sub: payload.userId, role: payload.role },
-      this.accessSecret,
-      { expiresIn: this.accessExpiresIn } as jwt.SignOptions,
-    );
+    return jwt.sign({ sub: payload.userId, role: payload.role }, this.accessSecret, {
+      expiresIn: this.accessExpiresIn,
+    } as jwt.SignOptions);
   }
 
   generateRefreshToken(payload: { userId: string; role: string }): {
     token: string;
   } {
-    const token = jwt.sign(
-      { sub: payload.userId, role: payload.role },
-      this.accessSecret,
-      { expiresIn: "7d" } as jwt.SignOptions,
-    );
+    const token = jwt.sign({ sub: payload.userId, role: payload.role }, this.accessSecret, {
+      expiresIn: '7d',
+    } as jwt.SignOptions);
 
     return { token };
   }
 
   hashToken(token: string): string {
-    return crypto.createHash("sha256").update(token).digest("hex");
+    return crypto.createHash('sha256').update(token).digest('hex');
   }
 
   verifyAccessToken(token: string): JWTTokenPaylod {
     try {
-      const decode = jwt.verify(token, this.accessSecret) as any;
-      return { id: decode.sub, role: decode.role };
-    } catch (error) {
-      throw new UnAuthenticatedError("token expired");
+      const decode = jwt.verify(token, this.accessSecret);
+      if (typeof decode !== 'string' && decode?.sub && decode?.role) {
+        return { id: decode.sub, role: decode.role };
+      }
+      throw new UnAuthenticatedError('token expired');
+    } catch (error: unknown) {
+      if (error instanceof jwt.TokenExpiredError) {
+        throw new UnAuthenticatedError('token expired');
+      }
+
+      if (error instanceof jwt.JsonWebTokenError) {
+        throw new UnAuthenticatedError('invalid token');
+      }
+      throw error;
     }
   }
 
@@ -72,10 +81,13 @@ export class TokenService implements ITokenService {
 
   verifyVerificationToken(token: string): { id: string } {
     try {
-      const decode = jwt.verify(token, this.accessSecret) as any;
-      return { id: decode.userId };
-    } catch (error) {
-      throw new Error("invalid token");
+      const decode = jwt.verify(token, this.accessSecret);
+      if (typeof decode !== 'string' && decode?.userId) {
+        return { id: decode.userId };
+      }
+      throw new Error('invalid token');
+    } catch {
+      throw new Error('invalid token');
     }
   }
 }

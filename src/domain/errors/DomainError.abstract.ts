@@ -1,4 +1,4 @@
-import { DomainErrorCode } from "./DomainErrorCode";
+import { type DomainErrorCode } from './DomainErrorCode';
 
 export abstract class DomainError extends Error {
   constructor(

@@ -1,4 +1,4 @@
-import { JWTTokenPaylod } from "@application/types/JWTTokenPayload.type";
+import { type JWTTokenPaylod } from '@application/types/JWTTokenPayload.type';
 
 export interface ITokenService {
   getSecureToken(): string;

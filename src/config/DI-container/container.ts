@@ -1,73 +1,61 @@
-import "reflect-metadata";
-import { Container } from "inversify";
-import { TYPES } from "./TYPES";
+import 'reflect-metadata';
+import { Container } from 'inversify';
+import { TYPES } from './TYPES';
 
 // Types
-import type { IUserRepository } from "@application/ports/repository/IUserRepository";
-import type { ITokenCache } from "@application/ports/repository/ITokenRepository";
-import type { IEmailService } from "@application/ports/services/IEmailService";
-import type { IHashService } from "@application/ports/services/IHashService";
-import type { ITokenService } from "@application/ports/services/ITokenService";
-import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
-import type { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
-import type { IRefreshTokenUsecase } from "@application/ports/usecase/IRefreshToken.usecase";
-import type { IResetPassswordUsecase } from "@application/ports/usecase/IResetPassword.usecase";
-import type { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
-import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
-import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
+import type { IUserRepository } from '@application/ports/repository/IUserRepository';
+import type { ITokenCache } from '@application/ports/cache/ITokenCache';
+import type { IEmailService } from '@application/ports/services/IEmailService';
+import type { IHashService } from '@application/ports/services/IHashService';
+import type { ITokenService } from '@application/ports/services/ITokenService';
+import type { IForgetPasswordUsecase } from '@application/ports/usecase/IForgetPassword.usercase';
+import type { ILoginUsecase } from '@application/ports/usecase/ILogin.usecase';
+import type { IRefreshTokenUsecase } from '@application/ports/usecase/IRefreshToken.usecase';
+import type { IResetPassswordUsecase } from '@application/ports/usecase/IResetPassword.usecase';
+import type { ISignUpUsecase } from '@application/ports/usecase/ISignUpUsecase';
+import type { IVerifyEmailUsecase } from '@application/ports/usecase/IVerifyEmail.usecase';
+import type { IAuthController } from '@presentation/interface/controllers/IAuthController';
 
 //
-import { UserRepository } from "@infrastructure/repositories/UserRepository";
-import { TokenCache } from "@infrastructure/cache/TokenCache";
-import { NodemailerEmailService } from "@infrastructure/services/NodemailerEmailService";
-import { ArgonPasswordHasher } from "@infrastructure/services/ArgonHashService";
-import { TokenService } from "@infrastructure/services/TokenServices";
-import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
-import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
-import { RefreshTokenUsecase } from "@application/useCases/user/refreshToken.usecase";
-import { ResetPasswordUsecase } from "@application/useCases/user/resetPassword.usecase";
-import { SignUpUser } from "@application/useCases/user/SignUp.usecase";
-import { VerifyEmailUseCase } from "@application/useCases/user/verifyEmail.usecase";
-import { AuthController } from "@presentation/controllers/auth.controller";
+import { UserRepository } from '@infrastructure/repositories/UserRepository';
+import { TokenCache } from '@infrastructure/cache/TokenCache';
+import { NodemailerEmailService } from '@infrastructure/services/NodemailerEmailService';
+import { ArgonPasswordHasher } from '@infrastructure/services/ArgonHashService';
+import { TokenService } from '@infrastructure/services/TokenServices';
+import { ForgetPasswordUsecase } from '@application/useCases/user/forgetPassword.usecase';
+import { LoginUsecase } from '@application/useCases/user/loginUser.usercase';
+import { RefreshTokenUsecase } from '@application/useCases/user/refreshToken.usecase';
+import { ResetPasswordUsecase } from '@application/useCases/user/resetPassword.usecase';
+import { SignUpUser } from '@application/useCases/user/SignUp.usecase';
+import { VerifyEmailUseCase } from '@application/useCases/user/verifyEmail.usecase';
+import { AuthController } from '@presentation/controllers/auth.controller';
 
-import { prisma } from "@infrastructure/database/prisma";
-import { PrismaClient } from "generated/prisma/client";
-import {
-  AppRedisClientType,
-  redisClient,
-} from "@infrastructure/database/redisClient";
-import { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
-import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
-import { CacheService } from "@infrastructure/cache/Cache";
-import { ICacheService } from "@application/ports/cache/ICache";
-import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
-import { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
-import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
-import { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
-import { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdminLogin.usecase";
-import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
-console.log("container ");
+import { prisma } from '@infrastructure/database/prisma';
+import { type PrismaClient } from 'generated/prisma/client';
+import { type AppRedisClientType, redisClient } from '@infrastructure/database/redisClient';
+import { type IPrismaRepository } from '@application/ports/repository/IPrismaTokenRepository';
+import { PrismaTokenRespository } from '@infrastructure/repositories/PrismaTokenRepository';
+import { CacheService } from '@infrastructure/cache/Cache';
+import { type ICacheService } from '@application/ports/cache/ICache';
+import { UserManagementController } from '@presentation/controllers/admin/UserManagement.controller';
+import { type IUserManagementController } from '@presentation/interface/controllers/IUserManagement.controller';
+import { GetUsersUsecase } from '@application/useCases/admin/GetUsers.usecase';
+import { type IGetUsersUsecase } from '@application/ports/usecase/admin/IGetUsers.usecase';
+import { type IAdminLoginUsecase } from '@application/ports/usecase/admin/IAdminLogin.usecase';
+import { AdminLoginUsecase } from '@application/useCases/admin/adminLogin.usecase';
+console.log('container ');
 
 const container = new Container();
 
 //cache
 
-container
-  .bind<ICacheService>(TYPES.CacheService)
-  .to(CacheService)
-  .inSingletonScope();
+container.bind<ICacheService>(TYPES.CacheService).to(CacheService).inSingletonScope();
 
 //Repository
 
-container
-  .bind<IUserRepository>(TYPES.UserRepository)
-  .to(UserRepository)
-  .inSingletonScope();
+container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository).inSingletonScope();
 
-container
-  .bind<ITokenCache>(TYPES.TokenRepository)
-  .to(TokenCache)
-  .inSingletonScope();
+container.bind<ITokenCache>(TYPES.TokenRepository).to(TokenCache).inSingletonScope();
 
 container
   .bind<IPrismaRepository>(TYPES.PrismaTokenRepository)
@@ -81,10 +69,7 @@ container
   .to(ForgetPasswordUsecase)
   .inSingletonScope();
 
-container
-  .bind<ILoginUsecase>(TYPES.LoginUseCase)
-  .to(LoginUsecase)
-  .inSingletonScope();
+container.bind<ILoginUsecase>(TYPES.LoginUseCase).to(LoginUsecase).inSingletonScope();
 
 container
   .bind<IRefreshTokenUsecase>(TYPES.RefreshTokenUseCase)
@@ -96,20 +81,14 @@ container
   .to(ResetPasswordUsecase)
   .inSingletonScope();
 
-container
-  .bind<ISignUpUsecase>(TYPES.SignUpUseCase)
-  .to(SignUpUser)
-  .inSingletonScope();
+container.bind<ISignUpUsecase>(TYPES.SignUpUseCase).to(SignUpUser).inSingletonScope();
 
 container
   .bind<IVerifyEmailUsecase>(TYPES.VerifyEmailUseCase)
   .to(VerifyEmailUseCase)
   .inSingletonScope();
 
-container
-  .bind<IGetUsersUsecase>(TYPES.GetUserUsecase)
-  .to(GetUsersUsecase)
-  .inSingletonScope();
+container.bind<IGetUsersUsecase>(TYPES.GetUserUsecase).to(GetUsersUsecase).inSingletonScope();
 
 container
   .bind<IAdminLoginUsecase>(TYPES.AdminLoginUseCase)
@@ -117,24 +96,12 @@ container
   .inSingletonScope();
 
 // services
-container
-  .bind<IEmailService>(TYPES.EmailService)
-  .to(NodemailerEmailService)
-  .inSingletonScope();
-container
-  .bind<IHashService>(TYPES.HashService)
-  .to(ArgonPasswordHasher)
-  .inSingletonScope();
-container
-  .bind<ITokenService>(TYPES.TokenService)
-  .to(TokenService)
-  .inSingletonScope();
+container.bind<IEmailService>(TYPES.EmailService).to(NodemailerEmailService).inSingletonScope();
+container.bind<IHashService>(TYPES.HashService).to(ArgonPasswordHasher).inSingletonScope();
+container.bind<ITokenService>(TYPES.TokenService).to(TokenService).inSingletonScope();
 
 //controller
-container
-  .bind<IAuthController>(TYPES.AuthController)
-  .to(AuthController)
-  .inSingletonScope();
+container.bind<IAuthController>(TYPES.AuthController).to(AuthController).inSingletonScope();
 container
   .bind<IUserManagementController>(TYPES.UserManagementController)
   .to(UserManagementController)
@@ -142,7 +109,5 @@ container
 
 // db client
 container.bind<PrismaClient>(TYPES.PrismaClient).toConstantValue(prisma);
-container
-  .bind<AppRedisClientType>(TYPES.RedisClient)
-  .toConstantValue(redisClient);
+container.bind<AppRedisClientType>(TYPES.RedisClient).toConstantValue(redisClient);
 export { container };

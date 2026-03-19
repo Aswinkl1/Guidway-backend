@@ -1,12 +1,12 @@
-import { resetPasswordDTO } from "@application/dto/user/resetPassword.dto";
-import { InvalidTokenError } from "@application/errors/InvalidTokenError";
-import { ITokenCache } from "@application/ports/repository/ITokenRepository";
-import { IUserRepository } from "@application/ports/repository/IUserRepository";
-import { IHashService } from "@application/ports/services/IHashService";
-import { ITokenService } from "@application/ports/services/ITokenService";
-import { IResetPassswordUsecase } from "@application/ports/usecase/IResetPassword.usecase";
-import { TYPES } from "@config/DI-container/TYPES";
-import { inject, injectable } from "inversify";
+import { resetPasswordDTO } from '@application/dto/user/resetPassword.dto';
+import { InvalidTokenError } from '@application/errors/InvalidTokenError';
+import { ITokenCache } from '@application/ports/cache/ITokenCache';
+import { IUserRepository } from '@application/ports/repository/IUserRepository';
+import { IHashService } from '@application/ports/services/IHashService';
+import { ITokenService } from '@application/ports/services/ITokenService';
+import { IResetPassswordUsecase } from '@application/ports/usecase/IResetPassword.usecase';
+import { TYPES } from '@config/DI-container/TYPES';
+import { inject, injectable } from 'inversify';
 
 @injectable()
 export class ResetPasswordUsecase implements IResetPassswordUsecase {
@@ -21,14 +21,14 @@ export class ResetPasswordUsecase implements IResetPassswordUsecase {
   ) {}
   execute = async (dto: resetPasswordDTO): Promise<void> => {
     // hash the token
-    console.log("hdhid");
+    console.log('hdhid');
     const hashedToken = this._tokenService.hashToken(dto.token);
     // check if the hash exist in the db
     const userId = await this._tokenRepository.getUserIdByToken(hashedToken);
     console.log(userId);
     // if not then thorow an errro invalid token
     if (!userId) {
-      throw new InvalidTokenError("invalid or expired token");
+      throw new InvalidTokenError('invalid or expired token');
     }
     // hash the password
     const hashedPassword = await this._hashService.hash(dto.password);

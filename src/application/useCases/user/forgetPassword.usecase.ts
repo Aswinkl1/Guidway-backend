@@ -1,13 +1,13 @@
-import { forgetPasswordDTO } from "@application/dto/user/forgetPassword.dto";
-import { ITokenCache } from "@application/ports/repository/ITokenRepository";
-import { IUserRepository } from "@application/ports/repository/IUserRepository";
-import { IEmailService } from "@application/ports/services/IEmailService";
-import { ITokenService } from "@application/ports/services/ITokenService";
-import { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
-import { emailServiceProb } from "@application/types/EmailPaylod.type";
-import { TYPES } from "@config/DI-container/TYPES";
-import { EnvConfig } from "@config/env";
-import { injectable, inject } from "inversify";
+import { forgetPasswordDTO } from '@application/dto/user/forgetPassword.dto';
+import { ITokenCache } from '@application/ports/cache/ITokenCache';
+import { IUserRepository } from '@application/ports/repository/IUserRepository';
+import { IEmailService } from '@application/ports/services/IEmailService';
+import { ITokenService } from '@application/ports/services/ITokenService';
+import { IForgetPasswordUsecase } from '@application/ports/usecase/IForgetPassword.usercase';
+import { emailServiceProb } from '@application/types/EmailPaylod.type';
+import { TYPES } from '@config/DI-container/TYPES';
+import { EnvConfig } from '@config/env';
+import { injectable, inject } from 'inversify';
 
 @injectable()
 export class ForgetPasswordUsecase implements IForgetPasswordUsecase {
@@ -35,7 +35,7 @@ export class ForgetPasswordUsecase implements IForgetPasswordUsecase {
     const verificationLink = `${EnvConfig.CLIENT_BASE_URL}/auth/reset-password?token=${token}`;
     const data: emailServiceProb = {
       to: dto.email,
-      subject: "Reset your Mentor Marketplace Password",
+      subject: 'Reset your Mentor Marketplace Password',
       fallback: `You requested a password reset. Please set a new password by going to this link: ${verificationLink}. If you did not request this, please ignore this email.`,
       html: `
           <h2>Password Reset Request</h2>

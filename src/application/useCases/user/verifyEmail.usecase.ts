@@ -1,8 +1,8 @@
-import { ITokenCache } from "@application/ports/repository/ITokenRepository";
-import { IUserRepository } from "@application/ports/repository/IUserRepository";
-import { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
-import { TYPES } from "@config/DI-container/TYPES";
-import { inject, injectable } from "inversify";
+import { ITokenCache } from '@application/ports/cache/ITokenCache';
+import { IUserRepository } from '@application/ports/repository/IUserRepository';
+import { IVerifyEmailUsecase } from '@application/ports/usecase/IVerifyEmail.usecase';
+import { TYPES } from '@config/DI-container/TYPES';
+import { inject, injectable } from 'inversify';
 @injectable()
 export class VerifyEmailUseCase implements IVerifyEmailUsecase {
   constructor(
@@ -15,7 +15,7 @@ export class VerifyEmailUseCase implements IVerifyEmailUsecase {
 
     // if not then send error meesage
     if (!userId) {
-      throw new Error("invalid token or expired token");
+      throw new Error('invalid token or expired token');
     }
 
     // change the user to verify
@@ -23,6 +23,6 @@ export class VerifyEmailUseCase implements IVerifyEmailUsecase {
     // delete the token from the repository
     await this._tokenRepository.deleteToken(dto);
     // send the responce back
-    return { message: "user verifyed succesfull" };
+    return { message: 'user verifyed succesfull' };
   }
 }

@@ -1,9 +1,9 @@
-export type Token = {
+export interface Token {
   token: string;
   userId: string;
   userAgent?: string;
   expiresAt: Date;
-};
+}
 
 export interface IPrismaRepository {
   create(data: Token): Promise<{ token: string }>;
