@@ -1,15 +1,11 @@
-import { InvalidTokenError } from "@application/errors/InvalidTokenError";
-import { NotFoundError } from "@application/errors/NotFoundError";
-import { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
-import { ITokenCache } from "@application/ports/repository/ITokenRepository";
-import { IUserRepository } from "@application/ports/repository/IUserRepository";
-import { ITokenService } from "@application/ports/services/ITokenService";
-import { IRefreshTokenUsecase } from "@application/ports/usecase/IRefreshToken.usecase";
-import { TYPES } from "@config/DI-container/TYPES";
-import { UserNotFoundError } from "@domain/errors/UserError";
+import { NotFoundError } from '@application/errors/NotFoundError';
+import { IUserRepository } from '@application/ports/repository/IUserRepository';
+import { ITokenService } from '@application/ports/services/ITokenService';
+import { IRefreshTokenUsecase } from '@application/ports/usecase/IRefreshToken.usecase';
+import { TYPES } from '@config/DI-container/TYPES';
 
-import { Role } from "generated/prisma/enums";
-import { inject, injectable } from "inversify";
+import { Role } from 'generated/prisma/enums';
+import { inject, injectable } from 'inversify';
 
 @injectable()
 export class RefreshTokenUsecase implements IRefreshTokenUsecase {
@@ -25,13 +21,13 @@ export class RefreshTokenUsecase implements IRefreshTokenUsecase {
 
       // check if the user is blocked
       const user = await this._userRepo.findById(payload.id);
-      console.log("refresh ethii too");
+
       if (!user) {
-        throw new NotFoundError("user not found");
+        throw new NotFoundError('user not found');
       }
       // if block error
       if (user?.isBlocked) {
-        throw new Error("user blocked by the admin");
+        throw new Error('user blocked by the admin');
       }
 
       const accessToken = this._tokenService.generateAccessToken({
