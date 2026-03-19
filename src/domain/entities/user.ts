@@ -6,7 +6,7 @@ export interface UserProps {
   phoneNumber: string;
   profileImageUrl: string | null;
   authProviderId: string | null;
-  role: "admin" | "mentor" | "mentee";
+  role: Role;
   isDeleted: boolean;
   isVerified: boolean;
   isBlocked: boolean;
@@ -23,7 +23,7 @@ export class User {
   public phoneNumber: string;
   public profileImageUrl: string | null;
   public authProviderId: string | null;
-  public role: "admin" | "mentor" | "mentee";
+  public role: Role;
   public isDeleted: boolean;
   public isVerified: boolean;
   public isBlocked: boolean;
@@ -48,3 +48,11 @@ export class User {
     this.updatedAt = data.updatedAt;
   }
 }
+
+export const Role = {
+  ADMIN: 'admin',
+  MENTOR: 'mentor',
+  MENTEE: 'mentee',
+} as const;
+
+export type Role = (typeof Role)[keyof typeof Role];

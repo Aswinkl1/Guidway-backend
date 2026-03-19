@@ -1,18 +1,6 @@
-export interface UserJWTTokenPaylod {
+import { type Role } from '@domain/entities/user';
+
+export interface JWTTokenPaylod {
   id: string;
-  role: 'mentee';
+  role: Role;
 }
-
-export interface MentroJWTTokenPaylod {
-  id: string;
-  role: 'mentor';
-}
-
-export interface AdminJWTTokenPaylod {
-  id: string;
-  role: 'admin';
-}
-
-export type JWTTokenPaylod = UserJWTTokenPaylod | AdminJWTTokenPaylod | MentroJWTTokenPaylod;
-
-export type JWTTokenPaylodRoleField = JWTTokenPaylod['role'];
