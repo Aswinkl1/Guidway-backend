@@ -52,7 +52,9 @@ export class AuthController implements IAuthController {
 
 	verifyUser = async (req: Request, res: Response): Promise<void> => {
 		// get the token from the query
-		// TODO:there is a but here dont forget to fix it
+		// TODO:there is a bug here dont forget to fix it
+
+		// if the token undefined then it will be string "undefined" and it will pass the if condition so we need to check if the token is "undefined" or not
 
 		const token = String(req.query.token);
 
@@ -67,7 +69,7 @@ export class AuthController implements IAuthController {
 
 		res
 			.status(HTTPSTATUS.OK)
-			.json(createSuccess("email verification succesfull", user));
+			.json(createSuccess("email verification succesfullbe", user));
 	};
 
 	userLogin = async (req: Request, res: Response): Promise<void> => {

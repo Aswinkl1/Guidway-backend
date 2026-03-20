@@ -68,5 +68,6 @@
 			"esbuild",
 			"prisma"
 		]
-	}
+	},
+	"packageManager": "pnpm@10.32.1"
 }
