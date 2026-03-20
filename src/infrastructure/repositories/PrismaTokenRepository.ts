@@ -20,7 +20,12 @@ export class PrismaTokenRespository implements IPrismaRepository {
 			},
 		});
 
-		return record;
+		return {
+			token: record?.token as string,
+			userId: record?.userId as string,
+			userAgent: record?.userAgent as string | undefined,
+			expiresAt: record?.expiresAt as Date,
+		};
 	}
 	create = async (data: {
 		token: string;
