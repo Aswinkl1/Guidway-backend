@@ -1,8 +1,8 @@
+import crypto from "node:crypto";
 import { UnAuthenticatedError } from "@application/errors/UnAuthenticatedError";
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { JWTTokenPaylod } from "@application/types/JWTTokenPayload.type";
 import { EnvConfig } from "@config/env";
-import crypto from "node:crypto";
 import { injectable } from "inversify";
 import jwt from "jsonwebtoken";
 
