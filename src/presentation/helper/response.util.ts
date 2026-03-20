@@ -1,27 +1,30 @@
 export interface SuccessResponse<T> {
-  success: true;
-  message: string;
-  result: T;
+	success: true;
+	message: string;
+	result: T;
 }
 
 export interface ErrorResponse<T> {
-  success: false;
-  message: string;
-  errors: T;
+	success: false;
+	message: string;
+	errors: T;
 }
 
-export function createSuccess<T>(message: string, result: T): SuccessResponse<T> {
-  return {
-    success: true as const,
-    message,
-    result,
-  };
+export function createSuccess<T>(
+	message: string,
+	result: T,
+): SuccessResponse<T> {
+	return {
+		success: true,
+		message,
+		result,
+	};
 }
 
 export function createError<T>(message: string, errors: T): ErrorResponse<T> {
-  return {
-    success: false as const,
-    message,
-    errors,
-  };
+	return {
+		success: false as const,
+		message,
+		errors,
+	};
 }

@@ -1,5 +1,5 @@
-import { type Request, type Response } from 'express';
+import type { Request, Response } from "express";
 
 export interface IUserManagementController {
-  getAllUsers: (req: Request, res: Response) => Promise<void>;
+	getAllUsers: (req: Request, res: Response) => Promise<void>;
 }

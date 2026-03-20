@@ -1,5 +1,5 @@
-import { type signupUserDTO } from '@application/dto/user/signupUser.dto';
+import type { signupUserDTO } from "@application/dto/user/signupUser.dto";
 
 export interface ISignUpUsecase {
-  execute(data: signupUserDTO): Promise<void>;
+	execute(data: signupUserDTO): Promise<void>;
 }

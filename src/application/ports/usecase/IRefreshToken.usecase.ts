@@ -1,5 +1,5 @@
-import { type Role } from '@domain/entities/user';
+import type { Role } from "@domain/entities/user";
 
 export interface IRefreshTokenUsecase {
-  execute(token: string): Promise<{ accessToken: string; role: Role }>;
+	execute(token: string): Promise<{ accessToken: string; role: Role }>;
 }

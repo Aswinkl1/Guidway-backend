@@ -1,5 +1,5 @@
-import { type resetPasswordDTO } from '@application/dto/user/resetPassword.dto';
+import type { resetPasswordDTO } from "@application/dto/user/resetPassword.dto";
 
 export interface IResetPassswordUsecase {
-  execute(dto: resetPasswordDTO): Promise<void>;
+	execute(dto: resetPasswordDTO): Promise<void>;
 }

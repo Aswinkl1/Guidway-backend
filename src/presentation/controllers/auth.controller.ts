@@ -1,130 +1,146 @@
-import { forgetPasswordSchema } from '@application/dto/user/forgetPassword.dto';
-import { loginUserInputDTO } from '@application/dto/user/loginUser.dto';
-import { resetPasswordSchema } from '@application/dto/user/resetPassword.dto';
-import { signupUserSchema } from '@application/dto/user/signupUser.dto';
-import { IAdminLoginUsecase } from '@application/ports/usecase/admin/IAdminLogin.usecase';
-import { IForgetPasswordUsecase } from '@application/ports/usecase/IForgetPassword.usercase';
-import { ILoginUsecase } from '@application/ports/usecase/ILogin.usecase';
-import { IRefreshTokenUsecase } from '@application/ports/usecase/IRefreshToken.usecase';
-import { IResetPassswordUsecase } from '@application/ports/usecase/IResetPassword.usecase';
-import { ISignUpUsecase } from '@application/ports/usecase/ISignUpUsecase';
-import { IVerifyEmailUsecase } from '@application/ports/usecase/IVerifyEmail.usecase';
+import { forgetPasswordSchema } from "@application/dto/user/forgetPassword.dto";
+import type { loginUserInputDTO } from "@application/dto/user/loginUser.dto";
+import { resetPasswordSchema } from "@application/dto/user/resetPassword.dto";
+import { signupUserSchema } from "@application/dto/user/signupUser.dto";
+import type { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdminLogin.usecase";
+import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
+import type { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
+import type { IRefreshTokenUsecase } from "@application/ports/usecase/IRefreshToken.usecase";
+import type { IResetPassswordUsecase } from "@application/ports/usecase/IResetPassword.usecase";
+import type { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
+import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
 
-import { TYPES } from '@config/DI-container/TYPES';
-import HTTPSTATUS from '@presentation/constants/httpStatus';
-import { CustomZodValidationError } from '@presentation/errors/customZodValidationError';
-import { createSuccess } from '@presentation/helper/response.util';
-import { IAuthController } from '@presentation/interface/controllers/IAuthController';
-import { Request, Response } from 'express';
-import { inject, injectable } from 'inversify';
+import { TYPES } from "@config/DI-container/TYPES";
+import HTTPSTATUS from "@presentation/constants/httpStatus";
+import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
+import { createSuccess } from "@presentation/helper/response.util";
+import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
+import type { Request, Response } from "express";
+import { inject, injectable } from "inversify";
 
 @injectable()
 export class AuthController implements IAuthController {
-  constructor(
-    @inject(TYPES.SignUpUseCase) private readonly signUpUsecase: ISignUpUsecase,
-    @inject(TYPES.VerifyEmailUseCase)
-    private readonly _verifyEmailUsecase: IVerifyEmailUsecase,
-    @inject(TYPES.LoginUseCase) private readonly _loginUsecase: ILoginUsecase,
-    @inject(TYPES.ForgetPasswordUseCase)
-    private readonly _forgetPasswordUsecase: IForgetPasswordUsecase,
-    @inject(TYPES.ResetPasswordUseCase)
-    private readonly _resetPasswordUSecase: IResetPassswordUsecase,
-    @inject(TYPES.RefreshTokenUseCase)
-    private readonly _refreshTokenUsecase: IRefreshTokenUsecase,
-    @inject(TYPES.AdminLoginUseCase)
-    private readonly _adminLoginUsecase: IAdminLoginUsecase,
-  ) {}
+	constructor(
+		@inject(TYPES.SignUpUseCase)
+		private readonly _signUpUsecase: ISignUpUsecase,
+		@inject(TYPES.VerifyEmailUseCase)
+		private readonly _verifyEmailUsecase: IVerifyEmailUsecase,
+		@inject(TYPES.LoginUseCase) private readonly _loginUsecase: ILoginUsecase,
+		@inject(TYPES.ForgetPasswordUseCase)
+		private readonly _forgetPasswordUsecase: IForgetPasswordUsecase,
+		@inject(TYPES.ResetPasswordUseCase)
+		private readonly _resetPasswordUSecase: IResetPassswordUsecase,
+		@inject(TYPES.RefreshTokenUseCase)
+		private readonly _refreshTokenUsecase: IRefreshTokenUsecase,
+		@inject(TYPES.AdminLoginUseCase)
+		private readonly _adminLoginUsecase: IAdminLoginUsecase,
+	) {}
 
-  userSignUp = async (req: Request, res: Response): Promise<void> => {
-    console.log(req.body);
-    const parsed = signupUserSchema.safeParse(req.body);
-    if (!parsed.success) {
-      throw new CustomZodValidationError(parsed.error);
-    }
-    console.log('parced', parsed);
-    const rec = await this.signUpUsecase.execute(parsed.data);
+	userSignUp = async (req: Request, res: Response): Promise<void> => {
+		console.log(req.body);
+		const parsed = signupUserSchema.safeParse(req.body);
+		if (!parsed.success) {
+			throw new CustomZodValidationError(parsed.error);
+		}
+		console.log("parced", parsed);
+		const rec = await this._signUpUsecase.execute(parsed.data);
 
-    const response = createSuccess('signup succesfull', rec);
+		const response = createSuccess("signup succesfull", rec);
 
-    res.status(HTTPSTATUS.CREATED).json(response);
-  };
+		res.status(HTTPSTATUS.CREATED).json(response);
+	};
 
-  verifyUser = async (req: Request, res: Response): Promise<void> => {
-    // get the token from the query
-    const token = String(req.query.token);
+	verifyUser = async (req: Request, res: Response): Promise<void> => {
+		// get the token from the query
+		// TODO:there is a but here dont forget to fix it
 
-    // if no token then sedn the error
-    if (token == undefined) {
-      throw new Error('token is not found');
-    }
+		const token = String(req.query.token);
 
-    // send the token to the verify usecase
-    const user = await this._verifyEmailUsecase.execute(token);
-    // send the responce back
+		// if no token then sedn the error
+		if (token === undefined) {
+			throw new Error("token is not found");
+		}
 
-    res.status(HTTPSTATUS.OK).json(createSuccess('email verification succesfull', user));
-  };
+		// send the token to the verify usecase
+		const user = await this._verifyEmailUsecase.execute(token);
+		// send the responce back
 
-  userLogin = async (req: Request, res: Response): Promise<void> => {
-    const data = req.validated?.body as loginUserInputDTO;
-    const { role, accessToken, refreshToken } = await this._loginUsecase.execute(data);
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
-    });
-    res.status(HTTPSTATUS.OK).json(createSuccess('login succesfull', { role, accessToken }));
-  };
+		res
+			.status(HTTPSTATUS.OK)
+			.json(createSuccess("email verification succesfull", user));
+	};
 
-  mock = async (req: Request, res: Response): Promise<void> => {
-    console.log(req.cookies);
-    res.send('heleleleo');
-  };
+	userLogin = async (req: Request, res: Response): Promise<void> => {
+		const data = req.validated?.body as loginUserInputDTO;
+		const { role, accessToken, refreshToken } =
+			await this._loginUsecase.execute(data);
+		res.cookie("refreshToken", refreshToken, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "strict",
+			maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
+		});
+		res
+			.status(HTTPSTATUS.OK)
+			.json(createSuccess("login succesfull", { role, accessToken }));
+	};
 
-  forgetPassword = async (req: Request, res: Response): Promise<void> => {
-    console.log(req.body);
-    const parsed = forgetPasswordSchema.safeParse(req.body);
-    if (!parsed.success) {
-      console.log('zod error');
-      throw new CustomZodValidationError(parsed.error);
-    }
-    console.log(parsed.data);
-    const { email } = await this._forgetPasswordUsecase.execute(parsed.data);
+	mock = async (req: Request, res: Response): Promise<void> => {
+		console.log(req.cookies);
+		res.send("heleleleo");
+	};
 
-    res.status(HTTPSTATUS.OK).json(createSuccess('check you email', email));
-  };
+	forgetPassword = async (req: Request, res: Response): Promise<void> => {
+		console.log(req.body);
+		const parsed = forgetPasswordSchema.safeParse(req.body);
+		if (!parsed.success) {
+			console.log("zod error");
+			throw new CustomZodValidationError(parsed.error);
+		}
+		console.log(parsed.data);
+		const { email } = await this._forgetPasswordUsecase.execute(parsed.data);
 
-  resetPassword = async (req: Request, res: Response): Promise<void> => {
-    // verify the req body {token,password}
-    const parsed = resetPasswordSchema.safeParse(req.body);
+		res.status(HTTPSTATUS.OK).json(createSuccess("check you email", email));
+	};
 
-    if (!parsed.success) {
-      throw new CustomZodValidationError(parsed.error);
-    }
-    // give this data to the reset usecase
-    await this._resetPasswordUSecase.execute(parsed.data);
-    // return a response
-    res.status(HTTPSTATUS.OK).json(createSuccess('password changed succesfull', ''));
-  };
+	resetPassword = async (req: Request, res: Response): Promise<void> => {
+		// verify the req body {token,password}
+		const parsed = resetPasswordSchema.safeParse(req.body);
 
-  refreshToken = async (req: Request, res: Response): Promise<void> => {
-    const token = req.cookies['refreshToken'];
+		if (!parsed.success) {
+			throw new CustomZodValidationError(parsed.error);
+		}
+		// give this data to the reset usecase
+		await this._resetPasswordUSecase.execute(parsed.data);
+		// return a response
+		res
+			.status(HTTPSTATUS.OK)
+			.json(createSuccess("password changed succesfull", ""));
+	};
 
-    const { accessToken, role } = await this._refreshTokenUsecase.execute(token);
+	refreshToken = async (req: Request, res: Response): Promise<void> => {
+		const token = req.cookies.refreshToken;
 
-    res.status(HTTPSTATUS.OK).json(createSuccess('req successfull', { role, accessToken }));
-  };
+		const { accessToken, role } =
+			await this._refreshTokenUsecase.execute(token);
 
-  adminLogin = async (req: Request, res: Response): Promise<void> => {
-    const data = req.validated?.body as loginUserInputDTO;
-    const { role, accessToken, refreshToken } = await this._adminLoginUsecase.execute(data);
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
-    });
-    res.status(HTTPSTATUS.OK).json(createSuccess('admin login succesfull', { role, accessToken }));
-  };
+		res
+			.status(HTTPSTATUS.OK)
+			.json(createSuccess("req successfull", { role, accessToken }));
+	};
+
+	adminLogin = async (req: Request, res: Response): Promise<void> => {
+		const data = req.validated?.body as loginUserInputDTO;
+		const { role, accessToken, refreshToken } =
+			await this._adminLoginUsecase.execute(data);
+		res.cookie("refreshToken", refreshToken, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "strict",
+			maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
+		});
+		res
+			.status(HTTPSTATUS.OK)
+			.json(createSuccess("admin login succesfull", { role, accessToken }));
+	};
 }

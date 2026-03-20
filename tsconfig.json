@@ -1,24 +1,25 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "baseUrl": "./src",
-    "outDir": "./dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "paths": {
-      "@domain/*": ["domain/*"],
-      "@application/*": ["application/*"],
-      "@infrastructure/*": ["infrastructure/*"],
-      "@presentation/*": ["presentation/*"],
-      "@config/*": ["config/*"]
-    }
-  },
-  "include": ["src", "prisma.config.ts"],
-  "exclude": ["node_modules"]
+	"compilerOptions": {
+		"target": "ES2020",
+		"baseUrl": "./src",
+		"outDir": "./dist",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"forceConsistentCasingInFileNames": true,
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		// "verbatimModuleSyntax": true,
+		"paths": {
+			"@domain/*": ["domain/*"],
+			"@application/*": ["application/*"],
+			"@infrastructure/*": ["infrastructure/*"],
+			"@presentation/*": ["presentation/*"],
+			"@config/*": ["config/*"]
+		}
+	},
+	"include": ["src", "prisma.config.ts"],
+	"exclude": ["node_modules"]
 }
