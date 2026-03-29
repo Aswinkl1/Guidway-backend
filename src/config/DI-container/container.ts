@@ -9,6 +9,7 @@ import type { IHashService } from "@application/ports/services/IHashService";
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdminLogin.usecase";
 import type { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
+import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdateBlockStatus";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import type { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
 import type { IRefreshTokenUsecase } from "@application/ports/usecase/IRefreshToken.usecase";
@@ -17,6 +18,7 @@ import type { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
+import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
 import { RefreshTokenUsecase } from "@application/useCases/user/refreshToken.usecase";
@@ -27,8 +29,8 @@ import { CacheService } from "@infrastructure/cache/Cache";
 import { TokenCache } from "@infrastructure/cache/TokenCache";
 import { prisma } from "@infrastructure/database/prisma";
 import {
-  type AppRedisClientType,
-  redisClient,
+	type AppRedisClientType,
+	redisClient,
 } from "@infrastructure/database/redisClient";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 //
@@ -43,8 +45,6 @@ import type { IUserManagementController } from "@presentation/interface/controll
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
 import { TYPES } from "./TYPES";
-import { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdateBlockStatus";
-import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 
 console.log("container ");
 
@@ -53,101 +53,101 @@ const container = new Container();
 //cache
 
 container
-  .bind<ICacheService>(TYPES.CacheService)
-  .to(CacheService)
-  .inSingletonScope();
+	.bind<ICacheService>(TYPES.CacheService)
+	.to(CacheService)
+	.inSingletonScope();
 
 //Repository
 
 container
-  .bind<IUserRepository>(TYPES.UserRepository)
-  .to(UserRepository)
-  .inSingletonScope();
+	.bind<IUserRepository>(TYPES.UserRepository)
+	.to(UserRepository)
+	.inSingletonScope();
 
 container
-  .bind<ITokenCache>(TYPES.TokenRepository)
-  .to(TokenCache)
-  .inSingletonScope();
+	.bind<ITokenCache>(TYPES.TokenRepository)
+	.to(TokenCache)
+	.inSingletonScope();
 
 container
-  .bind<IPrismaRepository>(TYPES.PrismaTokenRepository)
-  .to(PrismaTokenRespository)
-  .inSingletonScope();
+	.bind<IPrismaRepository>(TYPES.PrismaTokenRepository)
+	.to(PrismaTokenRespository)
+	.inSingletonScope();
 
 //usecase
 
 container
-  .bind<IForgetPasswordUsecase>(TYPES.ForgetPasswordUseCase)
-  .to(ForgetPasswordUsecase)
-  .inSingletonScope();
+	.bind<IForgetPasswordUsecase>(TYPES.ForgetPasswordUseCase)
+	.to(ForgetPasswordUsecase)
+	.inSingletonScope();
 
 container
-  .bind<ILoginUsecase>(TYPES.LoginUseCase)
-  .to(LoginUsecase)
-  .inSingletonScope();
+	.bind<ILoginUsecase>(TYPES.LoginUseCase)
+	.to(LoginUsecase)
+	.inSingletonScope();
 
 container
-  .bind<IRefreshTokenUsecase>(TYPES.RefreshTokenUseCase)
-  .to(RefreshTokenUsecase)
-  .inSingletonScope();
+	.bind<IRefreshTokenUsecase>(TYPES.RefreshTokenUseCase)
+	.to(RefreshTokenUsecase)
+	.inSingletonScope();
 
 container
-  .bind<IResetPassswordUsecase>(TYPES.ResetPasswordUseCase)
-  .to(ResetPasswordUsecase)
-  .inSingletonScope();
+	.bind<IResetPassswordUsecase>(TYPES.ResetPasswordUseCase)
+	.to(ResetPasswordUsecase)
+	.inSingletonScope();
 
 container
-  .bind<ISignUpUsecase>(TYPES.SignUpUseCase)
-  .to(SignUpUser)
-  .inSingletonScope();
+	.bind<ISignUpUsecase>(TYPES.SignUpUseCase)
+	.to(SignUpUser)
+	.inSingletonScope();
 
 container
-  .bind<IVerifyEmailUsecase>(TYPES.VerifyEmailUseCase)
-  .to(VerifyEmailUseCase)
-  .inSingletonScope();
+	.bind<IVerifyEmailUsecase>(TYPES.VerifyEmailUseCase)
+	.to(VerifyEmailUseCase)
+	.inSingletonScope();
 
 container
-  .bind<IGetUsersUsecase>(TYPES.GetUserUsecase)
-  .to(GetUsersUsecase)
-  .inSingletonScope();
+	.bind<IGetUsersUsecase>(TYPES.GetUserUsecase)
+	.to(GetUsersUsecase)
+	.inSingletonScope();
 
 container
-  .bind<IAdminLoginUsecase>(TYPES.AdminLoginUseCase)
-  .to(AdminLoginUsecase)
-  .inSingletonScope();
+	.bind<IAdminLoginUsecase>(TYPES.AdminLoginUseCase)
+	.to(AdminLoginUsecase)
+	.inSingletonScope();
 
 container
-  .bind<IUpdateBlockStatus>(TYPES.UpdateBlockStatus)
-  .to(UpdateBlockStatus)
-  .inSingletonScope();
+	.bind<IUpdateBlockStatus>(TYPES.UpdateBlockStatus)
+	.to(UpdateBlockStatus)
+	.inSingletonScope();
 // services
 container
-  .bind<IEmailService>(TYPES.EmailService)
-  .to(NodemailerEmailService)
-  .inSingletonScope();
+	.bind<IEmailService>(TYPES.EmailService)
+	.to(NodemailerEmailService)
+	.inSingletonScope();
 container
-  .bind<IHashService>(TYPES.HashService)
-  .to(ArgonPasswordHasher)
-  .inSingletonScope();
+	.bind<IHashService>(TYPES.HashService)
+	.to(ArgonPasswordHasher)
+	.inSingletonScope();
 container
-  .bind<ITokenService>(TYPES.TokenService)
-  .to(TokenService)
-  .inSingletonScope();
+	.bind<ITokenService>(TYPES.TokenService)
+	.to(TokenService)
+	.inSingletonScope();
 
 //controller
 container
-  .bind<IAuthController>(TYPES.AuthController)
-  .to(AuthController)
-  .inSingletonScope();
+	.bind<IAuthController>(TYPES.AuthController)
+	.to(AuthController)
+	.inSingletonScope();
 container
-  .bind<IUserManagementController>(TYPES.UserManagementController)
-  .to(UserManagementController)
-  .inSingletonScope();
+	.bind<IUserManagementController>(TYPES.UserManagementController)
+	.to(UserManagementController)
+	.inSingletonScope();
 
 // db client
 container.bind<PrismaClient>(TYPES.PrismaClient).toConstantValue(prisma);
 container
-  .bind<AppRedisClientType>(TYPES.RedisClient)
-  .toConstantValue(redisClient);
+	.bind<AppRedisClientType>(TYPES.RedisClient)
+	.toConstantValue(redisClient);
 
 export { container };

@@ -7,24 +7,24 @@ import { inject, injectable } from "inversify";
 
 @injectable()
 export class UpdateBlockStatus implements IUpdateBlockStatus {
-  constructor(
-    @inject(TYPES.UserRepository) private readonly _userRepo: IUserRepository,
-  ) {}
-  async execute(dto: updateBlockStatusDto): Promise<void> {
-    // check if the user existes
-    const user = await this._userRepo.findById(dto.userId);
-    // if not error
-    if (!user) {
-      throw new NotFoundError("user not found");
-    }
-    // change the thing in the domin
+	constructor(
+		@inject(TYPES.UserRepository) private readonly _userRepo: IUserRepository,
+	) {}
+	async execute(dto: updateBlockStatusDto): Promise<void> {
+		// check if the user existes
+		const user = await this._userRepo.findById(dto.userId);
+		// if not error
+		if (!user) {
+			throw new NotFoundError("user not found");
+		}
+		// change the thing in the domin
 
-    if (dto.newBlockStatus) {
-      user.block();
-    } else {
-      user.unBlock();
-    }
-    // save it
-    this._userRepo.update(user.id, { isBlocked: user.isBlocked });
-  }
+		if (dto.newBlockStatus) {
+			user.block();
+		} else {
+			user.unBlock();
+		}
+		// save it
+		this._userRepo.update(user.id, { isBlocked: user.isBlocked });
+	}
 }

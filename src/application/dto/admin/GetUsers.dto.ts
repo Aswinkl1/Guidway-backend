@@ -17,7 +17,7 @@ export const getUsersSchema = z.object({
   limit: z.coerce.number().min(5).catch(5),
   isBlocked: optionalBoolean,
   isVerified: optionalBoolean,
-  role: z.enum(["mentee", "mentor", "admin"]).optional(),
+  role: z.enum(Role).optional(),
 });
 
 export type getUsersDTO = z.infer<typeof getUsersSchema>;

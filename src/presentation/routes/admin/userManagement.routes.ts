@@ -8,18 +8,18 @@ import { Router } from "express";
 
 const router = Router();
 const userManagementController = container.get<IUserManagementController>(
-  TYPES.UserManagementController,
+	TYPES.UserManagementController,
 );
 
 router.get(
-  "/users",
-  validatetor(getUsersSchema, "query"),
-  userManagementController.getAllUsers,
+	"/users",
+	validatetor(getUsersSchema, "query"),
+	userManagementController.getAllUsers,
 );
 
 router.patch(
-  "/block-status",
-  validatetor(updateBlockStatusSchema, "body"),
-  userManagementController.updateBlockStatus,
+	"/block-status",
+	validatetor(updateBlockStatusSchema, "body"),
+	userManagementController.updateBlockStatus,
 );
 export default router;
