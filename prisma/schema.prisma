@@ -11,8 +11,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-
-
 }
 
 
@@ -69,7 +67,8 @@ model Mentor {
 
   headline                  String?
   shortBio                  String?
-  domainId                  String?  // Add relation once domains table is defined
+  domainId                  String?
+
 
   isVerified                Boolean  @default(false)
   status                    MentorStatus @default(DRAFT)
