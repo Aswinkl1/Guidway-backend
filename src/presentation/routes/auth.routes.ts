@@ -16,26 +16,28 @@ router.post("/signup", authController.userSignUp);
 router.get("/verify", authController.verifyUser);
 router.get("/refresh", authController.refreshToken);
 router.post(
-	"/login",
-	validatetor(loginInputSchema, "body"),
-	authController.userLogin,
+  "/login",
+  validatetor(loginInputSchema, "body"),
+  authController.userLogin,
 );
 
 router.get(
-	"/",
-	isAuthenticate,
-	authorizedRoles(Role.MENTEE),
-	authController.mock,
+  "/",
+  isAuthenticate,
+  authorizedRoles(Role.MENTEE),
+  authController.mock,
 );
 
 router.post("/forget-password", authController.forgetPassword);
 router.patch("/reset-password", authController.resetPassword);
 
 router.post(
-	"/admin/login",
-	validatetor(loginInputSchema, "body"),
-	authController.adminLogin,
+  "/admin/login",
+  validatetor(loginInputSchema, "body"),
+  authController.adminLogin,
 );
 
 router.post("/logout", authController.logout);
+
+router.post("/upload-url", isAuthenticate, authController.getSignedUrl);
 export default router;
