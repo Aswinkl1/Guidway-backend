@@ -24,7 +24,7 @@ model User {
   // Password is NULL if they sign up with LinkedIn/Google
   password        String?  // Encrypted. Nullable for OAuth users
   phoneNumber     String?
-  profileImageUrl String?
+  profileImageKey String?
   // Tracks how they signed up
   authProviderId  String?  // The unique ID from LinkedIn/Google (e.g. LINKEDIN_123)
   // The Role determines if they are a Student, Mentor, or Admin
@@ -54,6 +54,14 @@ enum Role {
 //   profileEmbedding Unsupported("vector(1536)")
 //   @@map("mentor_embeddings")
 // }
+
+enum MentorStatus {
+  DRAFT            // Currently in the onboarding wizard
+  PENDING_REVIEW   // Finished onboarding, waiting for admin approval
+  ACTIVE           // Live on the marketplace
+  PAUSED           // Temporarily hidden by the mentor (e.g., vacation)
+  SUSPENDED        // Locked by an admin for violations
+}
 model Mentor {
   id                        String   @id @default(uuid())
   userId                    String   @unique // @unique enforces the one-to-one with User
@@ -64,8 +72,8 @@ model Mentor {
   domainId                  String?  // Add relation once domains table is defined
 
   isVerified                Boolean  @default(false)
-  isSuspended               Boolean  @default(false)
-  isPublic                  Boolean  @default(true)
+  status                    MentorStatus @default(DRAFT)
+  onboardingStep            Int          @default(1)
 
   // Stripe
   stripeAccountId           String?
