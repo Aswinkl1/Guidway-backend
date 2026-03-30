@@ -15,21 +15,6 @@ datasource db {
 
 }
 
-model RefreshToken {
-  id        String      @id @default(uuid())
-  token     String      @unique @db.Char(64)
-  userId    String
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime    @default(now())
-  expiresAt DateTime
-  lastUsed  DateTime     @default(now())
-  userAgent   String?
-  ipAddress String?
-
-  @@index([token])
-  @@index([userId])
-  @@map("tokens")
-}
 
 
 model User {
@@ -38,7 +23,7 @@ model User {
   name            String
   // Password is NULL if they sign up with LinkedIn/Google
   password        String?  // Encrypted. Nullable for OAuth users
-  phoneNumber     String
+  phoneNumber     String?
   profileImageUrl String?
   // Tracks how they signed up
   authProviderId  String?  // The unique ID from LinkedIn/Google (e.g. LINKEDIN_123)
@@ -52,7 +37,7 @@ model User {
   updatedAt       DateTime @updatedAt
   @@map("users")
   mentor Mentor?
-    RefreshTokens          RefreshToken[]  // 👈 add this relation
+
 
 
 }
@@ -125,7 +110,7 @@ model Mentor {
 
 model Domain {
   id         String   @id @default(uuid())
-  domainName String
+  domainName String  @unique
 
   mentors    Mentor[]
 
@@ -177,7 +162,7 @@ model Language {
 model MentorLanguage {
   mentorId    String
   languageId  String
-  proficiency String // Native, Fluent, Conversational
+  proficiency ProficiencyLevel // Native, Fluent, Conversational
 
   mentor      Mentor   @relation(fields: [mentorId], references: [id])
   language    Language @relation(fields: [languageId], references: [id])
@@ -186,6 +171,12 @@ model MentorLanguage {
   @@map("mentor_languages")
 }
 
+enum ProficiencyLevel {
+  native
+  fluent
+  conversational
+  basic
+}
 // ==========================================
 // SKILLS
 // ==========================================
