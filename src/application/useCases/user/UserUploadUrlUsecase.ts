@@ -6,26 +6,26 @@ import { v4 as uuid } from "uuid";
 
 @injectable()
 export class UserUploadUrlUsecase implements IUserUploadUrlUsecase {
-  constructor(
-    @inject(TYPES.S3Service) private readonly _s3Service: IS3Service,
-  ) {}
-  execute = async (
-    id: string,
-    fileType: string,
-  ): Promise<{ uploadUrl: string; fileKey: string }> => {
-    // Validate file type
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+	constructor(
+		@inject(TYPES.S3Service) private readonly _s3Service: IS3Service,
+	) {}
+	execute = async (
+		id: string,
+		fileType: string,
+	): Promise<{ uploadUrl: string; fileKey: string }> => {
+		// Validate file type
+		const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
 
-    if (!allowedTypes.includes(fileType)) {
-      throw new Error("Unsupported file type");
-    }
+		if (!allowedTypes.includes(fileType)) {
+			throw new Error("Unsupported file type");
+		}
 
-    const fileKey = `user/${id}/${uuid()}`;
-    const uploadUrl = await this._s3Service.getPresignedUploadUrl(
-      fileKey,
-      fileType,
-    );
+		const fileKey = `user/${id}/${uuid()}`;
+		const uploadUrl = await this._s3Service.getPresignedUploadUrl(
+			fileKey,
+			fileType,
+		);
 
-    return { uploadUrl, fileKey };
-  };
+		return { uploadUrl, fileKey };
+	};
 }
