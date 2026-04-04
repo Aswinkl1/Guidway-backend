@@ -12,6 +12,7 @@ import type { IUserUploadUrlUsecase } from "@application/ports/usecase/IUserUplo
 import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
 
 import { TYPES } from "@config/DI-container/TYPES";
+import { EnvConfig } from "@config/env";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
 import { createSuccess } from "@presentation/helper/response.util";
@@ -21,160 +22,171 @@ import { inject, injectable } from "inversify";
 
 @injectable()
 export class AuthController implements IAuthController {
-	constructor(
-		@inject(TYPES.SignUpUseCase)
-		private readonly _signUpUsecase: ISignUpUsecase,
-		@inject(TYPES.VerifyEmailUseCase)
-		private readonly _verifyEmailUsecase: IVerifyEmailUsecase,
-		@inject(TYPES.LoginUseCase) private readonly _loginUsecase: ILoginUsecase,
-		@inject(TYPES.ForgetPasswordUseCase)
-		private readonly _forgetPasswordUsecase: IForgetPasswordUsecase,
-		@inject(TYPES.ResetPasswordUseCase)
-		private readonly _resetPasswordUSecase: IResetPassswordUsecase,
-		@inject(TYPES.RefreshTokenUseCase)
-		private readonly _refreshTokenUsecase: IRefreshTokenUsecase,
-		@inject(TYPES.AdminLoginUseCase)
-		private readonly _adminLoginUsecase: IAdminLoginUsecase,
-		@inject(TYPES.UserUploadUrlUsecase)
-		private readonly _getUserUploadUrlUsecase: IUserUploadUrlUsecase,
-	) {}
+  constructor(
+    @inject(TYPES.SignUpUseCase)
+    private readonly _signUpUsecase: ISignUpUsecase,
+    @inject(TYPES.VerifyEmailUseCase)
+    private readonly _verifyEmailUsecase: IVerifyEmailUsecase,
+    @inject(TYPES.LoginUseCase) private readonly _loginUsecase: ILoginUsecase,
+    @inject(TYPES.ForgetPasswordUseCase)
+    private readonly _forgetPasswordUsecase: IForgetPasswordUsecase,
+    @inject(TYPES.ResetPasswordUseCase)
+    private readonly _resetPasswordUSecase: IResetPassswordUsecase,
+    @inject(TYPES.RefreshTokenUseCase)
+    private readonly _refreshTokenUsecase: IRefreshTokenUsecase,
+    @inject(TYPES.AdminLoginUseCase)
+    private readonly _adminLoginUsecase: IAdminLoginUsecase,
+    @inject(TYPES.UserUploadUrlUsecase)
+    private readonly _getUserUploadUrlUsecase: IUserUploadUrlUsecase,
+  ) {}
 
-	logout = async (_req: Request, res: Response): Promise<void> => {
-		res.clearCookie("refreshToken", { httpOnly: true });
-		res.status(HTTPSTATUS.OK).json(createSuccess("logout succesfull", {}));
-	};
+  oauthCallback = async (req: Request, res: Response): Promise<void> => {
+    const refreshToken = req.user as string;
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: EnvConfig.COOKIE_MAX_AGE,
+    });
+    res.redirect("http://localhost:5174/");
+  };
 
-	userSignUp = async (req: Request, res: Response): Promise<void> => {
-		console.log(req.body);
-		const parsed = signupUserSchema.safeParse(req.body);
-		if (!parsed.success) {
-			throw new CustomZodValidationError(parsed.error);
-		}
-		console.log("parced", parsed);
-		const rec = await this._signUpUsecase.execute(parsed.data);
+  logout = async (_req: Request, res: Response): Promise<void> => {
+    res.clearCookie("refreshToken", { httpOnly: true });
+    res.status(HTTPSTATUS.OK).json(createSuccess("logout succesfull", {}));
+  };
 
-		const response = createSuccess("signup succesfull", rec);
+  userSignUp = async (req: Request, res: Response): Promise<void> => {
+    console.log(req.body);
+    const parsed = signupUserSchema.safeParse(req.body);
+    if (!parsed.success) {
+      throw new CustomZodValidationError(parsed.error);
+    }
+    console.log("parced", parsed);
+    const rec = await this._signUpUsecase.execute(parsed.data);
 
-		res.status(HTTPSTATUS.CREATED).json(response);
-	};
+    const response = createSuccess("signup succesfull", rec);
 
-	verifyUser = async (req: Request, res: Response): Promise<void> => {
-		// get the token from the query
-		// TODO:there is a bug here dont forget to fix it
+    res.status(HTTPSTATUS.CREATED).json(response);
+  };
 
-		// if the token undefined then it will be string "undefined" and it will pass the if condition so we need to check if the token is "undefined" or not
+  verifyUser = async (req: Request, res: Response): Promise<void> => {
+    // get the token from the query
+    // TODO:there is a bug here dont forget to fix it
 
-		const token = String(req.query.token);
+    // if the token undefined then it will be string "undefined" and it will pass the if condition so we need to check if the token is "undefined" or not
 
-		// if no token then sedn the error
-		if (token === undefined) {
-			throw new Error("token is not found");
-		}
+    const token = String(req.query.token);
 
-		// send the token to the verify usecase
-		const user = await this._verifyEmailUsecase.execute(token);
-		// send the responce back
+    // if no token then sedn the error
+    if (token === undefined) {
+      throw new Error("token is not found");
+    }
 
-		res
-			.status(HTTPSTATUS.OK)
-			.json(createSuccess("email verification succesfullbe", user));
-	};
+    // send the token to the verify usecase
+    const user = await this._verifyEmailUsecase.execute(token);
+    // send the responce back
 
-	userLogin = async (req: Request, res: Response): Promise<void> => {
-		const data = req.validated?.body as loginUserInputDTO;
-		const { role, accessToken, refreshToken } =
-			await this._loginUsecase.execute(data);
-		res.cookie("refreshToken", refreshToken, {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === "production",
-			sameSite: "strict",
-			maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
-		});
-		res
-			.status(HTTPSTATUS.OK)
-			.json(createSuccess("login succesfull", { role, accessToken }));
-	};
+    res
+      .status(HTTPSTATUS.OK)
+      .json(createSuccess("email verification succesfullbe", user));
+  };
 
-	mock = async (req: Request, res: Response): Promise<void> => {
-		console.log(req.cookies);
-		res.send("heleleleo");
-	};
+  userLogin = async (req: Request, res: Response): Promise<void> => {
+    const data = req.validated?.body as loginUserInputDTO;
+    const { role, accessToken, refreshToken } =
+      await this._loginUsecase.execute(data);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
+    });
+    res
+      .status(HTTPSTATUS.OK)
+      .json(createSuccess("login succesfull", { role, accessToken }));
+  };
 
-	forgetPassword = async (req: Request, res: Response): Promise<void> => {
-		console.log(req.body);
-		const parsed = forgetPasswordSchema.safeParse(req.body);
-		if (!parsed.success) {
-			console.log("zod error");
-			throw new CustomZodValidationError(parsed.error);
-		}
-		console.log(parsed.data);
-		const { email } = await this._forgetPasswordUsecase.execute(parsed.data);
+  mock = async (req: Request, res: Response): Promise<void> => {
+    console.log(req.cookies);
+    res.send("heleleleo");
+  };
 
-		res.status(HTTPSTATUS.OK).json(createSuccess("check you email", email));
-	};
+  forgetPassword = async (req: Request, res: Response): Promise<void> => {
+    console.log(req.body);
+    const parsed = forgetPasswordSchema.safeParse(req.body);
+    if (!parsed.success) {
+      console.log("zod error");
+      throw new CustomZodValidationError(parsed.error);
+    }
+    console.log(parsed.data);
+    const { email } = await this._forgetPasswordUsecase.execute(parsed.data);
 
-	resetPassword = async (req: Request, res: Response): Promise<void> => {
-		// verify the req body {token,password}
-		const parsed = resetPasswordSchema.safeParse(req.body);
+    res.status(HTTPSTATUS.OK).json(createSuccess("check you email", email));
+  };
 
-		if (!parsed.success) {
-			throw new CustomZodValidationError(parsed.error);
-		}
-		// give this data to the reset usecase
-		await this._resetPasswordUSecase.execute(parsed.data);
-		// return a response
-		res
-			.status(HTTPSTATUS.OK)
-			.json(createSuccess("password changed succesfull", ""));
-	};
+  resetPassword = async (req: Request, res: Response): Promise<void> => {
+    // verify the req body {token,password}
+    const parsed = resetPasswordSchema.safeParse(req.body);
 
-	refreshToken = async (req: Request, res: Response): Promise<void> => {
-		const token = req.cookies.refreshToken;
+    if (!parsed.success) {
+      throw new CustomZodValidationError(parsed.error);
+    }
+    // give this data to the reset usecase
+    await this._resetPasswordUSecase.execute(parsed.data);
+    // return a response
+    res
+      .status(HTTPSTATUS.OK)
+      .json(createSuccess("password changed succesfull", ""));
+  };
 
-		const { accessToken, role } =
-			await this._refreshTokenUsecase.execute(token);
+  refreshToken = async (req: Request, res: Response): Promise<void> => {
+    const token = req.cookies.refreshToken;
 
-		res
-			.status(HTTPSTATUS.OK)
-			.json(createSuccess("req successfull", { role, accessToken }));
-	};
+    const { accessToken, role } =
+      await this._refreshTokenUsecase.execute(token);
 
-	adminLogin = async (req: Request, res: Response): Promise<void> => {
-		const data = req.validated?.body as loginUserInputDTO;
-		const { role, accessToken, refreshToken } =
-			await this._adminLoginUsecase.execute(data);
-		res.cookie("refreshToken", refreshToken, {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === "production",
-			sameSite: "strict",
-			maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
-		});
-		res
-			.status(HTTPSTATUS.OK)
-			.json(createSuccess("admin login succesfull", { role, accessToken }));
-	};
+    res
+      .status(HTTPSTATUS.OK)
+      .json(createSuccess("req successfull", { role, accessToken }));
+  };
 
-	getSignedUrl = async (req: Request, res: Response): Promise<void> => {
-		console.log("but wju");
-		const userId = req.user?.id;
-		const { fileType } = req.body;
+  adminLogin = async (req: Request, res: Response): Promise<void> => {
+    const data = req.validated?.body as loginUserInputDTO;
+    const { role, accessToken, refreshToken } =
+      await this._adminLoginUsecase.execute(data);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
+    });
+    res
+      .status(HTTPSTATUS.OK)
+      .json(createSuccess("admin login succesfull", { role, accessToken }));
+  };
 
-		if (!userId) {
-			console.log(userId);
-			throw new Error("user not authenticated");
-		}
+  getSignedUrl = async (req: Request, res: Response): Promise<void> => {
+    console.log("but wju");
+    const userId = req.user?.id;
+    const { fileType } = req.body;
 
-		if (!fileType) {
-			throw new Error("file type is required");
-		}
+    if (!userId) {
+      console.log(userId);
+      throw new Error("user not authenticated");
+    }
 
-		const { uploadUrl, fileKey } = await this._getUserUploadUrlUsecase.execute(
-			userId,
-			fileType,
-		);
+    if (!fileType) {
+      throw new Error("file type is required");
+    }
 
-		res
-			.status(HTTPSTATUS.OK)
-			.json(createSuccess("upload url generated", { uploadUrl, fileKey }));
-	};
+    const { uploadUrl, fileKey } = await this._getUserUploadUrlUsecase.execute(
+      userId,
+      fileType,
+    );
+
+    res
+      .status(HTTPSTATUS.OK)
+      .json(createSuccess("upload url generated", { uploadUrl, fileKey }));
+  };
 }

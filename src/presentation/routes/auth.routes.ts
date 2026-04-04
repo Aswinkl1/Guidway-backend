@@ -7,6 +7,7 @@ import { authorizedRoles } from "@presentation/middleware/authorization.middlewa
 import { isAuthenticate } from "@presentation/middleware/isAuthentication.middleware";
 import validatetor from "@presentation/middleware/validation.middleware";
 import { Router } from "express";
+import passport from "passport";
 
 const authController = container.get<IAuthController>(TYPES.AuthController);
 const router = Router();
@@ -16,28 +17,52 @@ router.post("/signup", authController.userSignUp);
 router.get("/verify", authController.verifyUser);
 router.get("/refresh", authController.refreshToken);
 router.post(
-	"/login",
-	validatetor(loginInputSchema, "body"),
-	authController.userLogin,
+  "/login",
+  validatetor(loginInputSchema, "body"),
+  authController.userLogin,
 );
 
 router.get(
-	"/",
-	isAuthenticate,
-	authorizedRoles(Role.MENTEE),
-	authController.mock,
+  "/",
+  isAuthenticate,
+  authorizedRoles(Role.MENTEE),
+  authController.mock,
 );
 
 router.post("/forget-password", authController.forgetPassword);
 router.patch("/reset-password", authController.resetPassword);
 
 router.post(
-	"/admin/login",
-	validatetor(loginInputSchema, "body"),
-	authController.adminLogin,
+  "/admin/login",
+  validatetor(loginInputSchema, "body"),
+  authController.adminLogin,
 );
 
 router.post("/logout", authController.logout);
 
 router.post("/upload-url", isAuthenticate, authController.getSignedUrl);
+
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] }),
+);
+
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { session: false }),
+  authController.oauthCallback,
+);
+
+router.get(
+  "/linkedin",
+  passport.authenticate("linkedin", {
+    scope: ["openid", "profile", "email"],
+  }),
+);
+router.get(
+  "/linkedin/callback",
+  passport.authenticate("linkedin", { session: false }),
+  authController.oauthCallback,
+);
+
 export default router;
