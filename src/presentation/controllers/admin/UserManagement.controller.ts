@@ -11,35 +11,35 @@ import { inject, injectable } from "inversify";
 
 @injectable()
 export class UserManagementController implements IUserManagementController {
-  constructor(
-    @inject(TYPES.GetUserUsecase)
-    private readonly _getAllUsersUseCase: IGetUsersUsecase,
-    @inject(TYPES.UpdateBlockStatus)
-    private readonly _updateBlockStatusUsecase: IUpdateBlockStatus,
-  ) {}
+	constructor(
+		@inject(TYPES.GetUserUsecase)
+		private readonly _getAllUsersUseCase: IGetUsersUsecase,
+		@inject(TYPES.UpdateBlockStatus)
+		private readonly _updateBlockStatusUsecase: IUpdateBlockStatus,
+	) {}
 
-  getAllUsers = async (req: Request, res: Response): Promise<void> => {
-    const query = req.validated?.query as getUsersDTO;
-    console.log("query", query);
-    const { data: users, totalItems } =
-      await this._getAllUsersUseCase.execute(query);
-    const totalPages = Math.ceil(totalItems / query.limit);
-    res.status(HTTPSTATUS.OK).json(
-      createSuccess("users fetched successfully", {
-        users,
-        totalItems,
-        totalPages,
-        currentPage: query.page,
-      }),
-    );
-  };
+	getAllUsers = async (req: Request, res: Response): Promise<void> => {
+		const query = req.validated?.query as getUsersDTO;
+		console.log("query", query);
+		const { data: users, totalItems } =
+			await this._getAllUsersUseCase.execute(query);
+		const totalPages = Math.ceil(totalItems / query.limit);
+		res.status(HTTPSTATUS.OK).json(
+			createSuccess("users fetched successfully", {
+				users,
+				totalItems,
+				totalPages,
+				currentPage: query.page,
+			}),
+		);
+	};
 
-  updateBlockStatus = async (req: Request, res: Response) => {
-    const data = req.validated?.body as updateBlockStatusDto;
+	updateBlockStatus = async (req: Request, res: Response) => {
+		const data = req.validated?.body as updateBlockStatusDto;
 
-    await this._updateBlockStatusUsecase.execute(data);
-    res
-      .status(HTTPSTATUS.OK)
-      .json(createSuccess("status changed successfully", {}));
-  };
+		await this._updateBlockStatusUsecase.execute(data);
+		res
+			.status(HTTPSTATUS.OK)
+			.json(createSuccess("status changed successfully", {}));
+	};
 }

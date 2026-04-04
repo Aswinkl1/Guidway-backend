@@ -1,8 +1,8 @@
 import type {
-  OAuthInputDTO,
-  OAuthOutputDTO,
+	OAuthInputDTO,
+	OAuthOutputDTO,
 } from "@application/dto/user/OAuth.dto";
 
 export interface IOAuthUseCase {
-  execute(dto: OAuthInputDTO): Promise<OAuthOutputDTO>;
+	execute(dto: OAuthInputDTO): Promise<OAuthOutputDTO>;
 }
