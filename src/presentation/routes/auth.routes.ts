@@ -20,16 +20,16 @@ router.get(ROUTES.AUTH.VERIFY, authController.verifyUser);
 router.get(ROUTES.AUTH.REFRESH, authController.refreshToken);
 
 router.post(
-  ROUTES.AUTH.LOGIN,
-  validatetor(loginInputSchema, "body"),
-  authController.userLogin,
+	ROUTES.AUTH.LOGIN,
+	validatetor(loginInputSchema, "body"),
+	authController.userLogin,
 );
 
 router.get(
-  ROUTES.AUTH.ROOT,
-  isAuthenticate,
-  authorizedRoles(Role.MENTEE),
-  authController.mock,
+	ROUTES.AUTH.ROOT,
+	isAuthenticate,
+	authorizedRoles(Role.MENTEE),
+	authController.mock,
 );
 
 router.post(ROUTES.AUTH.FORGET_PASSWORD, authController.forgetPassword);
@@ -37,47 +37,47 @@ router.post(ROUTES.AUTH.FORGET_PASSWORD, authController.forgetPassword);
 router.patch(ROUTES.AUTH.RESET_PASSWORD, authController.resetPassword);
 
 router.post(
-  ROUTES.AUTH.ADMIN_LOGIN,
-  validatetor(loginInputSchema, "body"),
-  authController.adminLogin,
+	ROUTES.AUTH.ADMIN_LOGIN,
+	validatetor(loginInputSchema, "body"),
+	authController.adminLogin,
 );
 
 router.post(ROUTES.AUTH.LOGOUT, authController.logout);
 
 router.post(
-  ROUTES.AUTH.UPLOAD_URL,
-  isAuthenticate,
-  authController.getSignedUrl,
+	ROUTES.AUTH.UPLOAD_URL,
+	isAuthenticate,
+	authController.getSignedUrl,
 );
 
 router.get(
-  ROUTES.AUTH.GOOGLE_AUTH,
-  passport.authenticate("google", { scope: ["profile", "email"] }),
+	ROUTES.AUTH.GOOGLE_AUTH,
+	passport.authenticate("google", { scope: ["profile", "email"] }),
 );
 
 router.get(
-  ROUTES.AUTH.GOOGLE_CALLBACK,
-  passport.authenticate("google", {
-    session: false,
-    assignProperty: "OAuthUser",
-  }),
-  authController.oauthCallback,
+	ROUTES.AUTH.GOOGLE_CALLBACK,
+	passport.authenticate("google", {
+		session: false,
+		assignProperty: "OAuthUser",
+	}),
+	authController.oauthCallback,
 );
 
 router.get(
-  ROUTES.AUTH.LINKEDIN_AUTH,
-  passport.authenticate("oauth2", {
-    scope: ["openid", "profile", "email"],
-  }),
+	ROUTES.AUTH.LINKEDIN_AUTH,
+	passport.authenticate("oauth2", {
+		scope: ["openid", "profile", "email"],
+	}),
 );
 
 router.get(
-  ROUTES.AUTH.LINKEDIN_CALLBACK,
-  passport.authenticate("oauth2", {
-    session: false,
-    assignProperty: "OAuthUser",
-  }),
-  authController.oauthCallback,
+	ROUTES.AUTH.LINKEDIN_CALLBACK,
+	passport.authenticate("oauth2", {
+		session: false,
+		assignProperty: "OAuthUser",
+	}),
+	authController.oauthCallback,
 );
 
 export default router;
