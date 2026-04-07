@@ -17,25 +17,25 @@ router.post("/signup", authController.userSignUp);
 router.get("/verify", authController.verifyUser);
 router.get("/refresh", authController.refreshToken);
 router.post(
-  "/login",
-  validatetor(loginInputSchema, "body"),
-  authController.userLogin,
+	"/login",
+	validatetor(loginInputSchema, "body"),
+	authController.userLogin,
 );
 
 router.get(
-  "/",
-  isAuthenticate,
-  authorizedRoles(Role.MENTEE),
-  authController.mock,
+	"/",
+	isAuthenticate,
+	authorizedRoles(Role.MENTEE),
+	authController.mock,
 );
 
 router.post("/forget-password", authController.forgetPassword);
 router.patch("/reset-password", authController.resetPassword);
 
 router.post(
-  "/admin/login",
-  validatetor(loginInputSchema, "body"),
-  authController.adminLogin,
+	"/admin/login",
+	validatetor(loginInputSchema, "body"),
+	authController.adminLogin,
 );
 
 router.post("/logout", authController.logout);
@@ -43,33 +43,33 @@ router.post("/logout", authController.logout);
 router.post("/upload-url", isAuthenticate, authController.getSignedUrl);
 
 router.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] }),
+	"/auth/google",
+	passport.authenticate("google", { scope: ["profile", "email"] }),
 );
 
 router.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    session: false,
-    assignProperty: "OAuthUser",
-  }),
-  authController.oauthCallback,
+	"/auth/google/callback",
+	passport.authenticate("google", {
+		session: false,
+		assignProperty: "OAuthUser",
+	}),
+	authController.oauthCallback,
 );
 
 router.get(
-  "/auth/linkedin",
-  passport.authenticate("oauth2", {
-    scope: ["openid", "profile", "email"],
-  }),
+	"/auth/linkedin",
+	passport.authenticate("oauth2", {
+		scope: ["openid", "profile", "email"],
+	}),
 );
 
 router.get(
-  "/auth/linkedin/callback",
-  passport.authenticate("oauth2", {
-    session: false,
-    assignProperty: "OAuthUser",
-  }),
-  authController.oauthCallback,
+	"/auth/linkedin/callback",
+	passport.authenticate("oauth2", {
+		session: false,
+		assignProperty: "OAuthUser",
+	}),
+	authController.oauthCallback,
 );
 
 export default router;
