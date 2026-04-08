@@ -1,3 +1,5 @@
+import { DOMAIN_ERRORS_MESSAGE } from "@domain/constant/messages";
+
 export interface UserProps {
 	id: string;
 	email: string;
@@ -50,13 +52,16 @@ export class User {
 	}
 
 	block() {
-		if (this.role === Role.ADMIN) throw Error("admin cannot be block");
-		if (this.isBlocked) throw new Error("user already blocked");
+		if (this.role === Role.ADMIN)
+			throw Error(DOMAIN_ERRORS_MESSAGE.USER.ADMIN_BLOCK_RESTRICTED);
+		if (this.isBlocked)
+			throw new Error(DOMAIN_ERRORS_MESSAGE.USER.ALREADY_BLOCKED);
 		this.isBlocked = true;
 	}
 
 	unBlock() {
-		if (!this.isBlocked) throw new Error("user is not blocked");
+		if (!this.isBlocked)
+			throw new Error(DOMAIN_ERRORS_MESSAGE.USER.NOT_BLOCKED);
 		this.isBlocked = false;
 	}
 }
