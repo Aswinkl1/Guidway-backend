@@ -1,3 +1,4 @@
+import { APP_ERRORS_MESSAGES } from "@application/constant/errorMessage";
 import type { resetPasswordDTO } from "@application/dto/user/resetPassword.dto";
 import { InvalidTokenError } from "@application/errors/InvalidTokenError";
 import type { ITokenCache } from "@application/ports/cache/ITokenCache";
@@ -28,7 +29,7 @@ export class ResetPasswordUsecase implements IResetPassswordUsecase {
 		console.log(userId);
 		// if not then thorow an errro invalid token
 		if (!userId) {
-			throw new InvalidTokenError("invalid or expired token");
+			throw new InvalidTokenError(APP_ERRORS_MESSAGES.TOKEN.INVALID_OR_EXPIRED);
 		}
 		// hash the password
 		const hashedPassword = await this._hashService.hash(dto.password);

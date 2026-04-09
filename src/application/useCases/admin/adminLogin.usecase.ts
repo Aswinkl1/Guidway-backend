@@ -1,3 +1,4 @@
+import { APP_ERRORS_MESSAGES } from "@application/constant/errorMessage";
 import type {
 	loginOutputDTO,
 	loginUserInputDTO,
@@ -26,7 +27,9 @@ export class AdminLoginUsecase implements IAdminLoginUsecase {
 		const user = await this._userRepository.findByEmail(dto.email);
 
 		if (!user) {
-			throw new InvalidCredentialsError("Email or password is incorrect");
+			throw new InvalidCredentialsError(
+				APP_ERRORS_MESSAGES.USER.INVALID_CREDENTIALS,
+			);
 		}
 
 		if (user.role !== Role.ADMIN) {
@@ -37,7 +40,7 @@ export class AdminLoginUsecase implements IAdminLoginUsecase {
 
 		if (user.password == null) {
 			throw new InvalidCredentialsError(
-				"This account was created using Google. Please sign in with Google",
+				APP_ERRORS_MESSAGES.USER.GOOGLE_AUTH_REQUIRED,
 			);
 		}
 		const isPasswordValid = await this._hashService.compare(
@@ -46,7 +49,9 @@ export class AdminLoginUsecase implements IAdminLoginUsecase {
 		);
 
 		if (!isPasswordValid) {
-			throw new InvalidCredentialsError("Invalid password");
+			throw new InvalidCredentialsError(
+				APP_ERRORS_MESSAGES.USER.INVALID_CREDENTIALS,
+			);
 		}
 
 		const payload = { userId: user.id, role: user.role };

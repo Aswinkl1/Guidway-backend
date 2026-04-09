@@ -1,3 +1,4 @@
+import { APP_ERRORS_MESSAGES } from "@application/constant/errorMessage";
 import type { updateBlockStatusDto } from "@application/dto/admin/UpdateBlockStatus.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
@@ -15,7 +16,7 @@ export class UpdateBlockStatus implements IUpdateBlockStatus {
 		const user = await this._userRepo.findById(dto.userId);
 		// if not error
 		if (!user) {
-			throw new NotFoundError("user not found");
+			throw new NotFoundError(APP_ERRORS_MESSAGES.USER.NOT_FOUND);
 		}
 		// change the thing in the domin
 

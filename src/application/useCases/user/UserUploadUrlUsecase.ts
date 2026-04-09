@@ -1,3 +1,4 @@
+import { APP_ERRORS_MESSAGES } from "@application/constant/errorMessage";
 import type { IS3Service } from "@application/ports/services/IS3Service";
 import type { IUserUploadUrlUsecase } from "@application/ports/usecase/IUserUploadUrl.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
@@ -17,7 +18,7 @@ export class UserUploadUrlUsecase implements IUserUploadUrlUsecase {
 		const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
 
 		if (!allowedTypes.includes(fileType)) {
-			throw new Error("Unsupported file type");
+			throw new Error(APP_ERRORS_MESSAGES.FILE.UNSUPPORTED_TYPE);
 		}
 
 		const fileKey = `user/${id}/${uuid()}`;

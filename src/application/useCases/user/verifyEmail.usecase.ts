@@ -1,3 +1,4 @@
+import { APP_ERRORS_MESSAGES } from "@application/constant/errorMessage";
 import type { ITokenCache } from "@application/ports/cache/ITokenCache";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
@@ -15,7 +16,7 @@ export class VerifyEmailUseCase implements IVerifyEmailUsecase {
 
 		// if not then send error meesage
 		if (!userId) {
-			throw new Error("invalid token or expired token");
+			throw new Error(APP_ERRORS_MESSAGES.TOKEN.INVALID_OR_EXPIRED);
 		}
 
 		// change the user to verify

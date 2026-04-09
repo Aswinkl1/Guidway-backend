@@ -1,3 +1,4 @@
+import { APP_ERRORS_MESSAGES } from "@application/constant/errorMessage";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { ITokenService } from "@application/ports/services/ITokenService";
@@ -23,7 +24,7 @@ export class RefreshTokenUsecase implements IRefreshTokenUsecase {
 			const user = await this._userRepo.findById(payload.id);
 
 			if (!user) {
-				throw new NotFoundError("user not found");
+				throw new NotFoundError(APP_ERRORS_MESSAGES.USER.NOT_FOUND);
 			}
 			// if block error
 			if (user?.isBlocked) {

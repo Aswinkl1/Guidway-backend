@@ -1,3 +1,4 @@
+import { APP_ERRORS_MESSAGES } from "@application/constant/errorMessage";
 import type {
 	loginOutputDTO,
 	loginUserInputDTO,
@@ -27,12 +28,14 @@ export class LoginUsecase implements ILoginUsecase {
 
 		// if not usernot found error
 		if (!user) {
-			throw new InvalidCredentialsError("Invalid email or password");
+			throw new InvalidCredentialsError(
+				APP_ERRORS_MESSAGES.USER.INVALID_CREDENTIALS,
+			);
 		}
 
 		if (user.password == null) {
 			throw new InvalidCredentialsError(
-				"This account was created using Google. Please sign in with Google",
+				APP_ERRORS_MESSAGES.USER.GOOGLE_AUTH_REQUIRED,
 			);
 		}
 
@@ -43,7 +46,9 @@ export class LoginUsecase implements ILoginUsecase {
 		);
 		// if not password doest match
 		if (!isMatch) {
-			throw new InvalidCredentialsError("Invalid email or password");
+			throw new InvalidCredentialsError(
+				APP_ERRORS_MESSAGES.USER.INVALID_CREDENTIALS,
+			);
 		}
 
 		const payload = { userId: user.id, role: user.role };
