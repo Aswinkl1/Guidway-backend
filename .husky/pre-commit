@@ -1,1 +1,1 @@
-npx biome check --write --staged
+pnpm exec lint-staged
