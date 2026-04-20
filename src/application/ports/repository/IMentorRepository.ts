@@ -1,5 +1,5 @@
-import type { Mentor } from "@domain/entities/mentor/mentor.entity";
+import type { Mentor } from "@domain/mentor/mentor.entity";
 
 export interface IMentorRepository {
-	create(data: Partial<Mentor>): Mentor;
+  create(data: Partial<Mentor>): Mentor;
 }
