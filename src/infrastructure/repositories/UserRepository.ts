@@ -5,7 +5,7 @@ import type {
 import type { signupUserDTO } from "@application/dto/user/signupUser.dto";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { TYPES } from "@config/DI-container/TYPES";
-import { User } from "@domain/entities/user";
+import { User } from "@domain/user/user";
 import type {
 	Prisma,
 	PrismaClient,

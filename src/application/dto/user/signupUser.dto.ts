@@ -1,4 +1,4 @@
-import { Role } from "@domain/entities/user";
+import { Role } from "@domain/user/user";
 import { z } from "zod";
 export const signupUserSchema = z.object({
 	email: z.email("Please enter a valid email address."),

@@ -1,7 +1,7 @@
 import { loginInputSchema } from "@application/dto/user/loginUser.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
-import { Role } from "@domain/entities/user";
+import { Role } from "@domain/user/user";
 import { ROUTES } from "@presentation/constants/routes";
 import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import { authorizedRoles } from "@presentation/middleware/authorization.middleware";

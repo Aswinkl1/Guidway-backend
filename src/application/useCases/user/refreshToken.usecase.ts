@@ -4,7 +4,7 @@ import type { IUserRepository } from "@application/ports/repository/IUserReposit
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { IRefreshTokenUsecase } from "@application/ports/usecase/IRefreshToken.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
-import type { Role } from "@domain/entities/user";
+import type { Role } from "@domain/user/user";
 
 import { inject, injectable } from "inversify";
 

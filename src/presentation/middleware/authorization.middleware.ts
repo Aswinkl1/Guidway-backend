@@ -1,4 +1,4 @@
-import type { Role } from "@domain/entities/user";
+import type { Role } from "@domain/user/user";
 import type { NextFunction, Request, Response } from "express";
 
 export const authorizedRoles = (...roles: Role[]) => {

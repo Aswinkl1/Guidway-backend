@@ -3,7 +3,7 @@ import type {
 	PaginatedResult,
 } from "@application/dto/admin/GetUsers.dto";
 // import type { signupUserDTO } from "@application/dto/user/signupUser.dto";
-import type { User } from "@domain/entities/user";
+import type { User } from "@domain/user/user";
 
 export interface IUserRepository {
 	create(user: Partial<User>): Promise<User>;

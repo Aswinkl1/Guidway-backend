@@ -6,7 +6,7 @@ import type { IUserRepository } from "@application/ports/repository/IUserReposit
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { IOAuthUseCase } from "@application/ports/usecase/IOAuth.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
-import type { User } from "@domain/entities/user";
+import type { User } from "@domain/user/user";
 import { inject } from "inversify";
 
 export class OAuthUseCase implements IOAuthUseCase {

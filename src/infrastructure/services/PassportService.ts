@@ -2,7 +2,7 @@ import https from "node:https";
 import type { IOAuthUseCase } from "@application/ports/usecase/IOAuth.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { EnvConfig } from "@config/env";
-import { Role } from "@domain/entities/user";
+import { Role } from "@domain/user/user";
 import axios from "axios";
 import { inject, injectable } from "inversify";
 import passport from "passport";

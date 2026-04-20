@@ -10,7 +10,7 @@ import type { IHashService } from "@application/ports/services/IHashService";
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdminLogin.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
-import { Role } from "@domain/entities/user";
+import { Role } from "@domain/user/user";
 import { inject } from "inversify";
 
 export class AdminLoginUsecase implements IAdminLoginUsecase {

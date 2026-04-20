@@ -1,7 +1,7 @@
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
-import { Role } from "@domain/entities/user";
+import { Role } from "@domain/user/user";
 import type { NextFunction, Request, Response } from "express";
 
 const tokenService = container.get<ITokenService>(TYPES.TokenService);

@@ -1,4 +1,4 @@
-import type { Role } from "@domain/entities/user";
+import type { Role } from "@domain/user/user";
 import z from "zod";
 
 export const loginInputSchema = z.object({
