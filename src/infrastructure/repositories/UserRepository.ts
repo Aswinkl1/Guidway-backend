@@ -2,7 +2,7 @@ import type {
 	getUsersDTO,
 	PaginatedResult,
 } from "@application/dto/admin/GetUsers.dto";
-import type { signupUserDTO } from "@application/dto/user/signupUser.dto";
+// import type { signupUserDTO } from "@application/dto/user/signupUser.dto";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { TYPES } from "@config/DI-container/TYPES";
 import { User } from "@domain/user/user";
@@ -13,9 +13,13 @@ import type {
 } from "generated/prisma/client";
 import { inject, injectable } from "inversify";
 import { BaseRepository } from "./BaseRepository";
+
+type CreateInput = Prisma.UserCreateInput;
+type UpdateInput = Prisma.UserUpdateInput;
+
 @injectable()
 export class UserRepository
-	extends BaseRepository<PrismaUser, User>
+	extends BaseRepository<PrismaUser, User, CreateInput, UpdateInput>
 	implements IUserRepository
 {
 	constructor(@inject(TYPES.PrismaClient) private _prisma: PrismaClient) {
@@ -75,18 +79,18 @@ export class UserRepository
 	//   return UserRepository.toDomain(user);
 	// }
 
-	create = async (user: signupUserDTO): Promise<User> => {
-		const userRecord = await this._prisma.user.create({
-			data: {
-				name: user.name,
-				password: user.password,
-				phoneNumber: user.phoneNumber,
-				role: user.role,
-				email: user.email,
-			},
-		});
-		return this.toDomain(userRecord);
-	};
+	// create = async (user: signupUserDTO): Promise<User> => {
+	// 	const userRecord = await this._prisma.user.create({
+	// 		data: {
+	// 			name: user.name,
+	// 			password: user.password,
+	// 			phoneNumber: user.phoneNumber,
+	// 			role: user.role,
+	// 			email: user.email,
+	// 		},
+	// 	});
+	// 	return this.toDomain(userRecord);
+	// };
 
 	findByEmail = async (email: string): Promise<User | null> => {
 		console.log("Finding user by email:", email); // Debug log
@@ -133,5 +137,24 @@ export class UserRepository
 			createdAt: user.createdAt,
 			updatedAt: user.updatedAt,
 		});
+	}
+
+	protected toPersistence(
+		userEntity: User,
+	): Omit<PrismaUser, "createdAt" | "updatedAt"> {
+		return {
+			id: userEntity.id,
+			email: userEntity.email,
+			name: userEntity.name,
+			password: userEntity.password,
+			phoneNumber: userEntity.phoneNumber,
+			profileImageKey: userEntity.profileImageKey,
+			authProviderId: userEntity.authProviderId,
+			role: userEntity.role,
+			isDeleted: userEntity.isDeleted,
+			isVerified: userEntity.isVerified,
+			isBlocked: userEntity.isBlocked,
+			timezone: userEntity.timezone,
+		};
 	}
 }

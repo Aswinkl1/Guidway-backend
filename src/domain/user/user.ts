@@ -1,20 +1,21 @@
 import { DOMAIN_ERRORS_MESSAGE } from "@domain/constant/messages";
+import { v4 as uuid } from "uuid";
 
 export interface UserProps {
-	id: string;
+	id?: string;
 	email: string;
 	name: string;
 	password: string | null;
 	phoneNumber: string | null;
-	profileImageKey: string | null;
-	authProviderId: string | null;
+	profileImageKey?: string | null;
+	authProviderId?: string | null;
 	role: Role;
-	isDeleted: boolean;
-	isVerified: boolean;
-	isBlocked: boolean;
-	timezone: string | null;
-	createdAt: Date;
-	updatedAt: Date;
+	isDeleted?: boolean;
+	isVerified?: boolean;
+	isBlocked?: boolean;
+	timezone?: string | null;
+	createdAt?: Date;
+	updatedAt?: Date;
 }
 
 export class User {
@@ -34,21 +35,21 @@ export class User {
 	public updatedAt: Date;
 
 	constructor(public data: UserProps) {
-		this.id = data.id;
+		this.id = data.id ?? uuid();
 		this.email = data.email;
 		this.name = data.name;
 		this.password = data.password;
 		this.phoneNumber = data.phoneNumber ?? null;
-		this.profileImageKey = data.profileImageKey;
-		this.authProviderId = data.authProviderId;
+		this.profileImageKey = data.profileImageKey ?? null;
+		this.authProviderId = data.authProviderId ?? null;
 		this.role = data.role;
 		this.isDeleted = data.isDeleted ?? false;
 		this.isVerified = data.isVerified ?? false;
 		this.isBlocked = data.isBlocked ?? false;
 
-		this.timezone = data.timezone;
-		this.createdAt = data.createdAt;
-		this.updatedAt = data.updatedAt;
+		this.timezone = data.timezone ?? null;
+		this.createdAt = data.createdAt ?? new Date();
+		this.updatedAt = data.updatedAt ?? new Date();
 	}
 
 	block() {

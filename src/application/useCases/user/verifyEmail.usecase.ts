@@ -13,7 +13,7 @@ export class VerifyEmailUseCase implements IVerifyEmailUsecase {
 	async execute(dto: string): Promise<{ message: string }> {
 		// find if the token is exits in the repository
 		const userId = await this._tokenRepository.getUserIdByToken(dto);
-
+		console.log(userId);
 		// if not then send error meesage
 		if (!userId) {
 			throw new Error(APP_ERRORS_MESSAGES.TOKEN.INVALID_OR_EXPIRED);

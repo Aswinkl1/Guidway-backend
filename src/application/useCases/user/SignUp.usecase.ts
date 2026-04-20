@@ -7,7 +7,7 @@ import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { UserAlreadyExistsError } from "@domain/errors/UserError";
-import { Role } from "@domain/user/user";
+import { Role, User } from "@domain/user/user";
 import { inject, injectable } from "inversify";
 
 injectable();
@@ -27,7 +27,8 @@ export class SignUpUser implements ISignUpUsecase {
 		}
 
 		data.password = await this._hashService.hash(data.password);
-		const savedUser = await this._userRepository.create(data);
+		const user = new User(data);
+		const savedUser = await this._userRepository.create(user);
 
 		// if it is mentor create a row in the mentor table
 		if (savedUser.role === Role.MENTOR) {
