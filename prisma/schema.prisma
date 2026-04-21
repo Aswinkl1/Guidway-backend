@@ -7,43 +7,43 @@
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
-
-
 }
 
 datasource db {
   provider = "postgresql"
-
-
 }
+
+
 
 model User {
   id              String   @id @default(uuid())
   email           String   @unique
-  name            String?
+  name            String
   // Password is NULL if they sign up with LinkedIn/Google
   password        String?  // Encrypted. Nullable for OAuth users
   phoneNumber     String?
-  profileImageUrl String?
+  profileImageKey String?
   // Tracks how they signed up
   authProviderId  String?  // The unique ID from LinkedIn/Google (e.g. LINKEDIN_123)
   // The Role determines if they are a Student, Mentor, or Admin
-  role            String   @default("student") // values: admin, mentor, student
+  role            Role   @default(mentee) // values: admin, mentor, student
   isDeleted       Boolean  @default(false)
   isVerified      Boolean  @default(false)
   isBlocked       Boolean  @default(false)
-  timezone        String   @default("UTC") // e.g. "Asia/Kolkata", "America/New_York"
+  timezone        String?   @default("UTC") // e.g. "Asia/Kolkata", "America/New_York"
   createdAt       DateTime @default(now())
-
+  updatedAt       DateTime @updatedAt
   @@map("users")
   mentor Mentor?
+
+
 
 }
 
 enum Role {
   admin
   mentor
-  student
+  mentee
 }
 
 // model MentorEmbedding {
@@ -52,6 +52,14 @@ enum Role {
 //   profileEmbedding Unsupported("vector(1536)")
 //   @@map("mentor_embeddings")
 // }
+
+enum MentorStatus {
+  DRAFT            // Currently in the onboarding wizard
+  PENDING_REVIEW   // Finished onboarding, waiting for admin approval
+  ACTIVE           // Live on the marketplace
+  PAUSED           // Temporarily hidden by the mentor (e.g., vacation)
+  SUSPENDED        // Locked by an admin for violations
+}
 model Mentor {
   id                        String   @id @default(uuid())
   userId                    String   @unique // @unique enforces the one-to-one with User
@@ -59,11 +67,11 @@ model Mentor {
 
   headline                  String?
   shortBio                  String?
-  domainId                  String?  // Add relation once domains table is defined
+  domainId                  String?
+
 
   isVerified                Boolean  @default(false)
-  isSuspended               Boolean  @default(false)
-  isPublic                  Boolean  @default(true)
+  status                    MentorStatus @default(DRAFT)
 
   // Stripe
   stripeAccountId           String?
@@ -72,7 +80,7 @@ model Mentor {
   // AI
 
   // Cache columns
-  averageRating             Decimal  @default(0.00) @db.Decimal(3, 2)
+  averageRating             Float  @default(0)
   reviewCount               Int      @default(0)
 
   // Booking settings
@@ -108,7 +116,7 @@ model Mentor {
 
 model Domain {
   id         String   @id @default(uuid())
-  domainName String
+  domainName String  @unique
 
   mentors    Mentor[]
 
@@ -160,7 +168,7 @@ model Language {
 model MentorLanguage {
   mentorId    String
   languageId  String
-  proficiency String // Native, Fluent, Conversational
+  proficiency ProficiencyLevel // Native, Fluent, Conversational
 
   mentor      Mentor   @relation(fields: [mentorId], references: [id])
   language    Language @relation(fields: [languageId], references: [id])
@@ -169,6 +177,12 @@ model MentorLanguage {
   @@map("mentor_languages")
 }
 
+enum ProficiencyLevel {
+  native
+  fluent
+  conversational
+  basic
+}
 // ==========================================
 // SKILLS
 // ==========================================
