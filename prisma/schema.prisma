@@ -72,7 +72,6 @@ model Mentor {
 
   isVerified                Boolean  @default(false)
   status                    MentorStatus @default(DRAFT)
-  onboardingStep            Int          @default(1)
 
   // Stripe
   stripeAccountId           String?
@@ -81,7 +80,7 @@ model Mentor {
   // AI
 
   // Cache columns
-  averageRating             Decimal  @default(0.00) @db.Decimal(3, 2)
+  averageRating             Float  @default(0)
   reviewCount               Int      @default(0)
 
   // Booking settings

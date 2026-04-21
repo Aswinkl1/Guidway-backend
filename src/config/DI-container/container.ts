@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import type { ICacheService } from "@application/ports/cache/ICache";
 import type { ITokenCache } from "@application/ports/cache/ITokenCache";
+import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
 // Types
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
@@ -37,6 +38,7 @@ import {
 	type AppRedisClientType,
 	redisClient,
 } from "@infrastructure/database/redisClient";
+import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 //
 import { UserRepository } from "@infrastructure/repositories/UserRepository";
@@ -81,6 +83,10 @@ container
 	.to(PrismaTokenRespository)
 	.inSingletonScope();
 
+container
+	.bind<IMentorRepository>(TYPES.MentorRepository)
+	.to(MentorRepository)
+	.inSingletonScope();
 //usecase
 
 container

@@ -1,5 +1,5 @@
 import type { Mentor } from "@domain/mentor/mentor.entity";
+import type { IBaseRepository } from "./IBaseRepository";
 
-export interface IMentorRepository {
-  create(data: Partial<Mentor>): Mentor;
-}
+export interface IMentorRepository
+	extends IBaseRepository<Mentor, Partial<Mentor>, Partial<Mentor>> {}
