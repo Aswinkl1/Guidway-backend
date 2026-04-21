@@ -45,6 +45,60 @@ export class Mentor {
 			updatedAt: props.updatedAt ?? new Date(),
 		});
 	}
+
+	// ✅ Getters
+	get id() {
+		return this.props.id;
+	}
+
+	get userId() {
+		return this.props.userId;
+	}
+
+	get headline() {
+		return this.props.headline;
+	}
+
+	get shortBio() {
+		return this.props.shortBio;
+	}
+
+	get isVerified() {
+		return this.props.isVerified;
+	}
+
+	get domainId() {
+		return this.props.domainId;
+	}
+
+	get status() {
+		return this.props.status;
+	}
+
+	get stripeAccountId() {
+		return this.props.stripeAccountId;
+	}
+
+	get stripeOnboardingComplete() {
+		return this.props.stripeOnboardingComplete;
+	}
+
+	get averageRating() {
+		return this.props.averageRating;
+	}
+
+	get reviewCount() {
+		return this.props.reviewCount;
+	}
+
+	get createdAt() {
+		return this.props.createdAt;
+	}
+
+	get updatedAt() {
+		return this.props.updatedAt;
+	}
+
 	toPrimitive() {
 		return {
 			...this.props,
