@@ -2,6 +2,7 @@ import type { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
 import type { updateBlockStatusDto } from "@application/dto/admin/UpdateBlockStatus.dto";
 import type { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
 import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdateBlockStatus";
+import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
 import { createSuccess } from "@presentation/helper/response.util";
@@ -16,6 +17,8 @@ export class UserManagementController implements IUserManagementController {
 		private readonly _getAllUsersUseCase: IGetUsersUsecase,
 		@inject(TYPES.UpdateBlockStatus)
 		private readonly _updateBlockStatusUsecase: IUpdateBlockStatus,
+		@inject(TYPES.VerifyMentorUsecase)
+		private readonly _verifyMentorUsecase: IVerifyMentorUsecase,
 	) {}
 
 	getAllUsers = async (req: Request, res: Response): Promise<void> => {
@@ -41,5 +44,15 @@ export class UserManagementController implements IUserManagementController {
 		res
 			.status(HTTPSTATUS.OK)
 			.json(createSuccess("status changed successfully", {}));
+	};
+
+	updateVerifyMentor = async (req: Request, res: Response) => {
+		const { mentorId } = req.body;
+		console.log(mentorId);
+		await this._verifyMentorUsecase.execute(mentorId);
+		console.log("its done");
+		res
+			.status(HTTPSTATUS.OK)
+			.json(createSuccess("Mentor Verified successfully", {}));
 	};
 }

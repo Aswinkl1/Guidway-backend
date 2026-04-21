@@ -1,5 +1,6 @@
 import { getUsersSchema } from "@application/dto/admin/GetUsers.dto";
 import { updateBlockStatusSchema } from "@application/dto/admin/UpdateBlockStatus.dto";
+import { VerifyMentorSchema } from "@application/dto/admin/VerifyMentor.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
@@ -21,5 +22,11 @@ router.patch(
 	"/block-status",
 	validatetor(updateBlockStatusSchema, "body"),
 	userManagementController.updateBlockStatus,
+);
+
+router.patch(
+	"/verify-mentor",
+	validatetor(VerifyMentorSchema, "body"),
+	userManagementController.updateVerifyMentor,
 );
 export default router;

@@ -1,6 +1,14 @@
-import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
+import type {
+	getUsersDTO,
+	PaginatedResult,
+} from "@application/dto/admin/GetUsers.dto";
+import type {
+	IMentorRepository,
+	outputType,
+} from "@application/ports/repository/IMentorRepository";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Mentor } from "@domain/mentor/mentor.entity";
+import { User } from "@domain/user/user";
 import { prisma } from "@infrastructure/database/prisma";
 import type {
 	Prisma,
@@ -18,7 +26,54 @@ export default class MentorRepository
 	implements IMentorRepository
 {
 	constructor(@inject(TYPES.PrismaClient) private _prisma: PrismaClient) {
-		super(prisma.mentor);
+		super(_prisma.mentor);
+	}
+
+	async findAll(filter: getUsersDTO): Promise<PaginatedResult<outputType>> {
+		const { search, page, limit, isBlocked, isVerified, role } = filter;
+		const where: Prisma.MentorWhereInput = {};
+
+		where.user = {
+			...(search && {
+				OR: [
+					{ name: { contains: search, mode: "insensitive" } },
+					{ email: { contains: search, mode: "insensitive" } },
+				],
+			}),
+			...(isBlocked !== undefined && { isBlocked }),
+			...(isVerified !== undefined && { isVerified }),
+			...(role && { role }),
+		};
+
+		const [mentor, totalItems] = await Promise.all([
+			this._prisma.mentor.findMany({
+				where,
+				skip: (page - 1) * limit,
+				take: limit,
+				orderBy: { createdAt: "desc" },
+				include: {
+					user: {
+						select: {
+							name: true,
+							email: true,
+							profileImageKey: true,
+							phoneNumber: true,
+							isBlocked: true,
+							isVerified: true,
+						},
+					},
+				},
+			}),
+			this._prisma.mentor.count({ where }),
+		]);
+		console.log("mentor", mentor);
+		return {
+			data: mentor.map((user) => {
+				console.log("sinde repo", user);
+				return { mentor: this.toDomain(user), user: user.user };
+			}),
+			totalItems,
+		};
 	}
 
 	protected toDomain(record: PrismaMentor) {
@@ -26,9 +81,9 @@ export default class MentorRepository
 	}
 
 	protected toPersistence(
-		mentorEntity: Mentor,
+		mentorDetails: Partial<Mentor>,
 	): Omit<Prisma.MentorCreateInput, "createdAt" | "updatedAt"> {
-		const mentorDetails = mentorEntity.toPrimitive();
+		// const mentorDetails = mentorEntity.toPrimitive();
 		return {
 			id: mentorDetails.id,
 			user: { connect: { id: mentorDetails.userId } },

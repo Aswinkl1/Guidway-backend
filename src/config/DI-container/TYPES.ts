@@ -25,6 +25,7 @@ export const TYPES = {
 	UserUploadUrlUsecase: Symbol.for("UserUploadUrlUsecase"),
 	OAuthUseCase: Symbol.for("OAuthUseCase"),
 	PassPortConfig: Symbol.for("PassPortConfig"),
+	VerifyMentorUsecase: Symbol.for("VerifyMentorUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

@@ -12,6 +12,7 @@ import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdminLogin.usecase";
 import type { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
 import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdateBlockStatus";
+import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import type { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
 import type { IOAuthUseCase } from "@application/ports/usecase/IOAuth.usecase";
@@ -23,6 +24,7 @@ import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmai
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
+import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
 import { OAuthUseCase } from "@application/useCases/user/OAuth.usecase";
@@ -144,6 +146,10 @@ container
 	.to(OAuthUseCase)
 	.inSingletonScope();
 
+container
+	.bind<IVerifyMentorUsecase>(TYPES.VerifyMentorUsecase)
+	.to(VerifyMentorUsecase)
+	.inSingletonScope();
 // services
 container
 	.bind<IEmailService>(TYPES.EmailService)
