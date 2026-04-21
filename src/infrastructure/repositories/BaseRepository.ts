@@ -15,7 +15,7 @@ export abstract class BaseRepository<
 	// The strict rule: Every child repo MUST provide this mapper
 	protected abstract toDomain(record: DbModel): DomainEntity;
 	protected abstract toPersistence(
-		userEntity: DomainEntity,
+		userEntity: Partial<DomainEntity>,
 	): Omit<CreateInput, "createdAt" | "updatedAt">;
 	async findById(id: string): Promise<DomainEntity | null> {
 		const record = await this.prismaDelegate.findUnique({
@@ -31,5 +31,18 @@ export abstract class BaseRepository<
 		const record = await this.prismaDelegate.create({ data: persisence });
 
 		return this.toDomain(record);
+	};
+
+	save = async (
+		id: string,
+		entityData: Partial<DomainEntity>,
+	): Promise<DomainEntity> => {
+		const data = this.toPersistence(entityData);
+		// update the user with the id
+		const userRecord = await this.prismaDelegate.update({
+			where: { id },
+			data,
+		});
+		return this.toDomain(userRecord);
 	};
 }

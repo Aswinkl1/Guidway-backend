@@ -7,8 +7,19 @@ import type { User } from "@domain/user/user";
 import type { IBaseRepository } from "./IBaseRepository";
 
 export type outputType = {
-	mentor: Mentor;
-	user: User;
+	mentor: Pick<
+		Mentor,
+		"userId" | "isVerified" | "createdAt" | "averageRating" | "status" | "id"
+	>;
+	user: Pick<
+		User,
+		| "name"
+		| "email"
+		| "phoneNumber"
+		| "isBlocked"
+		| "isVerified"
+		| "profileImageKey"
+	>;
 };
 
 export interface IMentorRepository

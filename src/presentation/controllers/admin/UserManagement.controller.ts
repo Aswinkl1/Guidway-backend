@@ -50,7 +50,7 @@ export class UserManagementController implements IUserManagementController {
 		const { mentorId } = req.body;
 		console.log(mentorId);
 		await this._verifyMentorUsecase.execute(mentorId);
-
+		console.log("its done");
 		res
 			.status(HTTPSTATUS.OK)
 			.json(createSuccess("Mentor Verified successfully", {}));

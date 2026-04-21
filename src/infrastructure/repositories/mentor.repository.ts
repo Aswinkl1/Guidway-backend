@@ -59,6 +59,7 @@ export default class MentorRepository
 							profileImageKey: true,
 							phoneNumber: true,
 							isBlocked: true,
+							isVerified: true,
 						},
 					},
 				},
@@ -80,9 +81,9 @@ export default class MentorRepository
 	}
 
 	protected toPersistence(
-		mentorEntity: Mentor,
+		mentorDetails: Partial<Mentor>,
 	): Omit<Prisma.MentorCreateInput, "createdAt" | "updatedAt"> {
-		const mentorDetails = mentorEntity.toPrimitive();
+		// const mentorDetails = mentorEntity.toPrimitive();
 		return {
 			id: mentorDetails.id,
 			user: { connect: { id: mentorDetails.userId } },

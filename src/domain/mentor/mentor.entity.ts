@@ -99,6 +99,12 @@ export class Mentor {
 		return this.props.updatedAt;
 	}
 
+	verifyMentor() {
+		if (this.isVerified === false) {
+			this.props.isVerified = true;
+		}
+	}
+
 	toPrimitive() {
 		return {
 			...this.props,
