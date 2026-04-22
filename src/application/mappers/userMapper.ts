@@ -1,5 +1,4 @@
 import type { outputType } from "@application/ports/repository/IMentorRepository";
-import { Mentor } from "@domain/mentor/mentor.entity";
 import { Role, type User } from "@domain/user/user";
 
 export interface UserOutputDTO {
@@ -76,7 +75,7 @@ export class UserMapper {
 			timezone: null,
 			// mentor specific
 			mentorId: data.mentor.id,
-			mentorIsVerified: data.mentor.isVerified, // ← mentor table
+			mentorIsVerified: data.mentor.isVerified,
 			mentorStatus: data.mentor.status,
 			averageRating: data.mentor.averageRating,
 		};

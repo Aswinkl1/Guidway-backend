@@ -8,8 +8,7 @@ import type {
 } from "@application/ports/repository/IMentorRepository";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Mentor } from "@domain/mentor/mentor.entity";
-import { User } from "@domain/user/user";
-import { prisma } from "@infrastructure/database/prisma";
+
 import type {
 	Prisma,
 	PrismaClient,
