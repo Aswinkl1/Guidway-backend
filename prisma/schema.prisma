@@ -220,33 +220,41 @@ model MentorSkill {
 // ==========================================
 
 model Experience {
-  id          String    @id @default(uuid())
+  id          String  @id @default(uuid())
   mentorId    String
-  mentor      Mentor    @relation(fields: [mentorId], references: [id])
+  mentor      Mentor  @relation(fields: [mentorId], references: [id])
   role        String?
   company     String?
-  startDate   DateTime? @db.Date
-  endDate     DateTime? @db.Date // NULL if currently working
-  isCurrent   Boolean   @default(false)
+  startMonth  Int?
+  startYear   Int?
+  endMonth    Int?
+  endYear     Int?
+  isCurrent   Boolean @default(false)
   description String?
 
   @@map("experiences")
 }
 
 model Education {
-  id          String    @id @default(uuid())
+  id          String  @id @default(uuid())
   mentorId    String
-  mentor      Mentor    @relation(fields: [mentorId], references: [id])
-  school      String?
-  degree      String?
-  startDate   DateTime? @db.Date
-  endDate     DateTime? @db.Date
+  mentor      Mentor  @relation(fields: [mentorId], references: [id])
+
+  institution   String
+  degree        String
+  fieldOfStudy  String
+
+  startMonth  Int
+  startYear   Int
+  endMonth    Int?
+  endYear     Int?
+  isCurrent   Boolean @default(false)
+
   grade       String?
   description String?
 
   @@map("education")
 }
-
 enum AchievementType {
   award
   certification
