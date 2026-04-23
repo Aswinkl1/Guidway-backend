@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import type { ICacheService } from "@application/ports/cache/ICache";
 import type { ITokenCache } from "@application/ports/cache/ITokenCache";
+import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
 // Types
@@ -21,10 +22,12 @@ import type { IResetPassswordUsecase } from "@application/ports/usecase/IResetPa
 import type { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import type { IUserUploadUrlUsecase } from "@application/ports/usecase/IUserUploadUrl.usecase";
 import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
+import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/IAdd-Education.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
+import { AddEducationUsecase } from "@application/useCases/mentor/Add-Education.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
 import { OAuthUseCase } from "@application/useCases/user/OAuth.usecase";
@@ -40,6 +43,7 @@ import {
 	type AppRedisClientType,
 	redisClient,
 } from "@infrastructure/database/redisClient";
+import EducationRepository from "@infrastructure/repositories/Education.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 //
@@ -51,7 +55,9 @@ import { S3Service } from "@infrastructure/services/S3Service";
 import { TokenService } from "@infrastructure/services/TokenServices";
 import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
 import { AuthController } from "@presentation/controllers/auth.controller";
+import { ProfileController } from "@presentation/controllers/mentor/Profile.controller";
 import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
+import type { IProfileController } from "@presentation/interface/controllers/IProfileController";
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
@@ -88,6 +94,11 @@ container
 container
 	.bind<IMentorRepository>(TYPES.MentorRepository)
 	.to(MentorRepository)
+	.inSingletonScope();
+
+container
+	.bind<IEducationRepository>(TYPES.EducationRepository)
+	.to(EducationRepository)
 	.inSingletonScope();
 //usecase
 
@@ -168,6 +179,11 @@ container
 	.bind<PassportConfig>(TYPES.PassPortConfig)
 	.to(PassportConfig)
 	.inSingletonScope();
+container
+	.bind<IAddEducationUsecase>(TYPES.AddEducationUsecase)
+	.to(AddEducationUsecase)
+	.inSingletonScope();
+
 //controller
 container
 	.bind<IAuthController>(TYPES.AuthController)
@@ -177,7 +193,10 @@ container
 	.bind<IUserManagementController>(TYPES.UserManagementController)
 	.to(UserManagementController)
 	.inSingletonScope();
-
+container
+	.bind<IProfileController>(TYPES.ProfileMentorController)
+	.to(ProfileController)
+	.inSingletonScope();
 // db client
 container.bind<PrismaClient>(TYPES.PrismaClient).toConstantValue(prisma);
 container

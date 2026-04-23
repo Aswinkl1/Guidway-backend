@@ -181,7 +181,7 @@ export class AuthController implements IAuthController {
 
 	getSignedUrl = async (req: Request, res: Response): Promise<void> => {
 		console.log("but wju");
-		const userId = req?.user?.id;
+		const userId = req?.user?.userId;
 		const { fileType } = req.body;
 
 		if (!userId) {

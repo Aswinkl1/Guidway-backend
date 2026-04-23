@@ -15,4 +15,7 @@ export const ROUTES = {
 		LINKEDIN_AUTH: "/auth/linkedin",
 		LINKEDIN_CALLBACK: "/auth/linkedin/callback",
 	},
+	MENTOR: {
+		EDUCATION: "/education",
+	},
 } as const;
