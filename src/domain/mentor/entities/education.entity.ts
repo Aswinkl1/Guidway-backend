@@ -1,3 +1,4 @@
+import { TimePeriod } from "@domain/shared/value-object/time-period.vo";
 import { v4 as uuid } from "uuid";
 
 export interface IEducation {
@@ -23,23 +24,13 @@ export class Education {
 	private constructor(private props: IEducation) {}
 
 	static create(props: CreateEducationProps) {
-		const currentYear = new Date().getFullYear();
-
-		if (props.startYear !== null && props.startYear > currentYear) {
-			throw Error("Start year cannot be in the future");
-		}
-
-		if (
-			props.startYear !== null &&
-			props.endYear !== null &&
-			props.endYear < props.startYear
-		) {
-			throw new Error("End year cannot be before start year");
-		}
-
-		if (props.isCurrent && props.endYear !== null) {
-			throw new Error("Current education cannot have an end date");
-		}
+		TimePeriod.create({
+			startMonth: props.startMonth,
+			startYear: props.startYear,
+			endMonth: props.endMonth,
+			endYear: props.endYear,
+			isCurrent: props.isCurrent,
+		});
 
 		return new Education({ ...props, id: props.id ?? uuid() });
 	}
@@ -79,5 +70,45 @@ export class Education {
 	}
 	get description() {
 		return this.props.description;
+	}
+
+	update(updatedProps: Partial<Omit<Education, "id" | "mentorId">>) {
+		const updated = {
+			startMonth: updatedProps.startMonth
+				? updatedProps.startMonth
+				: this.props.startMonth,
+			startYear: updatedProps.startYear
+				? updatedProps.startYear
+				: this.props.startYear,
+			endMonth: updatedProps.endMonth
+				? updatedProps.endMonth
+				: this.props.endMonth,
+			endYear: updatedProps.endYear ? updatedProps.endYear : this.props.endYear,
+			isCurrent: updatedProps.isCurrent
+				? updatedProps.isCurrent
+				: this.props.isCurrent,
+		};
+
+		TimePeriod.create(updated);
+
+		if (updatedProps.degree !== undefined)
+			this.props.degree = updatedProps.degree;
+		if (updatedProps.institution !== undefined)
+			this.props.institution = updatedProps.institution;
+		if (updatedProps.fieldOfStudy !== undefined)
+			this.props.fieldOfStudy = updatedProps.fieldOfStudy;
+		if (updatedProps.startMonth !== undefined)
+			this.props.startMonth = updatedProps.startMonth;
+		if (updatedProps.startYear !== undefined)
+			this.props.startYear = updatedProps.startYear;
+		if (updatedProps.endMonth !== undefined)
+			this.props.endMonth = updatedProps.endMonth;
+		if (updatedProps.endYear !== undefined)
+			this.props.endYear = updatedProps.endYear;
+		if (updatedProps.isCurrent !== undefined)
+			this.props.isCurrent = updatedProps.isCurrent;
+		if (updatedProps.grade !== undefined) this.props.grade = updatedProps.grade;
+		if (updatedProps.description !== undefined)
+			this.props.description = updatedProps.description;
 	}
 }

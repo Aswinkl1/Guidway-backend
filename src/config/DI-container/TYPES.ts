@@ -28,6 +28,8 @@ export const TYPES = {
 	PassPortConfig: Symbol.for("PassPortConfig"),
 	VerifyMentorUsecase: Symbol.for("VerifyMentorUsecase"),
 	AddEducationUsecase: Symbol.for("AddEducationUsecase"),
+	EditEducationUsecase: Symbol.for("EditEducationUsecase"),
+
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

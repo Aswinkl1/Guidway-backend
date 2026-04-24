@@ -1,12 +1,11 @@
 import type { CreateEducationDTO } from "@application/dto/mentor/education.dot";
-import { NotFoundError } from "@application/errors/NotFoundError";
 import {
 	EducationMapper,
 	type EducationOutputDto,
 } from "@application/mappers/education.mapper";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
-import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/IAdd-Education.usecase";
+import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Education } from "@domain/mentor/entities/education.entity";
 import { inject, injectable } from "inversify";

@@ -22,12 +22,14 @@ import type { IResetPassswordUsecase } from "@application/ports/usecase/IResetPa
 import type { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import type { IUserUploadUrlUsecase } from "@application/ports/usecase/IUserUploadUrl.usecase";
 import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
-import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/IAdd-Education.usecase";
+import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
+import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
-import { AddEducationUsecase } from "@application/useCases/mentor/Add-Education.usecase";
+import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-Education.usecase";
+import EditEducationUsecase from "@application/useCases/mentor/education/Edit-Education.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
 import { OAuthUseCase } from "@application/useCases/user/OAuth.usecase";
@@ -161,6 +163,14 @@ container
 	.bind<IVerifyMentorUsecase>(TYPES.VerifyMentorUsecase)
 	.to(VerifyMentorUsecase)
 	.inSingletonScope();
+container
+	.bind<IAddEducationUsecase>(TYPES.AddEducationUsecase)
+	.to(AddEducationUsecase)
+	.inSingletonScope();
+container
+	.bind<IEditEducationUsecase>(TYPES.EditEducationUsecase)
+	.to(EditEducationUsecase)
+	.inSingletonScope();
 // services
 container
 	.bind<IEmailService>(TYPES.EmailService)
@@ -178,10 +188,6 @@ container.bind<IS3Service>(TYPES.S3Service).to(S3Service).inSingletonScope();
 container
 	.bind<PassportConfig>(TYPES.PassPortConfig)
 	.to(PassportConfig)
-	.inSingletonScope();
-container
-	.bind<IAddEducationUsecase>(TYPES.AddEducationUsecase)
-	.to(AddEducationUsecase)
 	.inSingletonScope();
 
 //controller
