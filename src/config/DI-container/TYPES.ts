@@ -7,6 +7,7 @@ export const TYPES = {
 	TokenRepository: Symbol.for("TokenRepository"),
 	PrismaTokenRepository: Symbol.for("PrismaTokenRepository"),
 	MentorRepository: Symbol.for("MentorRepository"),
+	EducationRepository: Symbol.for("EducationRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
@@ -26,10 +27,14 @@ export const TYPES = {
 	OAuthUseCase: Symbol.for("OAuthUseCase"),
 	PassPortConfig: Symbol.for("PassPortConfig"),
 	VerifyMentorUsecase: Symbol.for("VerifyMentorUsecase"),
+	AddEducationUsecase: Symbol.for("AddEducationUsecase"),
+	EditEducationUsecase: Symbol.for("EditEducationUsecase"),
+
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
 	AdminLoginUseCase: Symbol.for("AdminLoginUseCase"),
+	ProfileMentorController: Symbol.for("ProfileMentorController"),
 	// Infrastructure Clients
 	PrismaClient: Symbol.for("PrismaClient"),
 	RedisClient: Symbol.for("RedisClient"),

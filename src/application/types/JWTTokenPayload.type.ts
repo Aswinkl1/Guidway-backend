@@ -1,6 +1,7 @@
 import type { Role } from "@domain/user/user";
 
 export interface JWTTokenPaylod {
-	id: string;
+	userId: string;
 	role: Role;
+	mentorId: string | null;
 }

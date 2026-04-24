@@ -24,8 +24,13 @@ export class TokenService implements ITokenService {
 			const decode = jwt.verify(token, this.accessSecret) as {
 				sub: string;
 				role: JWTTokenPaylod["role"];
+				mentorId: JWTTokenPaylod["mentorId"];
 			};
-			return { id: decode.sub, role: decode.role };
+			return {
+				userId: decode.sub,
+				role: decode.role,
+				mentorId: decode.mentorId,
+			};
 		} catch {
 			throw new UnAuthenticatedError("token expired");
 		}
@@ -34,9 +39,9 @@ export class TokenService implements ITokenService {
 		return crypto.randomBytes(32).toString("hex");
 	}
 
-	generateAccessToken(payload: { userId: string; role: string }): string {
+	generateAccessToken(payload: JWTTokenPaylod): string {
 		return jwt.sign(
-			{ sub: payload.userId, role: payload.role },
+			{ sub: payload.userId, role: payload.role, mentorId: payload.mentorId },
 			this.accessSecret,
 			{
 				expiresIn: this.accessExpiresIn,
@@ -44,11 +49,11 @@ export class TokenService implements ITokenService {
 		);
 	}
 
-	generateRefreshToken(payload: { userId: string; role: string }): {
+	generateRefreshToken(payload: JWTTokenPaylod): {
 		token: string;
 	} {
 		const token = jwt.sign(
-			{ sub: payload.userId, role: payload.role },
+			{ sub: payload.userId, role: payload.role, mentorId: payload.mentorId },
 			this.accessSecret,
 			{
 				expiresIn: "7d",
@@ -65,9 +70,19 @@ export class TokenService implements ITokenService {
 	verifyAccessToken(token: string): JWTTokenPaylod {
 		try {
 			const decode = jwt.verify(token, this.accessSecret);
-			if (typeof decode !== "string" && decode?.sub && decode?.role) {
-				return { id: decode.sub, role: decode.role };
+			if (
+				typeof decode !== "string" &&
+				decode?.sub &&
+				decode?.role &&
+				decode?.mentorId
+			) {
+				return {
+					userId: decode.sub,
+					role: decode.role,
+					mentorId: decode.mentorId,
+				};
 			}
+			console.log("decode", decode);
 			throw new UnAuthenticatedError("token expired");
 		} catch (error: unknown) {
 			if (error instanceof jwt.TokenExpiredError) {

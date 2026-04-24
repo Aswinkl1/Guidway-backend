@@ -8,8 +8,7 @@ import type {
 } from "@application/ports/repository/IMentorRepository";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Mentor } from "@domain/mentor/mentor.entity";
-import { User } from "@domain/user/user";
-import { prisma } from "@infrastructure/database/prisma";
+
 import type {
 	Prisma,
 	PrismaClient,
@@ -74,6 +73,14 @@ export default class MentorRepository
 			}),
 			totalItems,
 		};
+	}
+
+	async findMentorByUserId(userId: string): Promise<Mentor | null> {
+		const mentor = await this._prisma.mentor.findUnique({ where: { userId } });
+		if (!mentor) {
+			return null;
+		}
+		return this.toDomain(mentor);
 	}
 
 	protected toDomain(record: PrismaMentor) {

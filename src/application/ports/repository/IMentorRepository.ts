@@ -25,4 +25,5 @@ export type outputType = {
 export interface IMentorRepository
 	extends IBaseRepository<Mentor, Partial<Mentor>, Partial<Mentor>> {
 	findAll(filter?: getUsersDTO): Promise<PaginatedResult<outputType>>;
+	findMentorByUserId(userId: string): Promise<Mentor | null>;
 }

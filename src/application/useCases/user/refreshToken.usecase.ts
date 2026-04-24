@@ -21,7 +21,7 @@ export class RefreshTokenUsecase implements IRefreshTokenUsecase {
 			const payload = await this._tokenService.verifyRefreshToken(token);
 
 			// check if the user is blocked
-			const user = await this._userRepo.findById(payload.id);
+			const user = await this._userRepo.findById(payload.userId);
 
 			if (!user) {
 				throw new NotFoundError(APP_ERRORS_MESSAGES.USER.NOT_FOUND);

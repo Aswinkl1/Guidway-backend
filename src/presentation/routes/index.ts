@@ -1,9 +1,11 @@
 import { Router } from "express";
-import router from "./admin/userManagement.routes";
+import adminRouter from "./admin/userManagement.routes";
 import authRoute from "./auth.routes";
+import router from "./mentor/profile.routes";
 
 const route = Router();
 
 route.use(authRoute);
-route.use("/admin", router);
+route.use("/admin", adminRouter);
+route.use("/mentor", router);
 export default route;
