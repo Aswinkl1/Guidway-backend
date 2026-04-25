@@ -29,7 +29,7 @@ export const TYPES = {
 	VerifyMentorUsecase: Symbol.for("VerifyMentorUsecase"),
 	AddEducationUsecase: Symbol.for("AddEducationUsecase"),
 	EditEducationUsecase: Symbol.for("EditEducationUsecase"),
-
+	DeleteEducationUsecase: Symbol.for("DeleteEducationUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

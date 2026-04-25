@@ -219,19 +219,34 @@ model MentorSkill {
 // EXPERIENCE, EDUCATION & ACHIEVEMENTS
 // ==========================================
 
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  FREELANCE
+  INTERNSHIP
+  CONTRACT
+}
+
 model Experience {
   id          String  @id @default(uuid())
   mentorId    String
   mentor      Mentor  @relation(fields: [mentorId], references: [id])
-  role        String?
-  company     String?
-  startMonth  Int?
-  startYear   Int?
+
+  role        String
+  company     String
+  employmentType EmploymentType
+
+  startMonth  Int
+  startYear   Int
   endMonth    Int?
   endYear     Int?
+
   isCurrent   Boolean @default(false)
   description String?
 
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
   @@map("experiences")
 }
 
@@ -252,7 +267,9 @@ model Education {
 
   grade       String?
   description String?
-
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
   @@map("education")
 }
 enum AchievementType {

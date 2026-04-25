@@ -1,9 +1,11 @@
 import {
 	CreateEducationSchema,
+	DeleteEducationSchema,
 	type EditEducationDTO,
 } from "@application/dto/mentor/education.dot";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
+import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
 import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
@@ -18,6 +20,8 @@ export class ProfileController {
 		private readonly _addEducationUsecae: IAddEducationUsecase,
 		@inject(TYPES.EditEducationUsecase)
 		private readonly _editEducationUsecase: IEditEducationUsecase,
+		@inject(TYPES.DeleteEducationUsecase)
+		private readonly _deleteEducationUsecase: IDeleteEducationUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -51,5 +55,24 @@ export class ProfileController {
 		res
 			.status(HTTPSTATUS.OK)
 			.json(createSuccess("Education edit succesfull", record));
+	};
+
+	deleteEducation = async (req: Request, res: Response) => {
+		const mentorId = req.user?.mentorId;
+		const educationId = req.params.id;
+
+		const parsed = DeleteEducationSchema.safeParse({
+			mentorId,
+			id: educationId,
+		});
+		if (!parsed.success) {
+			throw new CustomZodValidationError(parsed.error);
+		}
+
+		await this._deleteEducationUsecase.execute(parsed.data);
+
+		res
+			.status(HTTPSTATUS.NO_CONTENT)
+			.json(createSuccess("Education succesfull deleted ", {}));
 	};
 }

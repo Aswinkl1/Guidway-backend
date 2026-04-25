@@ -42,6 +42,7 @@ export default class EducationRepository
 			isCurrent: educationEntity.isCurrent,
 			grade: educationEntity.grade,
 			description: educationEntity.description,
+			deletedAt: educationEntity.deletedAt,
 		};
 	}
 }
