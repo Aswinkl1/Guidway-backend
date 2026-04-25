@@ -23,12 +23,14 @@ import type { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import type { IUserUploadUrlUsecase } from "@application/ports/usecase/IUserUploadUrl.usecase";
 import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
+import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
 import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
 import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-Education.usecase";
+import { DeleteEducationUsecase } from "@application/useCases/mentor/education/Delete-Education.usecase";
 import EditEducationUsecase from "@application/useCases/mentor/education/Edit-Education.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
@@ -170,6 +172,10 @@ container
 container
 	.bind<IEditEducationUsecase>(TYPES.EditEducationUsecase)
 	.to(EditEducationUsecase)
+	.inSingletonScope();
+container
+	.bind<IDeleteEducationUsecase>(TYPES.DeleteEducationUsecase)
+	.to(DeleteEducationUsecase)
 	.inSingletonScope();
 // services
 container

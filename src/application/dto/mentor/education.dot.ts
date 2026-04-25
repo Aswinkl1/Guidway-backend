@@ -19,4 +19,10 @@ export const EditEducationSchema = CreateEducationSchema.partial().extend({
 	id: z.string().trim().nonempty(),
 });
 
+export const DeleteEducationSchema = z.object({
+	id: z.uuid(),
+	mentorId: z.uuid().optional(),
+});
+
 export type EditEducationDTO = z.infer<typeof EditEducationSchema>;
+export type DeleteEducationDTO = z.infer<typeof DeleteEducationSchema>;

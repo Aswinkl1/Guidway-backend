@@ -26,4 +26,10 @@ router.put(
 	ProfileController.updateEducation,
 );
 
+router.delete(
+	ROUTES.MENTOR.EDUCATION.DETAIL,
+	isAuthenticate,
+	ProfileController.deleteEducation,
+);
+
 export default router;

@@ -14,10 +14,17 @@ export interface IEducation {
 	isCurrent: boolean;
 	grade: string | null;
 	description: string | null;
+	deletedAt: Date | null;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
-export interface CreateEducationProps extends Omit<IEducation, "id"> {
+export interface CreateEducationProps
+	extends Omit<IEducation, "id" | "createdAt" | "updatedAt" | "deletedAt"> {
 	id?: string;
+	createdAt?: Date;
+	updatedAt?: Date;
+	deletedAt?: Date | null;
 }
 
 export class Education {
@@ -32,7 +39,15 @@ export class Education {
 			isCurrent: props.isCurrent,
 		});
 
-		return new Education({ ...props, id: props.id ?? uuid() });
+		const finalProps = {
+			...props,
+			id: props.id ?? uuid(),
+			createdAt: props.createdAt ?? new Date(),
+			updatedAt: props.updatedAt ?? new Date(),
+			deletedAt: props.deletedAt ?? null,
+		};
+
+		return new Education(finalProps);
 	}
 
 	get id() {
@@ -70,6 +85,18 @@ export class Education {
 	}
 	get description() {
 		return this.props.description;
+	}
+	get deletedAt() {
+		return this.props.deletedAt;
+	}
+
+	delete() {
+		if (this.props.deletedAt !== null) {
+			//TODO chane this to confilict error
+			throw new Error("cannot delete something that is alredy deleted");
+		}
+
+		this.props.deletedAt = new Date();
 	}
 
 	update(updatedProps: Partial<Omit<Education, "id" | "mentorId">>) {
