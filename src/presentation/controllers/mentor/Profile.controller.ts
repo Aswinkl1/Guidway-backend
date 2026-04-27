@@ -2,11 +2,13 @@ import {
 	CreateEducationSchema,
 	DeleteEducationSchema,
 	type EditEducationDTO,
-} from "@application/dto/mentor/education.dot";
+} from "@application/dto/mentor/education.dto";
+import type { CreateExperiencedto } from "@application/dto/mentor/experience.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
 import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
+import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
@@ -22,6 +24,8 @@ export class ProfileController {
 		private readonly _editEducationUsecase: IEditEducationUsecase,
 		@inject(TYPES.DeleteEducationUsecase)
 		private readonly _deleteEducationUsecase: IDeleteEducationUsecase,
+		@inject(TYPES.AddExperienceUsecase)
+		private readonly __addExperienceUsecase: IAddExperienceUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -74,5 +78,19 @@ export class ProfileController {
 		res
 			.status(HTTPSTATUS.NO_CONTENT)
 			.json(createSuccess("Education succesfull deleted ", {}));
+	};
+
+	addExperience = async (req: Request, res: Response) => {
+		const mentorId = req.user?.mentorId;
+		const parsed = req.validated?.body as CreateExperiencedto;
+
+		if (!mentorId) {
+			throw new NotFoundError("mentorID not found");
+		}
+		const data = await this.__addExperienceUsecase.execute(mentorId, parsed);
+
+		res
+			.status(HTTPSTATUS.CREATED)
+			.json(createSuccess("Experience created succesfull", data));
 	};
 }

@@ -1,4 +1,4 @@
-import { EditEducationSchema } from "@application/dto/mentor/education.dot";
+import { EditEducationSchema } from "@application/dto/mentor/education.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -30,6 +30,12 @@ router.delete(
 	ROUTES.MENTOR.EDUCATION.DETAIL,
 	isAuthenticate,
 	ProfileController.deleteEducation,
+);
+
+router.post(
+	ROUTES.MENTOR.EXPERIENCE.ROOT,
+	isAuthenticate,
+	ProfileController.addExperience,
 );
 
 export default router;

@@ -36,8 +36,6 @@ model User {
   @@map("users")
   mentor Mentor?
 
-
-
 }
 
 enum Role {
@@ -108,7 +106,6 @@ model Mentor {
 
   @@map("mentors")
 }
-
 
 // ==========================================
 // DOMAINS
