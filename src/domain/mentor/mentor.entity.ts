@@ -28,7 +28,6 @@ export class Mentor {
 
 	public static create(props: { userId: string } & Partial<mentorProp>) {
 		return new Mentor({
-			// id: props.id ?? uuid(),
 			userId: props.userId,
 			headline: props.headline ?? "",
 			shortBio: props.shortBio ?? "",
@@ -43,11 +42,6 @@ export class Mentor {
 			updatedAt: props.updatedAt ?? new Date(),
 		});
 	}
-
-	// // ✅ Getters
-	// get id() {
-	//   return this.props.id;
-	// }
 
 	get userId() {
 		return this.props.userId;

@@ -60,20 +60,19 @@ export class LoginUsecase implements ILoginUsecase {
 		const payload: JWTTokenPaylod = {
 			userId: user.id,
 			role: user.role,
-			mentorId: null,
 		};
 
-		if (user.role === Role.MENTOR) {
-			const mentor = await this._mentorRepositoty.findMentorByUserId(user.id);
-			if (!mentor) {
-				logger.error("mentor with this USERID is not found");
-				throw new InvalidCredentialsError(
-					APP_ERRORS_MESSAGES.USER.INVALID_CREDENTIALS,
-				);
-			}
-			payload.mentorId = mentor.id;
-			console.log("yes it is mentor", payload);
-		}
+		// if (user.role === Role.MENTOR) {
+		// 	const mentor = await this._mentorRepositoty.findMentorByUserId(user.id);
+		// 	if (!mentor) {
+		// 		logger.error("mentor with this USERID is not found");
+		// 		throw new InvalidCredentialsError(
+		// 			APP_ERRORS_MESSAGES.USER.INVALID_CREDENTIALS,
+		// 		);
+		// 	}
+		// 	payload.mentorId = mentor.id;
+		// 	console.log("yes it is mentor", payload);
+		// }
 		const accessToken = this._tokenService.generateAccessToken(payload);
 
 		const { token: refreshToken } =
