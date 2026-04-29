@@ -9,7 +9,7 @@ import type { IBaseRepository } from "./IBaseRepository";
 export type outputType = {
 	mentor: Pick<
 		Mentor,
-		"userId" | "isVerified" | "createdAt" | "averageRating" | "status" | "id"
+		"userId" | "isVerified" | "createdAt" | "averageRating" | "status"
 	>;
 	user: Pick<
 		User,

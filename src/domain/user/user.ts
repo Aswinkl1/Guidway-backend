@@ -10,7 +10,7 @@ export interface UserProps {
 	profileImageKey?: string | null;
 	authProviderId?: string | null;
 	role: Role;
-	isDeleted?: boolean;
+	deletedAt?: Date | null;
 	isVerified?: boolean;
 	isBlocked?: boolean;
 	timezone?: string | null;
@@ -27,7 +27,7 @@ export class User {
 	public profileImageKey: string | null;
 	public authProviderId: string | null;
 	public role: Role;
-	public isDeleted: boolean;
+	public deletedAt: Date | null;
 	public isVerified: boolean;
 	public isBlocked: boolean;
 	public timezone: string | null;
@@ -43,10 +43,9 @@ export class User {
 		this.profileImageKey = data.profileImageKey ?? null;
 		this.authProviderId = data.authProviderId ?? null;
 		this.role = data.role;
-		this.isDeleted = data.isDeleted ?? false;
+		this.deletedAt = data.deletedAt ?? null;
 		this.isVerified = data.isVerified ?? false;
 		this.isBlocked = data.isBlocked ?? false;
-
 		this.timezone = data.timezone ?? null;
 		this.createdAt = data.createdAt ?? new Date();
 		this.updatedAt = data.updatedAt ?? new Date();
@@ -68,9 +67,9 @@ export class User {
 }
 
 export const Role = {
-	ADMIN: "admin",
-	MENTOR: "mentor",
-	MENTEE: "mentee",
+	ADMIN: "ADMIN",
+	MENTOR: "MENTOR",
+	MENTEE: "MENTEE",
 } as const;
 
 export type Role = (typeof Role)[keyof typeof Role];

@@ -13,7 +13,6 @@ export interface UserOutputDTO {
 	createdAt: Date;
 	isBlocked: boolean;
 
-	mentorId: string | null;
 	mentorIsVerified: boolean | null; // ← from mentor table (admin verified)
 	mentorStatus: string | null;
 	averageRating: number | null;
@@ -29,7 +28,7 @@ export interface MentorProfileDTO {
 	reviewCount: number;
 
 	// user table
-	userId: string;
+	// userId: string;
 	user: {
 		name: string;
 		email: string;
@@ -54,7 +53,6 @@ export class UserMapper {
 			isVerified: user.isVerified,
 			createdAt: user.createdAt,
 			isBlocked: user.isBlocked,
-			mentorId: null,
 			mentorIsVerified: null,
 			mentorStatus: null,
 			averageRating: null,
@@ -74,7 +72,6 @@ export class UserMapper {
 			isVerified: data.user.isVerified,
 			timezone: null,
 			// mentor specific
-			mentorId: data.mentor.id,
 			mentorIsVerified: data.mentor.isVerified,
 			mentorStatus: data.mentor.status,
 			averageRating: data.mentor.averageRating,

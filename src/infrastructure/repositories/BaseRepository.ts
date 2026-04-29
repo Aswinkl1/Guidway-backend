@@ -45,4 +45,14 @@ export abstract class BaseRepository<
 		});
 		return this.toDomain(userRecord);
 	};
+
+	async findByMentorId(id: string): Promise<DomainEntity> {
+		const record = await this.prismaDelegate.findMany({
+			where: {
+				mentorId: id,
+			},
+		});
+
+		return this.toDomain(record);
+	}
 }
