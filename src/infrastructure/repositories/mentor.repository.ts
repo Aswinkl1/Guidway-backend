@@ -33,15 +33,17 @@ export default class MentorRepository
 		const where: Prisma.MentorWhereInput = {};
 
 		where.user = {
-			...(search && {
-				OR: [
-					{ name: { contains: search, mode: "insensitive" } },
-					{ email: { contains: search, mode: "insensitive" } },
-				],
-			}),
-			...(isBlocked !== undefined && { isBlocked }),
-			...(isVerified !== undefined && { isVerified }),
-			...(role && { role }),
+			is: {
+				...(search && {
+					OR: [
+						{ name: { contains: search, mode: "insensitive" } },
+						{ email: { contains: search, mode: "insensitive" } },
+					],
+				}),
+				...(isBlocked !== undefined && { isBlocked }),
+				...(isVerified !== undefined && { isVerified }),
+				...(role && { role }),
+			},
 		};
 
 		const [mentor, totalItems] = await Promise.all([
@@ -83,6 +85,15 @@ export default class MentorRepository
 		return this.toDomain(mentor);
 	}
 
+	async update(userId: string, data: Partial<Mentor>): Promise<Mentor> {
+		const record = await this._prisma.mentor.update({
+			where: { userId },
+			data,
+		});
+
+		return this.toDomain(record);
+	}
+
 	protected toDomain(record: PrismaMentor) {
 		return Mentor.create(record);
 	}
@@ -92,7 +103,6 @@ export default class MentorRepository
 	): Omit<Prisma.MentorCreateInput, "createdAt" | "updatedAt"> {
 		// const mentorDetails = mentorEntity.toPrimitive();
 		return {
-			id: mentorDetails.id,
 			user: { connect: { id: mentorDetails.userId } },
 			status: mentorDetails.status,
 			domain: mentorDetails.domainId

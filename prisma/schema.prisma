@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client"
@@ -13,149 +9,229 @@ datasource db {
   provider = "postgresql"
 }
 
-
-
-model User {
-  id              String   @id @default(uuid())
-  email           String   @unique
-  name            String
-  // Password is NULL if they sign up with LinkedIn/Google
-  password        String?  // Encrypted. Nullable for OAuth users
-  phoneNumber     String?
-  profileImageKey String?
-  // Tracks how they signed up
-  authProviderId  String?  // The unique ID from LinkedIn/Google (e.g. LINKEDIN_123)
-  // The Role determines if they are a Student, Mentor, or Admin
-  role            Role   @default(mentee) // values: admin, mentor, student
-  isDeleted       Boolean  @default(false)
-  isVerified      Boolean  @default(false)
-  isBlocked       Boolean  @default(false)
-  timezone        String?   @default("UTC") // e.g. "Asia/Kolkata", "America/New_York"
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  @@map("users")
-  mentor Mentor?
-
-}
+// =============================================================
+// ENUMS
+// =============================================================
 
 enum Role {
-  admin
-  mentor
-  mentee
+  ADMIN
+  MENTOR
+  MENTEE
 }
-
-// model MentorEmbedding {
-//   mentorId         String  @id
-//   mentor           Mentor @relation(fields: [mentorId], references: [id])
-//   profileEmbedding Unsupported("vector(1536)")
-//   @@map("mentor_embeddings")
-// }
 
 enum MentorStatus {
-  DRAFT            // Currently in the onboarding wizard
-  PENDING_REVIEW   // Finished onboarding, waiting for admin approval
-  ACTIVE           // Live on the marketplace
-  PAUSED           // Temporarily hidden by the mentor (e.g., vacation)
-  SUSPENDED        // Locked by an admin for violations
+  DRAFT
+  PENDING_REVIEW
+  ACTIVE
+  PAUSED
+  SUSPENDED
 }
+
+enum SocialPlatform {
+  LINKEDIN
+  GITHUB
+  TWITTER
+  INSTAGRAM
+  FACEBOOK
+  WEBSITE
+  BEHANCE
+  DRIBBBLE
+  YOUTUBE
+  OTHER
+}
+
+enum ProficiencyLevel {
+  NATIVE
+  FLUENT
+  CONVERSATIONAL
+  BASIC
+}
+
+enum SkillStatus {
+  ACTIVE
+  PENDING_REVIEW
+  REJECTED
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  FREELANCE
+  INTERNSHIP
+  CONTRACT
+}
+
+enum AchievementType {
+  AWARD
+  CERTIFICATION
+  COMPETITION
+  PUBLICATION
+  SPEAKING
+  HACKATHON_WIN
+  SCHOLARSHIP
+  WORK_RECOGNITION
+  OTHER
+}
+
+// =============================================================
+// USER
+// Base identity table. All roles (Mentor, Admin, Mentee) extend
+// from here using the shared PK pattern.
+// =============================================================
+
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  name            String
+  password        String?
+  phoneNumber     String?
+  profileImageKey String?
+  authProviderId  String?   // Unique ID from OAuth provider e.g. "LINKEDIN_123"
+  role            Role      @default(MENTEE)
+  isVerified      Boolean   @default(false)
+  isBlocked       Boolean   @default(false)
+  timezone        String?    @default("UTC")
+  deletedAt       DateTime? // Null = active. Not-null = soft deleted. Email masked on deletion.
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  mentor Mentor?
+
+  @@index([role])
+  // @@index([deletedAt])
+  // @@index([isBlocked])
+  @@map("users")
+}
+
+// =============================================================
+// MENTOR
+// Extends User via shared PK. userId IS the PK — no separate id.
+// One-to-one with User enforced at the DB level.
+// =============================================================
+
 model Mentor {
-  id                        String   @id @default(uuid())
-  userId                    String   @unique // @unique enforces the one-to-one with User
-  user                      User     @relation(fields: [userId], references: [id])
+  userId String       @id // Shared PK — same value as User.id
+  user   User         @relation(fields: [userId], references: [id])
 
-  headline                  String?
-  shortBio                  String?
-  domainId                  String?
-
-
-  isVerified                Boolean  @default(false)
-  status                    MentorStatus @default(DRAFT)
+  headline   String?
+  shortBio   String?
+  domainId   String?
+  isVerified Boolean      @default(false)
+  status     MentorStatus @default(DRAFT)
 
   // Stripe
-  stripeAccountId           String?
-  stripeOnboardingComplete  Boolean  @default(false)
+  stripeAccountId          String?
+  stripeOnboardingComplete Boolean @default(false)
 
-  // AI
+  // Denormalized cache columns — ONLY update via MentorService, never raw writes
+  averageRating Float @default(0)
+  reviewCount   Int   @default(0)
 
-  // Cache columns
-  averageRating             Float  @default(0)
-  reviewCount               Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  // Booking settings
-  bookingLeadTimeHours      Int      @default(24)
-  bookingFutureLimitDays    Int      @default(30)
-  maxSessionsDaily          Int      @default(4)
-  bufferTimeMinutes         Int      @default(15)
+  // Relations
+  domain               Domain?                     @relation(fields: [domainId], references: [id])
+  bookingSettings      MentorBookingSettings?       // One-to-one: mentor has one booking config
+  notificationSettings MentorNotificationSettings?  // One-to-one: mentor has one notification config
+  socialLinks          SocialLink[]
+  mentorLanguages      MentorLanguage[]
+  mentorSkills         MentorSkill[]
+  experiences          Experience[]
+  education            Education[]
+  achievements         Achievement[]
 
-  cancellationCutoffHours   Int      @default(24)
-
-  // Notifications
-  notificationSettings      Json?
-
-  createdAt                 DateTime @default(now())
-  updatedAt                 DateTime @updatedAt         // <-- added
-// Back-relations
-  domain          Domain?          @relation(fields: [domainId], references: [id])
-  socialLinks     SocialLink[]
-  mentorLanguages MentorLanguage[]
-  mentorSkills    MentorSkill[]
-  experiences     Experience[]
-  education       Education[]
-  achievements    Achievement[]
-  // embedding  MentorEmbedding?
-
+  @@index([status])
+  @@index([domainId])
+  // @@index([averageRating])
   @@map("mentors")
 }
 
-// ==========================================
+// =============================================================
+// MENTOR BOOKING SETTINGS
+// Extracted from Mentor to keep the Mentor table focused.
+// Shared PK pattern — userId is both PK and FK.
+// =============================================================
+
+model MentorBookingSettings {
+  userId String @id
+  mentor Mentor @relation(fields: [userId], references: [userId])
+
+  leadTimeHours           Int @default(24) // Min hours before a booking can be made
+  futureLimitDays         Int @default(30) // How far ahead mentees can book
+  maxSessionsDaily        Int @default(4)  // Max sessions per day
+  bufferTimeMinutes       Int @default(15) // Gap between sessions
+  cancellationCutoffHours Int @default(24) // Hours before session cancellation is allowed
+
+  updatedAt DateTime @updatedAt
+
+  @@map("mentor_booking_settings")
+}
+
+// =============================================================
+// MENTOR NOTIFICATION SETTINGS
+// Typed columns instead of Json — explicit, queryable, type-safe.
+// Shared PK pattern — userId is both PK and FK.
+// =============================================================
+
+model MentorNotificationSettings {
+  userId String @id
+  mentor Mentor @relation(fields: [userId], references: [userId])
+
+  emailOnBooking Boolean @default(true)
+  emailOnCancel  Boolean @default(true)
+  emailOnReview  Boolean @default(true)
+  smsOnBooking   Boolean @default(false)
+  smsOnCancel    Boolean @default(false)
+
+  updatedAt DateTime @updatedAt
+
+  @@map("mentor_notification_settings")
+}
+
+// =============================================================
 // DOMAINS
-// ==========================================
+// Admin-managed master list of mentoring domains e.g. "Engineering"
+// =============================================================
 
 model Domain {
   id         String   @id @default(uuid())
-  domainName String  @unique
+  domainName String   @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  mentors    Mentor[]
+  mentors Mentor[]
 
   @@map("domains")
 }
 
-// ==========================================
+// =============================================================
 // SOCIAL LINKS
-// ==========================================
-
-enum SocialPlatform {
-  linkedin
-  github
-  twitter
-  instagram
-  facebook
-  website
-  behance
-  dribbble
-  youtube
-  other
-}
+// Belongs to Mentor domain — uses mentorId pointing to Mentor.userId.
+// One row per platform per mentor enforced by @@unique.
+// =============================================================
 
 model SocialLink {
-  id         String         @id @default(uuid())
-  mentorId   String
-  mentor     Mentor         @relation(fields: [mentorId], references: [id])
-  platform   SocialPlatform
-  url        String
+  id       String         @id @default(uuid())
+  mentorId String
+  mentor   Mentor         @relation(fields: [mentorId], references: [userId])
+  platform SocialPlatform
+  url      String
 
-  @@unique([mentorId, platform])
+  // @@unique([mentorId, platform]) // A mentor can only have one link per platform
+  @@index([mentorId])
   @@map("social_links")
 }
 
-// ==========================================
+// =============================================================
 // LANGUAGES
-// ==========================================
+// Master list of languages. Mentors link to these via MentorLanguage.
+// =============================================================
 
 model Language {
-  id              String           @id @default(uuid())
-  name            String
-  code            String
+  id   String @id @default(uuid())
+  name String @unique
+  code String @unique // ISO 639-1 code e.g. "en", "hi", "fr"
 
   mentorLanguages MentorLanguage[]
 
@@ -165,35 +241,27 @@ model Language {
 model MentorLanguage {
   mentorId    String
   languageId  String
-  proficiency ProficiencyLevel // Native, Fluent, Conversational
+  proficiency ProficiencyLevel
 
-  mentor      Mentor   @relation(fields: [mentorId], references: [id])
-  language    Language @relation(fields: [languageId], references: [id])
+  mentor   Mentor   @relation(fields: [mentorId], references: [userId])
+  language Language @relation(fields: [languageId], references: [id])
 
-  @@id([mentorId, languageId])
+  @@id([mentorId, languageId]) // Composite PK — one row per mentor+language
   @@map("mentor_languages")
 }
 
-enum ProficiencyLevel {
-  native
-  fluent
-  conversational
-  basic
-}
-// ==========================================
+// =============================================================
 // SKILLS
-// ==========================================
-
-enum SkillStatus {
-  active
-  pending_review
-  rejected
-}
+// Admin-managed master list. Mentors link via MentorSkill.
+// New skills submitted by mentors start as PENDING_REVIEW.
+// =============================================================
 
 model Skill {
-  id           String        @id @default(uuid())
-  name         String        @unique
-  status       SkillStatus   @default(active)
+  id        String      @id @default(uuid())
+  name      String      @unique
+  status    SkillStatus @default(ACTIVE)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   mentorSkills MentorSkill[]
 
@@ -205,91 +273,92 @@ model MentorSkill {
   skillId         String
   yearsExperience Int?
 
-  mentor          Mentor @relation(fields: [mentorId], references: [id])
-  skill           Skill  @relation(fields: [skillId], references: [id])
+  mentor Mentor @relation(fields: [mentorId], references: [userId])
+  skill  Skill  @relation(fields: [skillId], references: [id])
 
-  @@id([mentorId, skillId])
+  @@id([mentorId, skillId]) // Composite PK — one row per mentor+skill
   @@map("mentor_skills")
 }
 
-// ==========================================
-// EXPERIENCE, EDUCATION & ACHIEVEMENTS
-// ==========================================
-
-enum EmploymentType {
-  FULL_TIME
-  PART_TIME
-  FREELANCE
-  INTERNSHIP
-  CONTRACT
-}
+// =============================================================
+// EXPERIENCE
+// Work history entries for a mentor.
+// Soft deleted via deletedAt instead of hard delete.
+// =============================================================
 
 model Experience {
-  id          String  @id @default(uuid())
-  mentorId    String
-  mentor      Mentor  @relation(fields: [mentorId], references: [id])
+  id             String         @id @default(uuid())
+  mentorId       String
+  mentor         Mentor         @relation(fields: [mentorId], references: [userId])
 
-  role        String
-  company     String
+  role           String
+  company        String
   employmentType EmploymentType
+  startMonth     Int
+  startYear      Int
+  endMonth       Int?
+  endYear        Int?
+  isCurrent      Boolean        @default(false)
+  description    String?
 
-  startMonth  Int
-  startYear   Int
-  endMonth    Int?
-  endYear     Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
 
-  isCurrent   Boolean @default(false)
-  description String?
-
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deletedAt  DateTime?
+  @@index([mentorId])
+  // @@index([deletedAt])
   @@map("experiences")
 }
 
+// =============================================================
+// EDUCATION
+// Academic history entries for a mentor.
+// Soft deleted via deletedAt instead of hard delete.
+// =============================================================
+
 model Education {
-  id          String  @id @default(uuid())
-  mentorId    String
-  mentor      Mentor  @relation(fields: [mentorId], references: [id])
+  id       String @id @default(uuid())
+  mentorId String
+  mentor   Mentor @relation(fields: [mentorId], references: [userId])
 
-  institution   String
-  degree        String
-  fieldOfStudy  String
+  institution  String
+  degree       String
+  fieldOfStudy String
+  startMonth   Int
+  startYear    Int
+  endMonth     Int?
+  endYear      Int?
+  isCurrent    Boolean @default(false)
+  grade        String?
+  description  String?
 
-  startMonth  Int
-  startYear   Int
-  endMonth    Int?
-  endYear     Int?
-  isCurrent   Boolean @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
 
-  grade       String?
-  description String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deletedAt  DateTime?
+  @@index([mentorId])
+  // @@index([deletedAt])
   @@map("education")
 }
-enum AchievementType {
-  award
-  certification
-  competition
-  publication
-  speaking
-  hackathon_win
-  scholarship
-  work_recognition
-  other
-}
+
+// =============================================================
+// ACHIEVEMENTS
+// Awards, certifications, publications etc. for a mentor.
+// =============================================================
 
 model Achievement {
   id       String          @id @default(uuid())
   mentorId String
-  mentor   Mentor          @relation(fields: [mentorId], references: [id])
+  mentor   Mentor          @relation(fields: [mentorId], references: [userId])
+
   title    String?
   type     AchievementType
   year     Int?
 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
+
+  @@index([mentorId])
   @@map("achievements")
 }
-
-
