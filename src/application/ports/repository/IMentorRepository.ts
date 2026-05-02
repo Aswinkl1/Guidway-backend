@@ -9,7 +9,7 @@ import type { IBaseRepository } from "./IBaseRepository";
 export type outputType = {
 	mentor: Pick<
 		Mentor,
-		"userId" | "isVerified" | "createdAt" | "averageRating" | "status" | "id"
+		"userId" | "isVerified" | "createdAt" | "averageRating" | "status"
 	>;
 	user: Pick<
 		User,
@@ -26,4 +26,5 @@ export interface IMentorRepository
 	extends IBaseRepository<Mentor, Partial<Mentor>, Partial<Mentor>> {
 	findAll(filter?: getUsersDTO): Promise<PaginatedResult<outputType>>;
 	findMentorByUserId(userId: string): Promise<Mentor | null>;
+	update(userId: string, data: Partial<Mentor>): Promise<Mentor>;
 }

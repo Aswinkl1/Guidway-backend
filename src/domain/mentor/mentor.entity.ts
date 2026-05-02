@@ -1,7 +1,5 @@
-import { v4 as uuid } from "uuid";
-
 interface mentorProp {
-	readonly id: string;
+	// readonly id: string;
 	readonly userId: string;
 	headline: string | null;
 	shortBio: string | null;
@@ -30,7 +28,6 @@ export class Mentor {
 
 	public static create(props: { userId: string } & Partial<mentorProp>) {
 		return new Mentor({
-			id: props.id ?? uuid(),
 			userId: props.userId,
 			headline: props.headline ?? "",
 			shortBio: props.shortBio ?? "",
@@ -44,11 +41,6 @@ export class Mentor {
 			createdAt: props.createdAt ?? new Date(),
 			updatedAt: props.updatedAt ?? new Date(),
 		});
-	}
-
-	// ✅ Getters
-	get id() {
-		return this.props.id;
 	}
 
 	get userId() {

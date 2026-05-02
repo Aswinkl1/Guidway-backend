@@ -11,6 +11,7 @@ export const errorHandler = async (
 	res: Response,
 	_next: NextFunction,
 ): Promise<void> => {
+	console.log(err);
 	if (err instanceof DomainError || err instanceof AppError) {
 		const statusCode = getHttpStatusForErrorCode(err.code);
 

@@ -24,12 +24,10 @@ export class TokenService implements ITokenService {
 			const decode = jwt.verify(token, this.accessSecret) as {
 				sub: string;
 				role: JWTTokenPaylod["role"];
-				mentorId: JWTTokenPaylod["mentorId"];
 			};
 			return {
 				userId: decode.sub,
 				role: decode.role,
-				mentorId: decode.mentorId,
 			};
 		} catch {
 			throw new UnAuthenticatedError("token expired");
@@ -41,7 +39,7 @@ export class TokenService implements ITokenService {
 
 	generateAccessToken(payload: JWTTokenPaylod): string {
 		return jwt.sign(
-			{ sub: payload.userId, role: payload.role, mentorId: payload.mentorId },
+			{ sub: payload.userId, role: payload.role },
 			this.accessSecret,
 			{
 				expiresIn: this.accessExpiresIn,
@@ -53,7 +51,7 @@ export class TokenService implements ITokenService {
 		token: string;
 	} {
 		const token = jwt.sign(
-			{ sub: payload.userId, role: payload.role, mentorId: payload.mentorId },
+			{ sub: payload.userId, role: payload.role },
 			this.accessSecret,
 			{
 				expiresIn: "7d",
@@ -70,16 +68,10 @@ export class TokenService implements ITokenService {
 	verifyAccessToken(token: string): JWTTokenPaylod {
 		try {
 			const decode = jwt.verify(token, this.accessSecret);
-			if (
-				typeof decode !== "string" &&
-				decode?.sub &&
-				decode?.role &&
-				decode?.mentorId
-			) {
+			if (typeof decode !== "string" && decode?.sub && decode?.role) {
 				return {
 					userId: decode.sub,
 					role: decode.role,
-					mentorId: decode.mentorId,
 				};
 			}
 			console.log("decode", decode);

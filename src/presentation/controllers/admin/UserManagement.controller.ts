@@ -39,7 +39,7 @@ export class UserManagementController implements IUserManagementController {
 
 	updateBlockStatus = async (req: Request, res: Response) => {
 		const data = req.validated?.body as updateBlockStatusDto;
-
+		console.log(data);
 		await this._updateBlockStatusUsecase.execute(data);
 		res
 			.status(HTTPSTATUS.OK)
@@ -47,9 +47,9 @@ export class UserManagementController implements IUserManagementController {
 	};
 
 	updateVerifyMentor = async (req: Request, res: Response) => {
-		const { mentorId } = req.body;
-		console.log(mentorId);
-		await this._verifyMentorUsecase.execute(mentorId);
+		const { userId } = req.body;
+		console.log(userId);
+		await this._verifyMentorUsecase.execute(userId);
 		console.log("its done");
 		res
 			.status(HTTPSTATUS.OK)

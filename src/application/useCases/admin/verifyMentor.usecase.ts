@@ -10,9 +10,9 @@ export default class VerifyMentorUsecase implements IVerifyMentorUsecase {
 		@inject(TYPES.MentorRepository)
 		private readonly _mentorRepository: IMentorRepository,
 	) {}
-	async execute(mentorId: string): Promise<void> {
+	async execute(userId: string): Promise<void> {
 		// find if the mentor exist
-		const mentor = await this._mentorRepository.findById(mentorId);
+		const mentor = await this._mentorRepository.findMentorByUserId(userId);
 		// if not error
 		if (!mentor) {
 			throw new UserNotFoundError("user not found");
@@ -22,6 +22,6 @@ export default class VerifyMentorUsecase implements IVerifyMentorUsecase {
 		mentor.verifyMentor();
 
 		// now save
-		await this._mentorRepository.save(mentor.id, mentor);
+		await this._mentorRepository.update(mentor.userId, mentor);
 	}
 }
