@@ -50,4 +50,9 @@ router.put(
 	ProfileController.editExperience,
 );
 
+router.delete(
+	ROUTES.MENTOR.EXPERIENCE.DETAIL,
+	isAuthenticate,
+	ProfileController.deleteExperience,
+);
 export default router;

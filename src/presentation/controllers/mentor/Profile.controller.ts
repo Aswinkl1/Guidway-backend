@@ -3,12 +3,16 @@ import {
 	DeleteEducationSchema,
 	type EditEducationDTO,
 } from "@application/dto/mentor/education.dto";
-import type { CreateExperiencedto } from "@application/dto/mentor/experience.dto";
+import {
+	type CreateExperiencedto,
+	DeleteExperienceSchema,
+} from "@application/dto/mentor/experience.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
 import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
+import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
@@ -29,6 +33,8 @@ export class ProfileController {
 		private readonly __addExperienceUsecase: IAddExperienceUsecase,
 		@inject(TYPES.EditExperienceUsecase)
 		private readonly _editExperienceUsecase: IEditExperienceUsecase,
+		@inject(TYPES.DeleteExperienceUsecase)
+		private readonly _deleteExperienceUsecase: IDeleteExperienceUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -109,5 +115,24 @@ export class ProfileController {
 		res
 			.status(HTTPSTATUS.OK)
 			.json(createSuccess("Experience updated  succesfull", data));
+	};
+
+	deleteExperience = async (req: Request, res: Response) => {
+		const mentorId = req.user?.userId;
+		const experienceId = req.params.id;
+
+		const parsed = DeleteExperienceSchema.safeParse({
+			mentorId,
+			id: experienceId,
+		});
+		if (!parsed.success) {
+			throw new CustomZodValidationError(parsed.error);
+		}
+
+		await this._deleteExperienceUsecase.execute(parsed.data);
+
+		res
+			.status(HTTPSTATUS.NO_CONTENT)
+			.json(createSuccess("Education succesfull deleted ", {}));
 	};
 }

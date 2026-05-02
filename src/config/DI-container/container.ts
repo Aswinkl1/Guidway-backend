@@ -27,6 +27,7 @@ import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/edu
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
 import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
+import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
@@ -36,6 +37,7 @@ import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-
 import { DeleteEducationUsecase } from "@application/useCases/mentor/education/Delete-Education.usecase";
 import EditEducationUsecase from "@application/useCases/mentor/education/Edit-Education.usecase";
 import { AddExperienceUsecase } from "@application/useCases/mentor/experience/Add-Experience.usecase";
+import { DeleteExperienceUsecase } from "@application/useCases/mentor/experience/Delete-Experience.usecase";
 import { EditExperienceUsecase } from "@application/useCases/mentor/experience/Edit-Experience.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
@@ -195,6 +197,12 @@ container
 	.bind<IEditExperienceUsecase>(TYPES.EditExperienceUsecase)
 	.to(EditExperienceUsecase)
 	.inSingletonScope();
+
+container
+	.bind<IDeleteExperienceUsecase>(TYPES.DeleteExperienceUsecase)
+	.to(DeleteExperienceUsecase)
+	.inSingletonScope();
+
 // services
 container
 	.bind<IEmailService>(TYPES.EmailService)
