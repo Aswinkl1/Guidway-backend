@@ -33,7 +33,7 @@ export class ProfileController {
 		if (!parsed.success) {
 			throw new CustomZodValidationError(parsed.error);
 		}
-		const mentorId = req?.user?.mentorId;
+		const mentorId = req?.user?.userId;
 		console.log(req.headers.authorization);
 		if (!mentorId) {
 			throw new NotFoundError("mentor id not found");
@@ -49,7 +49,7 @@ export class ProfileController {
 
 	updateEducation = async (req: Request, res: Response) => {
 		const parsed = req.validated?.body as EditEducationDTO;
-		const mentorId = req?.user?.mentorId;
+		const mentorId = req?.user?.userId;
 		if (!mentorId) {
 			throw new NotFoundError("mentor id not found");
 		}
@@ -62,7 +62,7 @@ export class ProfileController {
 	};
 
 	deleteEducation = async (req: Request, res: Response) => {
-		const mentorId = req.user?.mentorId;
+		const mentorId = req.user?.userId;
 		const educationId = req.params.id;
 
 		const parsed = DeleteEducationSchema.safeParse({
@@ -81,7 +81,7 @@ export class ProfileController {
 	};
 
 	addExperience = async (req: Request, res: Response) => {
-		const mentorId = req.user?.mentorId;
+		const mentorId = req.user?.userId;
 		const parsed = req.validated?.body as CreateExperiencedto;
 
 		if (!mentorId) {
