@@ -4,15 +4,12 @@ import type {
 	loginUserInputDTO,
 } from "@application/dto/user/loginUser.dto";
 import { InvalidCredentialsError } from "@application/errors/InvalidCredentialsError";
-import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { IHashService } from "@application/ports/services/IHashService";
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
 import type { JWTTokenPaylod } from "@application/types/JWTTokenPayload.type";
 import { TYPES } from "@config/DI-container/TYPES";
-import { logger } from "@config/logger";
-import { Role } from "@domain/user/user";
 
 import { inject, injectable } from "inversify";
 
@@ -23,8 +20,6 @@ export class LoginUsecase implements ILoginUsecase {
 		private readonly _userRepository: IUserRepository,
 		@inject(TYPES.HashService) private readonly _hashService: IHashService,
 		@inject(TYPES.TokenService) private readonly _tokenService: ITokenService,
-		@inject(TYPES.MentorRepository)
-		private readonly _mentorRepositoty: IMentorRepository,
 	) {}
 	execute = async (dto: loginUserInputDTO): Promise<loginOutputDTO> => {
 		//TODO : later change this to env

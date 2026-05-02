@@ -6,7 +6,7 @@ import type { IUserRepository } from "@application/ports/repository/IUserReposit
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { IOAuthUseCase } from "@application/ports/usecase/IOAuth.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
-import type { User } from "@domain/user/user";
+import { User } from "@domain/user/user";
 import { inject } from "inversify";
 
 export class OAuthUseCase implements IOAuthUseCase {
@@ -32,13 +32,16 @@ export class OAuthUseCase implements IOAuthUseCase {
 		//find the user by email
 
 		// if user not found then create a new user
+		const entity = new User({
+			email: dto.email,
+			name: dto.name,
+			authProviderId: dto.providerId,
+			role: dto.role,
+			password: null,
+			phoneNumber: null,
+		});
 		if (!user) {
-			user = await this._userRepo.create({
-				email: dto.email,
-				name: dto.name,
-				authProviderId: dto.providerId,
-				role: dto.role,
-			});
+			user = await this._userRepo.create(entity);
 		}
 
 		const payload = { userId: user.id, role: user.role };
