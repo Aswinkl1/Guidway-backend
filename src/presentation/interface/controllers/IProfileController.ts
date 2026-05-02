@@ -5,4 +5,5 @@ export interface IProfileController {
 	updateEducation(req: Request, res: Response): Promise<void>;
 	deleteEducation(req: Request, res: Response): Promise<void>;
 	addExperience(req: Request, res: Response): Promise<void>;
+	editExperience(req: Request, res: Response): Promise<void>;
 }

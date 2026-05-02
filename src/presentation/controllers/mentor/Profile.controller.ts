@@ -9,6 +9,7 @@ import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/edu
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
 import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
+import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
@@ -26,6 +27,8 @@ export class ProfileController {
 		private readonly _deleteEducationUsecase: IDeleteEducationUsecase,
 		@inject(TYPES.AddExperienceUsecase)
 		private readonly __addExperienceUsecase: IAddExperienceUsecase,
+		@inject(TYPES.EditExperienceUsecase)
+		private readonly _editExperienceUsecase: IEditExperienceUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -92,5 +95,19 @@ export class ProfileController {
 		res
 			.status(HTTPSTATUS.CREATED)
 			.json(createSuccess("Experience created succesfull", data));
+	};
+
+	editExperience = async (req: Request, res: Response) => {
+		const mentorId = req.user?.userId;
+		const parsed = req.validated?.body as EditEducationDTO;
+		console.log("parced", parsed);
+		if (!mentorId) {
+			throw new NotFoundError("mentorID not found");
+		}
+		const data = await this._editExperienceUsecase.execute(mentorId, parsed);
+
+		res
+			.status(HTTPSTATUS.OK)
+			.json(createSuccess("Experience updated  succesfull", data));
 	};
 }

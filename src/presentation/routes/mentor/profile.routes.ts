@@ -1,5 +1,8 @@
 import { EditEducationSchema } from "@application/dto/mentor/education.dto";
-import { CreateExperienceSchema } from "@application/dto/mentor/experience.dto";
+import {
+	CreateExperienceSchema,
+	EditExperienceSchema,
+} from "@application/dto/mentor/experience.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -38,6 +41,13 @@ router.post(
 	isAuthenticate,
 	validatetor(CreateExperienceSchema, "body"),
 	ProfileController.addExperience,
+);
+
+router.put(
+	ROUTES.MENTOR.EXPERIENCE.DETAIL,
+	isAuthenticate,
+	validatetor(EditExperienceSchema, "body"),
+	ProfileController.editExperience,
 );
 
 export default router;

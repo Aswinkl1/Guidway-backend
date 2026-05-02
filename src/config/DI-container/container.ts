@@ -27,6 +27,7 @@ import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/edu
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
 import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
+import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
@@ -35,6 +36,7 @@ import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-
 import { DeleteEducationUsecase } from "@application/useCases/mentor/education/Delete-Education.usecase";
 import EditEducationUsecase from "@application/useCases/mentor/education/Edit-Education.usecase";
 import { AddExperienceUsecase } from "@application/useCases/mentor/experience/Add-Experience.usecase";
+import { EditExperienceUsecase } from "@application/useCases/mentor/experience/Edit-Experience.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
 import { OAuthUseCase } from "@application/useCases/user/OAuth.usecase";
@@ -70,8 +72,6 @@ import type { IUserManagementController } from "@presentation/interface/controll
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
 import { TYPES } from "./TYPES";
-
-console.log("container ");
 
 const container = new Container();
 
@@ -189,6 +189,11 @@ container
 container
 	.bind<IAddExperienceUsecase>(TYPES.AddExperienceUsecase)
 	.to(AddExperienceUsecase)
+	.inSingletonScope();
+
+container
+	.bind<IEditExperienceUsecase>(TYPES.EditExperienceUsecase)
+	.to(EditExperienceUsecase)
 	.inSingletonScope();
 // services
 container

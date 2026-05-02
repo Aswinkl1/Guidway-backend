@@ -32,7 +32,8 @@ export const TYPES = {
 	EditEducationUsecase: Symbol.for("EditEducationUsecase"),
 	DeleteEducationUsecase: Symbol.for("DeleteEducationUsecase"),
 	AddExperienceUsecase: Symbol.for("AddExperienceUsecase"),
-
+	EditExperienceUsecase: Symbol.for("EditExperienceUsecase"),
+	DeleteExperienceUsecase: Symbol.for("DeleteExperienceUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

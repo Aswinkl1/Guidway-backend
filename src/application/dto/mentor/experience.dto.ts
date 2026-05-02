@@ -42,3 +42,15 @@ export const CreateExperienceSchema = z.object({
 });
 
 export type CreateExperiencedto = z.infer<typeof CreateExperienceSchema>;
+
+export const EditExperienceSchema = CreateExperienceSchema.partial().extend({
+	id: z.string().trim().nonempty(),
+});
+
+export const DeleteExperienceSchema = z.object({
+	id: z.uuid(),
+	mentorId: z.uuid().optional(),
+});
+
+export type EditExperienceDTO = z.infer<typeof EditExperienceSchema>;
+export type DeleteExperienceDTO = z.infer<typeof DeleteExperienceSchema>;
