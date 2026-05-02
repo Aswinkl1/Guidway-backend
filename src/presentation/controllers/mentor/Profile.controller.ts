@@ -83,7 +83,7 @@ export class ProfileController {
 	addExperience = async (req: Request, res: Response) => {
 		const mentorId = req.user?.userId;
 		const parsed = req.validated?.body as CreateExperiencedto;
-
+		console.log("parced", parsed);
 		if (!mentorId) {
 			throw new NotFoundError("mentorID not found");
 		}

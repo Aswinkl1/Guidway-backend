@@ -1,4 +1,5 @@
 import { EditEducationSchema } from "@application/dto/mentor/education.dto";
+import { CreateExperienceSchema } from "@application/dto/mentor/experience.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -35,6 +36,7 @@ router.delete(
 router.post(
 	ROUTES.MENTOR.EXPERIENCE.ROOT,
 	isAuthenticate,
+	validatetor(CreateExperienceSchema, "body"),
 	ProfileController.addExperience,
 );
 

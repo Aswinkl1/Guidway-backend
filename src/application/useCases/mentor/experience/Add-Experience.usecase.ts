@@ -19,8 +19,9 @@ export class AddExperienceUsecase implements IAddExperienceUsecase {
 		mentorId: string,
 		dto: CreateExperiencedto,
 	): Promise<ExperienceOutputDto> => {
+		console.log("dto", dto);
 		const experienceEntity = Experience.create({ ...dto, mentorId });
-
+		console.log("exper", experienceEntity);
 		const record = await this._experienceRepository.create(experienceEntity);
 
 		return ExperienceMapper.toOutput(record);

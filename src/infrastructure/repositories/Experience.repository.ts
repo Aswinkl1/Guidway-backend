@@ -40,7 +40,7 @@ export default class ExperienceRepository
 			endMonth: entity.endMonth,
 			endYear: entity.endYear,
 			isCurrent: entity.isCurrent,
-			mentor: { connect: { id: entity.mentorId } },
+			mentor: { connect: { userId: entity.mentorId } },
 			deletedAt: entity.deletedAt,
 		};
 	}
