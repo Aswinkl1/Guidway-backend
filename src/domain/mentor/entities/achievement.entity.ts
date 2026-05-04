@@ -1,13 +1,19 @@
 import { v4 as uuid } from "uuid";
 
-export enum AchievementType {
-	AWARD = "AWARD",
-	CERTIFICATION = "CERTIFICATION",
-	PUBLICATION = "PUBLICATION",
-	PATENT = "PATENT",
-	PROJECT = "PROJECT",
-	OTHER = "OTHER",
-}
+export const AchievementType = {
+	AWARD: "AWARD",
+	CERTIFICATION: "CERTIFICATION",
+	COMPETITION: "COMPETITION",
+	PUBLICATION: "PUBLICATION",
+	SPEAKING: "SPEAKING",
+	HACKATHON_WIN: "HACKATHON_WIN",
+	SCHOLARSHIP: "SCHOLARSHIP",
+	WORK_RECOGNITION: "WORK_RECOGNITION",
+	OTHER: "OTHER",
+} as const;
+
+export type AchievementType =
+	(typeof AchievementType)[keyof typeof AchievementType];
 
 export interface IAchievement {
 	id: string;
