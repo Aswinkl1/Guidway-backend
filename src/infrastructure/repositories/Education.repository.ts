@@ -26,6 +26,7 @@ export default class EducationRepository
 		return Education.create(record);
 	}
 
+	//TODO refactor this to prisma.educationcreateInput
 	protected toPersistence(
 		educationEntity: Partial<Partial<Education>>,
 	): Omit<Partial<Education>, "createdAt" | "updatedAt"> {

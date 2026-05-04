@@ -1,4 +1,4 @@
-import type { CreateEducationDTO } from "@application/dto/mentor/education.dot";
+import type { CreateEducationDTO } from "@application/dto/mentor/education.dto";
 import {
 	EducationMapper,
 	type EducationOutputDto,

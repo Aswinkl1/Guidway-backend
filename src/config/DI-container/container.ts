@@ -2,6 +2,7 @@ import "reflect-metadata";
 import type { ICacheService } from "@application/ports/cache/ICache";
 import type { ITokenCache } from "@application/ports/cache/ITokenCache";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
+import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
 // Types
@@ -25,6 +26,9 @@ import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmai
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
 import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
+import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
+import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
+import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
@@ -32,6 +36,9 @@ import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecas
 import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-Education.usecase";
 import { DeleteEducationUsecase } from "@application/useCases/mentor/education/Delete-Education.usecase";
 import EditEducationUsecase from "@application/useCases/mentor/education/Edit-Education.usecase";
+import { AddExperienceUsecase } from "@application/useCases/mentor/experience/Add-Experience.usecase";
+import { DeleteExperienceUsecase } from "@application/useCases/mentor/experience/Delete-Experience.usecase";
+import { EditExperienceUsecase } from "@application/useCases/mentor/experience/Edit-Experience.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
 import { OAuthUseCase } from "@application/useCases/user/OAuth.usecase";
@@ -48,6 +55,7 @@ import {
 	redisClient,
 } from "@infrastructure/database/redisClient";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
+import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 //
@@ -66,8 +74,6 @@ import type { IUserManagementController } from "@presentation/interface/controll
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
 import { TYPES } from "./TYPES";
-
-console.log("container ");
 
 const container = new Container();
 
@@ -103,6 +109,10 @@ container
 container
 	.bind<IEducationRepository>(TYPES.EducationRepository)
 	.to(EducationRepository)
+	.inSingletonScope();
+container
+	.bind<IExperienceRepository>(TYPES.ExperienceRepository)
+	.to(ExperienceRepository)
 	.inSingletonScope();
 //usecase
 
@@ -177,6 +187,22 @@ container
 	.bind<IDeleteEducationUsecase>(TYPES.DeleteEducationUsecase)
 	.to(DeleteEducationUsecase)
 	.inSingletonScope();
+
+container
+	.bind<IAddExperienceUsecase>(TYPES.AddExperienceUsecase)
+	.to(AddExperienceUsecase)
+	.inSingletonScope();
+
+container
+	.bind<IEditExperienceUsecase>(TYPES.EditExperienceUsecase)
+	.to(EditExperienceUsecase)
+	.inSingletonScope();
+
+container
+	.bind<IDeleteExperienceUsecase>(TYPES.DeleteExperienceUsecase)
+	.to(DeleteExperienceUsecase)
+	.inSingletonScope();
+
 // services
 container
 	.bind<IEmailService>(TYPES.EmailService)

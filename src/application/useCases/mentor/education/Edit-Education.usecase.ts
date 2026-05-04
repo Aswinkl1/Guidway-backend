@@ -1,4 +1,4 @@
-import type { EditEducationDTO } from "@application/dto/mentor/education.dot";
+import type { EditEducationDTO } from "@application/dto/mentor/education.dto";
 import { ForbiddenError } from "@application/errors/ForbidenError";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import {

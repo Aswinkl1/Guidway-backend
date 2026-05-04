@@ -2,7 +2,6 @@ import type {
 	getUsersDTO,
 	PaginatedResult,
 } from "@application/dto/admin/GetUsers.dto";
-// import type { signupUserDTO } from "@application/dto/user/signupUser.dto";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import { TYPES } from "@config/DI-container/TYPES";
 import { User } from "@domain/user/user";
@@ -69,28 +68,6 @@ export class UserRepository
 			totalItems,
 		};
 	}
-
-	// async findById(id: string): Promise<User | null> {
-	//   // TODO:figure out a way to remove the passwor while getting data even from db
-	//   const user = await this._prisma.user.findUnique({ where: { id } });
-	//   if (!user) {
-	//     return null;
-	//   }
-	//   return UserRepository.toDomain(user);
-	// }
-
-	// create = async (user: signupUserDTO): Promise<User> => {
-	// 	const userRecord = await this._prisma.user.create({
-	// 		data: {
-	// 			name: user.name,
-	// 			password: user.password,
-	// 			phoneNumber: user.phoneNumber,
-	// 			role: user.role,
-	// 			email: user.email,
-	// 		},
-	// 	});
-	// 	return this.toDomain(userRecord);
-	// };
 
 	findByEmail = async (email: string): Promise<User | null> => {
 		console.log("Finding user by email:", email); // Debug log
