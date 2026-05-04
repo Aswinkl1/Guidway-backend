@@ -8,6 +8,7 @@ export const TYPES = {
 	PrismaTokenRepository: Symbol.for("PrismaTokenRepository"),
 	MentorRepository: Symbol.for("MentorRepository"),
 	EducationRepository: Symbol.for("EducationRepository"),
+	ExperienceRepository: Symbol.for("ExperienceRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
@@ -30,6 +31,9 @@ export const TYPES = {
 	AddEducationUsecase: Symbol.for("AddEducationUsecase"),
 	EditEducationUsecase: Symbol.for("EditEducationUsecase"),
 	DeleteEducationUsecase: Symbol.for("DeleteEducationUsecase"),
+	AddExperienceUsecase: Symbol.for("AddExperienceUsecase"),
+	EditExperienceUsecase: Symbol.for("EditExperienceUsecase"),
+	DeleteExperienceUsecase: Symbol.for("DeleteExperienceUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

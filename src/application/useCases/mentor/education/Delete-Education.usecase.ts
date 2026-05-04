@@ -1,4 +1,4 @@
-import type { DeleteEducationDTO } from "@application/dto/mentor/education.dot";
+import type { DeleteEducationDTO } from "@application/dto/mentor/education.dto";
 import { ForbiddenError } from "@application/errors/ForbidenError";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";

@@ -1,4 +1,4 @@
-import type { EditEducationDTO } from "@application/dto/mentor/education.dot";
+import type { EditEducationDTO } from "@application/dto/mentor/education.dto";
 import type { EducationOutputDto } from "@application/mappers/education.mapper";
 
 export interface IEditEducationUsecase {
