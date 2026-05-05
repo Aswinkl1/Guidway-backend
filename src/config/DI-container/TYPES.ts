@@ -37,6 +37,7 @@ export const TYPES = {
 	EditExperienceUsecase: Symbol.for("EditExperienceUsecase"),
 	DeleteExperienceUsecase: Symbol.for("DeleteExperienceUsecase"),
 	AddAchievementUsecase: Symbol.for("AddAchievementUsecase"),
+	GetSkillUsecase: Symbol.for("GetSkillUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
