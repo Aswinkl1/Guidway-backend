@@ -9,6 +9,7 @@ export const TYPES = {
 	MentorRepository: Symbol.for("MentorRepository"),
 	EducationRepository: Symbol.for("EducationRepository"),
 	ExperienceRepository: Symbol.for("ExperienceRepository"),
+	AchievementRepository: Symbol.for("AchievementRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
@@ -34,6 +35,7 @@ export const TYPES = {
 	AddExperienceUsecase: Symbol.for("AddExperienceUsecase"),
 	EditExperienceUsecase: Symbol.for("EditExperienceUsecase"),
 	DeleteExperienceUsecase: Symbol.for("DeleteExperienceUsecase"),
+	AddAchievementUsecase: Symbol.for("AddAchievementUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

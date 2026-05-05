@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import type { ICacheService } from "@application/ports/cache/ICache";
 import type { ITokenCache } from "@application/ports/cache/ITokenCache";
+import type { IAchievementRepository } from "@application/ports/repository/IAcheivement.repository";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
@@ -23,6 +24,7 @@ import type { IResetPassswordUsecase } from "@application/ports/usecase/IResetPa
 import type { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
 import type { IUserUploadUrlUsecase } from "@application/ports/usecase/IUserUploadUrl.usecase";
 import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
+import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
 import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
@@ -33,6 +35,7 @@ import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecas
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
+import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
 import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-Education.usecase";
 import { DeleteEducationUsecase } from "@application/useCases/mentor/education/Delete-Education.usecase";
 import EditEducationUsecase from "@application/useCases/mentor/education/Edit-Education.usecase";
@@ -56,6 +59,7 @@ import {
 } from "@infrastructure/database/redisClient";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
+import AchievementRepository from "@infrastructure/repositories/IAchievement.reository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 //
@@ -113,6 +117,11 @@ container
 container
 	.bind<IExperienceRepository>(TYPES.ExperienceRepository)
 	.to(ExperienceRepository)
+	.inSingletonScope();
+
+container
+	.bind<IAchievementRepository>(TYPES.AchievementRepository)
+	.to(AchievementRepository)
 	.inSingletonScope();
 //usecase
 
@@ -201,6 +210,11 @@ container
 container
 	.bind<IDeleteExperienceUsecase>(TYPES.DeleteExperienceUsecase)
 	.to(DeleteExperienceUsecase)
+	.inSingletonScope();
+
+container
+	.bind<IAddAchievementUsecase>(TYPES.AddAchievementUsecase)
+	.to(AddAchievementUsecase)
 	.inSingletonScope();
 
 // services
