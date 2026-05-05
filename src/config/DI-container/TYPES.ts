@@ -10,6 +10,7 @@ export const TYPES = {
 	EducationRepository: Symbol.for("EducationRepository"),
 	ExperienceRepository: Symbol.for("ExperienceRepository"),
 	AchievementRepository: Symbol.for("AchievementRepository"),
+	SkillRepository: Symbol.for("SkillRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),

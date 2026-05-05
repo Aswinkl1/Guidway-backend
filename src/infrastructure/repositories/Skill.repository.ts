@@ -7,8 +7,9 @@ import type {
 	PrismaClient,
 	Skill as PrismaSkill,
 } from "generated/prisma/client";
-import { inject } from "inversify";
+import { inject, injectable } from "inversify";
 import { BaseRepository } from "./BaseRepository";
+@injectable()
 export class SkillRepository
 	extends BaseRepository<
 		PrismaSkill,

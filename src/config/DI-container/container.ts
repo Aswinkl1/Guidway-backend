@@ -6,6 +6,7 @@ import type { IEducationRepository } from "@application/ports/repository/IEducat
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
+import type { ISkillRepository } from "@application/ports/repository/ISkill.repositorty";
 // Types
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { IEmailService } from "@application/ports/services/IEmailService";
@@ -62,6 +63,7 @@ import EducationRepository from "@infrastructure/repositories/Education.reposito
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
+import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
 //
 import { UserRepository } from "@infrastructure/repositories/UserRepository";
 import { ArgonPasswordHasher } from "@infrastructure/services/ArgonHashService";
@@ -123,6 +125,11 @@ container
 	.bind<IAchievementRepository>(TYPES.AchievementRepository)
 	.to(AchievementRepository)
 	.inSingletonScope();
+container
+	.bind<ISkillRepository>(TYPES.SkillRepository)
+	.to(SkillRepository)
+	.inSingletonScope();
+
 //usecase
 
 container
@@ -184,14 +191,17 @@ container
 	.bind<IVerifyMentorUsecase>(TYPES.VerifyMentorUsecase)
 	.to(VerifyMentorUsecase)
 	.inSingletonScope();
+
 container
 	.bind<IAddEducationUsecase>(TYPES.AddEducationUsecase)
 	.to(AddEducationUsecase)
 	.inSingletonScope();
+
 container
 	.bind<IEditEducationUsecase>(TYPES.EditEducationUsecase)
 	.to(EditEducationUsecase)
 	.inSingletonScope();
+
 container
 	.bind<IDeleteEducationUsecase>(TYPES.DeleteEducationUsecase)
 	.to(DeleteEducationUsecase)

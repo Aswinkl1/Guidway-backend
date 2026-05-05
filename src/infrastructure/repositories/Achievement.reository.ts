@@ -7,9 +7,9 @@ import type {
 	Achievement as PrismaAchievement,
 	PrismaClient,
 } from "generated/prisma/client";
-import { inject } from "inversify";
+import { inject, injectable } from "inversify";
 import { BaseRepository } from "./BaseRepository";
-
+@injectable()
 export default class AchievementRepository
 	extends BaseRepository<
 		PrismaAchievement,
