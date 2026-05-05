@@ -2,6 +2,7 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { seedDomains } from "./domain.seed";
+import { seedLanguages } from "./language.seed";
 import { seedSkills } from "./skills.seed";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
@@ -14,6 +15,9 @@ async function main() {
 
 	await seedSkills(prisma);
 
+	console.log("languages seeding");
+
+	await seedLanguages(prisma);
 	console.log("finished seeding");
 }
 
