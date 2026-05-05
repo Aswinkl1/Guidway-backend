@@ -57,9 +57,9 @@ import {
 	type AppRedisClientType,
 	redisClient,
 } from "@infrastructure/database/redisClient";
+import AchievementRepository from "@infrastructure/repositories/Achievement.reository";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
-import AchievementRepository from "@infrastructure/repositories/IAchievement.reository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 //
