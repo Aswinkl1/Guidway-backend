@@ -4,6 +4,7 @@ import {
 	CreateExperienceSchema,
 	EditExperienceSchema,
 } from "@application/dto/mentor/experience.dto";
+import { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -62,5 +63,11 @@ router.post(
 	isAuthenticate,
 	validatetor(CreateAchievementSchema, "body"),
 	ProfileController.addAchievement,
+);
+
+router.get(
+	ROUTES.MENTOR.SKILL.ROOT,
+	validatetor(GetSkillsQueryDto, "query"),
+	ProfileController.getAllSkills,
 );
 export default router;

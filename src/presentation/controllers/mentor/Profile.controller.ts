@@ -8,6 +8,7 @@ import {
 	type CreateExperiencedto,
 	DeleteExperienceSchema,
 } from "@application/dto/mentor/experience.dto";
+import type { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
@@ -16,6 +17,7 @@ import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/ed
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
+import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
@@ -40,6 +42,8 @@ export class ProfileController implements IProfileController {
 		private readonly _deleteExperienceUsecase: IDeleteExperienceUsecase,
 		@inject(TYPES.AddAchievementUsecase)
 		private readonly _addAchievementUsecase: IAddAchievementUsecase,
+		@inject(TYPES.GetSkillUsecase)
+		private readonly _getSkillUsecase: IGetSkillsUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -154,5 +158,13 @@ export class ProfileController implements IProfileController {
 		res
 			.status(HTTPSTATUS.CREATED)
 			.json(createSuccess("Achievement created succesfull", data));
+	};
+
+	getAllSkills = async (req: Request, res: Response): Promise<void> => {
+		const parsed = req.validated?.query as GetSkillsQueryDto;
+
+		const record = await this._getSkillUsecase.execute(parsed);
+		console.log(record);
+		res.status(HTTPSTATUS.OK).json(createSuccess("", record));
 	};
 }

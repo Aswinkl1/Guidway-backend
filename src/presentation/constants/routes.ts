@@ -19,5 +19,9 @@ export const ROUTES = {
 		EDUCATION: { ROOT: "/education", DETAIL: "/education/:id" },
 		EXPERIENCE: { ROOT: "/experience", DETAIL: "/experience/:id" },
 		ACHIEVEMENT: { ROOT: "/achievement", DETAIL: "/achievement/:id" },
+		SKILL: {
+			ROOT: "/skill",
+			DETAIL: "/skill/:id",
+		},
 	},
 } as const;
