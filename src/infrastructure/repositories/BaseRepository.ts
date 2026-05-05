@@ -15,7 +15,7 @@ export abstract class BaseRepository<
 	// The strict rule: Every child repo MUST provide this mapper
 	protected abstract toDomain(record: DbModel): DomainEntity;
 	protected abstract toPersistence(
-		userEntity: Partial<DomainEntity>,
+		entity: Partial<DomainEntity>,
 	): Omit<CreateInput, "createdAt" | "updatedAt">;
 	async findById(id: string): Promise<DomainEntity | null> {
 		const record = await this.prismaDelegate.findUnique({

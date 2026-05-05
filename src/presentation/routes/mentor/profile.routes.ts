@@ -1,3 +1,4 @@
+import { CreateAchievementSchema } from "@application/dto/mentor/acheivement.dto";
 import { EditEducationSchema } from "@application/dto/mentor/education.dto";
 import {
 	CreateExperienceSchema,
@@ -54,5 +55,12 @@ router.delete(
 	ROUTES.MENTOR.EXPERIENCE.DETAIL,
 	isAuthenticate,
 	ProfileController.deleteExperience,
+);
+
+router.post(
+	ROUTES.MENTOR.ACHIEVEMENT.ROOT,
+	isAuthenticate,
+	validatetor(CreateAchievementSchema, "body"),
+	ProfileController.addAchievement,
 );
 export default router;
