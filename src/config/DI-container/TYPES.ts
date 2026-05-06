@@ -17,6 +17,8 @@ export const TYPES = {
 	TokenService: Symbol.for("TokenService"),
 	S3Service: Symbol.for("S3Service"),
 
+	//queries
+	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
 	ForgetPasswordUseCase: Symbol.for("ForgetPasswordUseCase"),
 	LoginUseCase: Symbol.for("LoginUseCase"),
@@ -38,6 +40,7 @@ export const TYPES = {
 	DeleteExperienceUsecase: Symbol.for("DeleteExperienceUsecase"),
 	AddAchievementUsecase: Symbol.for("AddAchievementUsecase"),
 	GetSkillUsecase: Symbol.for("GetSkillUsecase"),
+	GetMentorProfileUsecase: Symbol.for("GetMentorProfileUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

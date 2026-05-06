@@ -1,5 +1,4 @@
 import type { MentorProfileDto } from "@application/dto/mentor/mentor-profile.dto";
-import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IMentorQuery } from "@application/ports/queries/IMentor.query";
 import { TYPES } from "@config/DI-container/TYPES";
 import type { PrismaClient } from "generated/prisma/client";
@@ -88,9 +87,7 @@ export class MentorQuery implements IMentorQuery {
 			},
 		});
 
-		if (!record) {
-			throw new NotFoundError("mentor not found");
-		}
+		if (!record) return null;
 
 		return {
 			name: record.user.name,
