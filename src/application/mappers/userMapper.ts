@@ -17,28 +17,28 @@ export interface UserOutputDTO {
 	mentorStatus: string | null;
 	averageRating: number | null;
 }
-export interface MentorProfileDTO {
-	// mentor table
-	id: string;
-	headline: string | null;
-	shortBio: string | null;
-	status: string;
-	isVerified: boolean; // ← mentor admin verified
-	averageRating: number;
-	reviewCount: number;
+// export interface MentorProfileDTO {
+// 	// mentor table
+// 	id: string;
+// 	headline: string | null;
+// 	shortBio: string | null;
+// 	status: string;
+// 	isVerified: boolean; // ← mentor admin verified
+// 	averageRating: number;
+// 	reviewCount: number;
 
-	// user table
-	// userId: string;
-	user: {
-		name: string;
-		email: string;
-		profileImageKey: string | null;
-		phoneNumber: string;
-		isBlocked: boolean;
-		isVerified: boolean;
-	};
-	createdAt: Date;
-}
+// 	// user table
+// 	// userId: string;
+// 	user: {
+// 		name: string;
+// 		email: string;
+// 		profileImageKey: string | null;
+// 		phoneNumber: string;
+// 		isBlocked: boolean;
+// 		isVerified: boolean;
+// 	};
+// 	createdAt: Date;
+// }
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class UserMapper {
 	static toResponseDTO(user: User): UserOutputDTO {
