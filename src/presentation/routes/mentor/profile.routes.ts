@@ -4,6 +4,7 @@ import {
 	CreateExperienceSchema,
 	EditExperienceSchema,
 } from "@application/dto/mentor/experience.dto";
+import { MentorSkillSchema } from "@application/dto/mentor/mentorSkill.dto";
 import { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
@@ -69,5 +70,12 @@ router.get(
 	ROUTES.MENTOR.SKILL.ROOT,
 	validatetor(GetSkillsQueryDto, "query"),
 	ProfileController.getAllSkills,
+);
+
+router.put(
+	ROUTES.MENTOR.SKILL.DETAIL,
+	isAuthenticate,
+	validatetor(MentorSkillSchema, "body"),
+	ProfileController.addOrUpdateSkills,
 );
 export default router;
