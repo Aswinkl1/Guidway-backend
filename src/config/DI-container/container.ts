@@ -7,7 +7,7 @@ import type { IEducationRepository } from "@application/ports/repository/IEducat
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
-import type { ISkillRepository } from "@application/ports/repository/ISkill.repositorty";
+import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
 // Types
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { IEmailService } from "@application/ports/services/IEmailService";

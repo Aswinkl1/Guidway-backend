@@ -1,5 +1,5 @@
 import type { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
-import type { ISkillRepository } from "@application/ports/repository/ISkill.repositorty";
+import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Skill } from "@domain/mentor/entities/skills.entity";
 import type {

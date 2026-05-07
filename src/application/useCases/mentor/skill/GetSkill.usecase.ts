@@ -3,7 +3,7 @@ import {
 	SkillMapper,
 	type SkillOutputDto,
 } from "@application/mappers/skills.mapper";
-import type { ISkillRepository } from "@application/ports/repository/ISkill.repositorty";
+import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { inject, injectable } from "inversify";
