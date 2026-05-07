@@ -171,6 +171,7 @@ export class ProfileController implements IProfileController {
 		console.log(record);
 		res.status(HTTPSTATUS.OK).json(createSuccess("", record));
 	};
+
 	addOrUpdateSkills = async (req: Request, res: Response): Promise<void> => {
 		const parsed = req.validated?.body as MentorSkillDTO;
 		const mentorId = req.user?.userId;
