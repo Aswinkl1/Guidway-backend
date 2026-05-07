@@ -3,11 +3,11 @@ import { NotFoundError } from "@domain/errors/UserError";
 interface IMentorSKillProps {
 	mentorId: string;
 	skillId: string;
-	yearsExperience: number;
+	yearsExperience?: number;
 }
 
 export class MentorSkillVO {
-	private constructor(public readonly prosp: IMentorSKillProps) {}
+	private constructor(public readonly props: IMentorSKillProps) {}
 
 	static create(props: IMentorSKillProps) {
 		if (!props.mentorId) {

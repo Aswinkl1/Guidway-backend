@@ -10,5 +10,5 @@ export type MentorSkillDTO = z.infer<typeof MentorSkillSchema>;
 export interface MentorSkillOutputDTO {
 	skillId: string;
 	name: string;
-	yearsExperience: number | null;
+	yearsExperience?: number;
 }
