@@ -36,6 +36,7 @@ import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
+import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
@@ -50,6 +51,7 @@ import { DeleteExperienceUsecase } from "@application/useCases/mentor/experience
 import { EditExperienceUsecase } from "@application/useCases/mentor/experience/Edit-Experience.usecase";
 import { GetMentorProfileUsecase } from "@application/useCases/mentor/GetMentorProfile.usecase";
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
+import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
@@ -94,7 +96,6 @@ import { TYPES } from "./TYPES";
 const container = new Container();
 
 //cache
-
 container
 	.bind<ICacheService>(TYPES.CacheService)
 	.to(CacheService)
@@ -252,6 +253,11 @@ container
 container
 	.bind<IAddMentorSkillUsecase>(TYPES.AddMentorSkillUsecase)
 	.to(AddMentorSkillUsecase)
+	.inSingletonScope();
+
+container
+	.bind<IDeleteMentorSkillUsecase>(TYPES.DeleteMentorSkillUsecase)
+	.to(DeleteMentorSkillUsecase)
 	.inSingletonScope();
 // services
 container

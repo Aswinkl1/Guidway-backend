@@ -43,6 +43,7 @@ export const TYPES = {
 	GetSkillUsecase: Symbol.for("GetSkillUsecase"),
 	GetMentorProfileUsecase: Symbol.for("GetMentorProfileUsecase"),
 	AddMentorSkillUsecase: Symbol.for("AddMentorSkillUsecase"),
+	DeleteMentorSkillUsecase: Symbol.for("DeleteMentorSkillUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

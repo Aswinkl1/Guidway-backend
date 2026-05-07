@@ -8,7 +8,11 @@ import {
 	type CreateExperiencedto,
 	DeleteExperienceSchema,
 } from "@application/dto/mentor/experience.dto";
-import type { MentorSkillDTO } from "@application/dto/mentor/mentorSkill.dto";
+import {
+	type DeleteMentorSkillDTO,
+	DeleteMentorSkillSchema,
+	type MentorSkillDTO,
+} from "@application/dto/mentor/mentorSkill.dto";
 import type { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
@@ -19,6 +23,7 @@ import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/ex
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
+import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
@@ -48,6 +53,8 @@ export class ProfileController implements IProfileController {
 		private readonly _getSkillUsecase: IGetSkillsUsecase,
 		@inject(TYPES.AddMentorSkillUsecase)
 		private readonly _addMentorSkillUsecase: IAddMentorSkillUsecase,
+		@inject(TYPES.DeleteMentorSkillUsecase)
+		private readonly _deleteMentorSkillUsecase: IDeleteMentorSkillUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -172,7 +179,10 @@ export class ProfileController implements IProfileController {
 		res.status(HTTPSTATUS.OK).json(createSuccess("", record));
 	};
 
-	addOrUpdateSkills = async (req: Request, res: Response): Promise<void> => {
+	addOrUpdateMentorSkills = async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
 		const parsed = req.validated?.body as MentorSkillDTO;
 		const mentorId = req.user?.userId;
 		if (!mentorId) {
@@ -182,5 +192,22 @@ export class ProfileController implements IProfileController {
 		const data = await this._addMentorSkillUsecase.execute(mentorId, parsed);
 
 		res.status(HTTPSTATUS.OK).json(createSuccess("succesfull", data));
+	};
+
+	removeMentorSkill = async (req: Request, res: Response): Promise<void> => {
+		const skillId = req.params.id;
+		const mentorId = req.user?.userId;
+		const parsed = DeleteMentorSkillSchema.safeParse({ skillId });
+		if (!parsed.success) {
+			throw new CustomZodValidationError(parsed.error);
+		}
+		if (!mentorId) {
+			throw new NotFoundError("mentorid not foundS");
+		}
+
+		await this._deleteMentorSkillUsecase.execute(mentorId, parsed.data);
+		res
+			.send(HTTPSTATUS.NO_CONTENT)
+			.json(createSuccess("deleted succesfull", {}));
 	};
 }
