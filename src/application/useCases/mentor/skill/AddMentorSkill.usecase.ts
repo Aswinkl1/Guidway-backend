@@ -6,16 +6,22 @@ import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
-import type { IMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IMentorSkill.usecase";
+import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
+import { TYPES } from "@config/DI-container/TYPES";
 import { MentorSkillVO } from "@domain/mentor/value_object/mentor.skills.vo";
+import { inject, injectable } from "inversify";
 
-export class MentorSkillUsecase implements IMentorSkillUsecase {
+@injectable()
+export class AddMentorSkillUsecase implements IAddMentorSkillUsecase {
 	constructor(
+		@inject(TYPES.MentorRepository)
 		private readonly _mentorRepository: IMentorRepository,
+		@inject(TYPES.SkillRepository)
 		private readonly _skillRepository: ISkillRepository,
+		@inject(TYPES.MentorSkillRepository)
 		private readonly _mentorSkillRepository: IMentorSkillRepository,
 	) {}
-	async addOrUpdateSkill(
+	async execute(
 		mentorId: string,
 		dto: MentorSkillDTO,
 	): Promise<MentorSkillOutputDTO> {

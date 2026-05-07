@@ -6,6 +6,7 @@ import type { IAchievementRepository } from "@application/ports/repository/IAche
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
+import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
 // Types
@@ -34,6 +35,7 @@ import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/ex
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
+import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
@@ -47,6 +49,7 @@ import { AddExperienceUsecase } from "@application/useCases/mentor/experience/Ad
 import { DeleteExperienceUsecase } from "@application/useCases/mentor/experience/Delete-Experience.usecase";
 import { EditExperienceUsecase } from "@application/useCases/mentor/experience/Edit-Experience.usecase";
 import { GetMentorProfileUsecase } from "@application/useCases/mentor/GetMentorProfile.usecase";
+import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
@@ -67,6 +70,7 @@ import { MentorQuery } from "@infrastructure/queries/mentor.query";
 import AchievementRepository from "@infrastructure/repositories/Achievement.reository";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
+import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
@@ -135,7 +139,10 @@ container
 	.bind<ISkillRepository>(TYPES.SkillRepository)
 	.to(SkillRepository)
 	.inSingletonScope();
-
+container
+	.bind<IMentorSkillRepository>(TYPES.MentorSkillRepository)
+	.to(MentorSkillRepository)
+	.inSingletonScope();
 //usecase
 
 container
@@ -242,6 +249,10 @@ container
 	.to(GetMentorProfileUsecase)
 	.inSingletonScope();
 
+container
+	.bind<IAddMentorSkillUsecase>(TYPES.AddMentorSkillUsecase)
+	.to(AddMentorSkillUsecase)
+	.inSingletonScope();
 // services
 container
 	.bind<IEmailService>(TYPES.EmailService)
