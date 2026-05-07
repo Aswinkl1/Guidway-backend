@@ -21,3 +21,12 @@ export class UserNotFoundError extends DomainError {
 		super(DomainErrorCode.NOT_FOUND, "User not found");
 	}
 }
+
+export class NotFoundError extends DomainError {
+	serialize(): { message: string; field?: string }[] {
+		return [{ message: this.message }];
+	}
+	constructor(_email: string) {
+		super(DomainErrorCode.NOT_FOUND, " not found");
+	}
+}
