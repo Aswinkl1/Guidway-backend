@@ -87,4 +87,10 @@ router.delete(
 	isAuthenticate,
 	ProfileController.removeMentorSkill,
 );
+
+router.get(
+	ROUTES.MENTOR.PROFILE.ROOT,
+	isAuthenticate,
+	ProfileController.getMentorProfile,
+);
 export default router;

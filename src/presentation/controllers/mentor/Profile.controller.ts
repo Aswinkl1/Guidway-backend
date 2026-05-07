@@ -22,6 +22,7 @@ import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/ed
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
+import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
 import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
@@ -55,6 +56,8 @@ export class ProfileController implements IProfileController {
 		private readonly _addMentorSkillUsecase: IAddMentorSkillUsecase,
 		@inject(TYPES.DeleteMentorSkillUsecase)
 		private readonly _deleteMentorSkillUsecase: IDeleteMentorSkillUsecase,
+		@inject(TYPES.GetMentorProfileUsecase)
+		private readonly _getMentorProfileUsecase: IGetMentorProfileUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -209,5 +212,14 @@ export class ProfileController implements IProfileController {
 		res
 			.send(HTTPSTATUS.NO_CONTENT)
 			.json(createSuccess("deleted succesfull", {}));
+	};
+
+	getMentorProfile = async (req: Request, res: Response): Promise<void> => {
+		const mentorId = req.user?.userId;
+		if (!mentorId) {
+			throw new NotFoundError("mentorid not foundS");
+		}
+		const profile = await this._getMentorProfileUsecase.execute(mentorId);
+		res.status(HTTPSTATUS.OK).json(createSuccess("succesfull", profile));
 	};
 }
