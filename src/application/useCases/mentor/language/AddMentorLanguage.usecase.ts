@@ -3,6 +3,7 @@ import type {
 	MentorLanguageOutputDTO,
 } from "@application/dto/mentor/mentorLanguage.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
+import type { ILanguageRepository } from "@application/ports/repository/ILanguage.repository";
 import type { IMentorLanguageRepository } from "@application/ports/repository/IMentorLanguage.repository";
 
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";

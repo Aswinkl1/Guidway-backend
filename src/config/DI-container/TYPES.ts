@@ -13,6 +13,7 @@ export const TYPES = {
 	SkillRepository: Symbol.for("SkillRepository"),
 	MentorSkillRepository: Symbol.for("MentorSkillRepository"),
 	MentorLanguageRepository: Symbol.for("MentorLanguageRepository"),
+	LanguageRepository: Symbol.for("LanguageRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),

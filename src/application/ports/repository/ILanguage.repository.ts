@@ -1,4 +1,4 @@
-import type { GetLanguagesQueryDto } from "@application/dto/mentor/mentorLanguage.dto";
+import type { GetLanguagesQueryDto } from "@application/dto/mentor/language.dto";
 import type { Language } from "@domain/mentor/entities/language.entity";
 import type { IBaseRepository } from "./IBaseRepository";
 

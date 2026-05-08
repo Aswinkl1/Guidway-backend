@@ -5,6 +5,7 @@ import type { IMentorQuery } from "@application/ports/queries/IMentor.query";
 import type { IAchievementRepository } from "@application/ports/repository/IAcheivement.repository";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
+import type { ILanguageRepository } from "@application/ports/repository/ILanguage.repository";
 import type { IMentorLanguageRepository } from "@application/ports/repository/IMentorLanguage.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
@@ -77,6 +78,7 @@ import { MentorQuery } from "@infrastructure/queries/mentor.query";
 import AchievementRepository from "@infrastructure/repositories/Achievement.reository";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
+import { LanguageRepository } from "@infrastructure/repositories/language.repository";
 import { MentorLanguageRepository } from "@infrastructure/repositories/MentorLanguage.repository";
 import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
@@ -153,6 +155,10 @@ container
 container
 	.bind<IMentorLanguageRepository>(TYPES.MentorLanguageRepository)
 	.to(MentorLanguageRepository)
+	.inSingletonScope();
+container
+	.bind<ILanguageRepository>(TYPES.LanguageRepository)
+	.to(LanguageRepository)
 	.inSingletonScope();
 //usecase
 
