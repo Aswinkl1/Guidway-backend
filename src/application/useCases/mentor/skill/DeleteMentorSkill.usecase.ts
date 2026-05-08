@@ -20,7 +20,7 @@ export class DeleteMentorSkillUsecase implements IDeleteMentorSkillUsecase {
 
 	async execute(mentorId: string, dto: DeleteMentorSkillDTO): Promise<void> {
 		const mentor = await this._mentorRepository.findMentorByUserId(mentorId);
-
+		console.log(dto);
 		if (!mentor) {
 			throw new NotFoundError("mentor not found");
 		}
