@@ -55,7 +55,7 @@ const languages = [
 ];
 
 export async function seedLanguages(prisma: PrismaClient) {
-	await prisma.skill.createMany({
+	await prisma.language.createMany({
 		data: languages,
 		skipDuplicates: true,
 	});
