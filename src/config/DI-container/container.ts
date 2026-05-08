@@ -5,6 +5,8 @@ import type { IMentorQuery } from "@application/ports/queries/IMentor.query";
 import type { IAchievementRepository } from "@application/ports/repository/IAcheivement.repository";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
+import type { ILanguageRepository } from "@application/ports/repository/ILanguage.repository";
+import type { IMentorLanguageRepository } from "@application/ports/repository/IMentorLanguage.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
@@ -35,6 +37,9 @@ import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/ex
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
+import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
+import type { IDeleteMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IDeleteMentorLanguage.usecase";
+import type { IGetLanguagesUsecase } from "@application/ports/usecase/mentor/language/IGetLanguage.usecase";
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
 import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
@@ -50,6 +55,9 @@ import { AddExperienceUsecase } from "@application/useCases/mentor/experience/Ad
 import { DeleteExperienceUsecase } from "@application/useCases/mentor/experience/Delete-Experience.usecase";
 import { EditExperienceUsecase } from "@application/useCases/mentor/experience/Edit-Experience.usecase";
 import { GetMentorProfileUsecase } from "@application/useCases/mentor/GetMentorProfile.usecase";
+import { AddMentorLanguageUsecase } from "@application/useCases/mentor/language/AddMentorLanguage.usecase";
+import { DeleteMentorLanguageUsecase } from "@application/useCases/mentor/language/DeleteMentorLanguage.usecase";
+import { GetLanguageUsecase } from "@application/useCases/mentor/language/GetLanguage.usecase";
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
@@ -72,6 +80,8 @@ import { MentorQuery } from "@infrastructure/queries/mentor.query";
 import AchievementRepository from "@infrastructure/repositories/Achievement.reository";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
+import { LanguageRepository } from "@infrastructure/repositories/language.repository";
+import { MentorLanguageRepository } from "@infrastructure/repositories/MentorLanguage.repository";
 import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
@@ -143,6 +153,14 @@ container
 container
 	.bind<IMentorSkillRepository>(TYPES.MentorSkillRepository)
 	.to(MentorSkillRepository)
+	.inSingletonScope();
+container
+	.bind<IMentorLanguageRepository>(TYPES.MentorLanguageRepository)
+	.to(MentorLanguageRepository)
+	.inSingletonScope();
+container
+	.bind<ILanguageRepository>(TYPES.LanguageRepository)
+	.to(LanguageRepository)
 	.inSingletonScope();
 //usecase
 
@@ -258,6 +276,19 @@ container
 container
 	.bind<IDeleteMentorSkillUsecase>(TYPES.DeleteMentorSkillUsecase)
 	.to(DeleteMentorSkillUsecase)
+	.inSingletonScope();
+container
+	.bind<IAddMentorLanguageUsecase>(TYPES.AddMentorLanguageUsecase)
+	.to(AddMentorLanguageUsecase)
+	.inSingletonScope();
+
+container
+	.bind<IDeleteMentorLanguageUsecase>(TYPES.DeleteMentorLanguageUsecase)
+	.to(DeleteMentorLanguageUsecase)
+	.inSingletonScope();
+container
+	.bind<IGetLanguagesUsecase>(TYPES.GetLanguageUsecase)
+	.to(GetLanguageUsecase)
 	.inSingletonScope();
 // services
 container
