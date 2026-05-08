@@ -28,5 +28,9 @@ export const ROUTES = {
 		PROFILE: {
 			ROOT: "/profile",
 		},
+		LANGUAGE: {
+			ROOT: "/language",
+			DETAIL: "/language/:id",
+		},
 	},
 } as const;

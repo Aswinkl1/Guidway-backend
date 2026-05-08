@@ -9,7 +9,10 @@ import {
 	DeleteExperienceSchema,
 } from "@application/dto/mentor/experience.dto";
 import {
-	type DeleteMentorSkillDTO,
+	DeleteMentorLanguageSchema,
+	type MentorLanguageDTO,
+} from "@application/dto/mentor/mentorLanguage.dto";
+import {
 	DeleteMentorSkillSchema,
 	type MentorSkillDTO,
 } from "@application/dto/mentor/mentorSkill.dto";
@@ -23,6 +26,8 @@ import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/ex
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
+import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
+import type { IDeleteMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IDeleteMentorLanguage.usecase";
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
 import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
@@ -58,6 +63,11 @@ export class ProfileController implements IProfileController {
 		private readonly _deleteMentorSkillUsecase: IDeleteMentorSkillUsecase,
 		@inject(TYPES.GetMentorProfileUsecase)
 		private readonly _getMentorProfileUsecase: IGetMentorProfileUsecase,
+		@inject(TYPES.AddMentorLanguageUsecase)
+		private readonly _addMentorLanguageUsecase: IAddMentorLanguageUsecase,
+
+		@inject(TYPES.DeleteMentorLanguageUsecase)
+		private readonly _deleteMentorLanguageUsecase: IDeleteMentorLanguageUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -221,5 +231,46 @@ export class ProfileController implements IProfileController {
 		}
 		const profile = await this._getMentorProfileUsecase.execute(mentorId);
 		res.status(HTTPSTATUS.OK).json(createSuccess("succesfull", profile));
+	};
+
+	addOrUpdateMentorLanguage = async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		const parsed = req.validated?.body as MentorLanguageDTO;
+
+		const mentorId = req.user?.userId;
+
+		if (!mentorId) {
+			throw new NotFoundError("mentorId not found");
+		}
+
+		const data = await this._addMentorLanguageUsecase.execute(mentorId, parsed);
+
+		res.status(HTTPSTATUS.OK).json(createSuccess("successful", data));
+	};
+
+	removeMentorLanguage = async (req: Request, res: Response): Promise<void> => {
+		const languageId = req.params.id;
+
+		const mentorId = req.user?.userId;
+
+		const parsed = DeleteMentorLanguageSchema.safeParse({
+			languageId,
+		});
+
+		if (!parsed.success) {
+			throw new CustomZodValidationError(parsed.error);
+		}
+
+		if (!mentorId) {
+			throw new NotFoundError("mentorId not found");
+		}
+
+		await this._deleteMentorLanguageUsecase.execute(mentorId, parsed.data);
+
+		res
+			.status(HTTPSTATUS.NO_CONTENT)
+			.json(createSuccess("deleted successful", {}));
 	};
 }
