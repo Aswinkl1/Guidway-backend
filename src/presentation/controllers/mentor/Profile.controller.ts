@@ -8,6 +8,7 @@ import {
 	type CreateExperiencedto,
 	DeleteExperienceSchema,
 } from "@application/dto/mentor/experience.dto";
+import type { GetLanguagesQueryDto } from "@application/dto/mentor/language.dto";
 import {
 	DeleteMentorLanguageSchema,
 	type MentorLanguageDTO,
@@ -28,6 +29,7 @@ import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/e
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
 import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
 import type { IDeleteMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IDeleteMentorLanguage.usecase";
+import type { IGetLanguagesUsecase } from "@application/ports/usecase/mentor/language/IGetLanguage.usecase";
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
 import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
@@ -68,6 +70,8 @@ export class ProfileController implements IProfileController {
 
 		@inject(TYPES.DeleteMentorLanguageUsecase)
 		private readonly _deleteMentorLanguageUsecase: IDeleteMentorLanguageUsecase,
+		@inject(TYPES.GetLanguageUsecase)
+		private readonly _getLanguageUsecase: IGetLanguagesUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -272,5 +276,15 @@ export class ProfileController implements IProfileController {
 		res
 			.status(HTTPSTATUS.NO_CONTENT)
 			.json(createSuccess("deleted successful", {}));
+	};
+
+	getAllLanguages = async (req: Request, res: Response): Promise<void> => {
+		const parsed = req.validated?.query as GetLanguagesQueryDto;
+
+		const record = await this._getLanguageUsecase.execute(parsed);
+
+		console.log(record);
+
+		res.status(HTTPSTATUS.OK).json(createSuccess("", record));
 	};
 }

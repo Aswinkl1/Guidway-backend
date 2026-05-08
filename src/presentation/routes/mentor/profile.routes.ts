@@ -4,6 +4,7 @@ import {
 	CreateExperienceSchema,
 	EditExperienceSchema,
 } from "@application/dto/mentor/experience.dto";
+import { GetLanguagesQueryDto } from "@application/dto/mentor/language.dto";
 import { MentorLanguageSchema } from "@application/dto/mentor/mentorLanguage.dto";
 import { MentorSkillSchema } from "@application/dto/mentor/mentorSkill.dto";
 import { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
@@ -103,5 +104,11 @@ router.delete(
 	ROUTES.MENTOR.LANGUAGE.DETAIL,
 	isAuthenticate,
 	ProfileController.removeMentorLanguage,
+);
+
+router.get(
+	ROUTES.MENTOR.LANGUAGE.ROOT,
+	validatetor(GetLanguagesQueryDto, "query"),
+	ProfileController.getAllLanguages,
 );
 export default router;
