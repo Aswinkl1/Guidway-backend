@@ -8,6 +8,12 @@ import {
 	type CreateExperiencedto,
 	DeleteExperienceSchema,
 } from "@application/dto/mentor/experience.dto";
+import {
+	type DeleteMentorSkillDTO,
+	DeleteMentorSkillSchema,
+	type MentorSkillDTO,
+} from "@application/dto/mentor/mentorSkill.dto";
+import type { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
@@ -16,6 +22,10 @@ import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/ed
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
+import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
+import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
+import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
+import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
@@ -40,6 +50,14 @@ export class ProfileController implements IProfileController {
 		private readonly _deleteExperienceUsecase: IDeleteExperienceUsecase,
 		@inject(TYPES.AddAchievementUsecase)
 		private readonly _addAchievementUsecase: IAddAchievementUsecase,
+		@inject(TYPES.GetSkillUsecase)
+		private readonly _getSkillUsecase: IGetSkillsUsecase,
+		@inject(TYPES.AddMentorSkillUsecase)
+		private readonly _addMentorSkillUsecase: IAddMentorSkillUsecase,
+		@inject(TYPES.DeleteMentorSkillUsecase)
+		private readonly _deleteMentorSkillUsecase: IDeleteMentorSkillUsecase,
+		@inject(TYPES.GetMentorProfileUsecase)
+		private readonly _getMentorProfileUsecase: IGetMentorProfileUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -154,5 +172,54 @@ export class ProfileController implements IProfileController {
 		res
 			.status(HTTPSTATUS.CREATED)
 			.json(createSuccess("Achievement created succesfull", data));
+	};
+
+	getAllSkills = async (req: Request, res: Response): Promise<void> => {
+		const parsed = req.validated?.query as GetSkillsQueryDto;
+
+		const record = await this._getSkillUsecase.execute(parsed);
+		console.log(record);
+		res.status(HTTPSTATUS.OK).json(createSuccess("", record));
+	};
+
+	addOrUpdateMentorSkills = async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		const parsed = req.validated?.body as MentorSkillDTO;
+		const mentorId = req.user?.userId;
+		if (!mentorId) {
+			throw new NotFoundError("mentorid not foundS");
+		}
+
+		const data = await this._addMentorSkillUsecase.execute(mentorId, parsed);
+
+		res.status(HTTPSTATUS.OK).json(createSuccess("succesfull", data));
+	};
+
+	removeMentorSkill = async (req: Request, res: Response): Promise<void> => {
+		const skillId = req.params.id;
+		const mentorId = req.user?.userId;
+		const parsed = DeleteMentorSkillSchema.safeParse({ skillId });
+		if (!parsed.success) {
+			throw new CustomZodValidationError(parsed.error);
+		}
+		if (!mentorId) {
+			throw new NotFoundError("mentorid not foundS");
+		}
+
+		await this._deleteMentorSkillUsecase.execute(mentorId, parsed.data);
+		res
+			.send(HTTPSTATUS.NO_CONTENT)
+			.json(createSuccess("deleted succesfull", {}));
+	};
+
+	getMentorProfile = async (req: Request, res: Response): Promise<void> => {
+		const mentorId = req.user?.userId;
+		if (!mentorId) {
+			throw new NotFoundError("mentorid not foundS");
+		}
+		const profile = await this._getMentorProfileUsecase.execute(mentorId);
+		res.status(HTTPSTATUS.OK).json(createSuccess("succesfull", profile));
 	};
 }

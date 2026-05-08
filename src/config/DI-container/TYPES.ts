@@ -10,12 +10,16 @@ export const TYPES = {
 	EducationRepository: Symbol.for("EducationRepository"),
 	ExperienceRepository: Symbol.for("ExperienceRepository"),
 	AchievementRepository: Symbol.for("AchievementRepository"),
+	SkillRepository: Symbol.for("SkillRepository"),
+	MentorSkillRepository: Symbol.for("MentorSkillRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
 	TokenService: Symbol.for("TokenService"),
 	S3Service: Symbol.for("S3Service"),
 
+	//queries
+	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
 	ForgetPasswordUseCase: Symbol.for("ForgetPasswordUseCase"),
 	LoginUseCase: Symbol.for("LoginUseCase"),
@@ -36,6 +40,10 @@ export const TYPES = {
 	EditExperienceUsecase: Symbol.for("EditExperienceUsecase"),
 	DeleteExperienceUsecase: Symbol.for("DeleteExperienceUsecase"),
 	AddAchievementUsecase: Symbol.for("AddAchievementUsecase"),
+	GetSkillUsecase: Symbol.for("GetSkillUsecase"),
+	GetMentorProfileUsecase: Symbol.for("GetMentorProfileUsecase"),
+	AddMentorSkillUsecase: Symbol.for("AddMentorSkillUsecase"),
+	DeleteMentorSkillUsecase: Symbol.for("DeleteMentorSkillUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

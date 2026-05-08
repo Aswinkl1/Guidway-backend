@@ -4,6 +4,11 @@ import {
 	CreateExperienceSchema,
 	EditExperienceSchema,
 } from "@application/dto/mentor/experience.dto";
+import {
+	DeleteMentorSkillSchema,
+	MentorSkillSchema,
+} from "@application/dto/mentor/mentorSkill.dto";
+import { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -62,5 +67,30 @@ router.post(
 	isAuthenticate,
 	validatetor(CreateAchievementSchema, "body"),
 	ProfileController.addAchievement,
+);
+
+router.get(
+	ROUTES.MENTOR.SKILL.ROOT,
+	validatetor(GetSkillsQueryDto, "query"),
+	ProfileController.getAllSkills,
+);
+
+router.put(
+	ROUTES.MENTOR.SKILL.DETAIL,
+	isAuthenticate,
+	validatetor(MentorSkillSchema, "body"),
+	ProfileController.addOrUpdateMentorSkills,
+);
+
+router.delete(
+	ROUTES.MENTOR.SKILL.DETAIL,
+	isAuthenticate,
+	ProfileController.removeMentorSkill,
+);
+
+router.get(
+	ROUTES.MENTOR.PROFILE.ROOT,
+	isAuthenticate,
+	ProfileController.getMentorProfile,
 );
 export default router;

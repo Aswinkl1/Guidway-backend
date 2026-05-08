@@ -16,8 +16,17 @@ export const ROUTES = {
 		LINKEDIN_CALLBACK: "/auth/linkedin/callback",
 	},
 	MENTOR: {
+		ROOT: "/",
+		DETAIL: "/:id",
 		EDUCATION: { ROOT: "/education", DETAIL: "/education/:id" },
 		EXPERIENCE: { ROOT: "/experience", DETAIL: "/experience/:id" },
 		ACHIEVEMENT: { ROOT: "/achievement", DETAIL: "/achievement/:id" },
+		SKILL: {
+			ROOT: "/skill",
+			DETAIL: "/skill/:id",
+		},
+		PROFILE: {
+			ROOT: "/profile",
+		},
 	},
 } as const;

@@ -8,4 +8,8 @@ export interface IProfileController {
 	editExperience(req: Request, res: Response): Promise<void>;
 	deleteExperience(req: Request, res: Response): Promise<void>;
 	addAchievement(req: Request, res: Response): Promise<void>;
+	getAllSkills(req: Request, res: Response): Promise<void>;
+	addOrUpdateMentorSkills(req: Request, res: Response): Promise<void>;
+	removeMentorSkill(req: Request, res: Response): Promise<void>;
+	getMentorProfile(req: Request, res: Response): Promise<void>;
 }
