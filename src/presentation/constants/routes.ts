@@ -32,6 +32,10 @@ export const ROUTES = {
 			ROOT: "/language",
 			DETAIL: "/language/:id",
 		},
+		DOMAIN: {
+			ROOT: "/domain",
+			DETAIL: "/domian/:id",
+		},
 	},
 	USER: {
 		ROOT: "/",
