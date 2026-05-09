@@ -6,7 +6,7 @@ export interface IDomainOutputDTO {
 }
 
 export class DomainMapper {
-	static(entity: Domain): IDomainOutputDTO {
+	static toOutput(entity: Domain): IDomainOutputDTO {
 		return {
 			id: entity.id,
 			domainName: entity.domainName,
