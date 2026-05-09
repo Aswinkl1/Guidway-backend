@@ -2,7 +2,7 @@ import z from "zod";
 
 export const EditUserProfileSchema = z.object({
 	name: z.string(),
-	phoneNumber: z.number(),
+	phoneNumber: z.string(),
 	timeZone: z.string(),
 });
 
