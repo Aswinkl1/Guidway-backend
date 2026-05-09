@@ -3,6 +3,7 @@ import type { ICacheService } from "@application/ports/cache/ICache";
 import type { ITokenCache } from "@application/ports/cache/ITokenCache";
 import type { IMentorQuery } from "@application/ports/queries/IMentor.query";
 import type { IAchievementRepository } from "@application/ports/repository/IAcheivement.repository";
+import type { IDomainRepository } from "@application/ports/repository/IDomain.repository";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
 import type { ILanguageRepository } from "@application/ports/repository/ILanguage.repository";
@@ -80,6 +81,7 @@ import {
 } from "@infrastructure/database/redisClient";
 import { MentorQuery } from "@infrastructure/queries/mentor.query";
 import AchievementRepository from "@infrastructure/repositories/Achievement.reository";
+import { DomainRepository } from "@infrastructure/repositories/Domain.repoisitoty";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
 import { LanguageRepository } from "@infrastructure/repositories/language.repository";
@@ -163,6 +165,10 @@ container
 container
 	.bind<ILanguageRepository>(TYPES.LanguageRepository)
 	.to(LanguageRepository)
+	.inSingletonScope();
+container
+	.bind<IDomainRepository>(TYPES.DomainRepository)
+	.to(DomainRepository)
 	.inSingletonScope();
 //usecase
 
