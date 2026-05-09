@@ -1,4 +1,5 @@
 import { CreateAchievementSchema } from "@application/dto/mentor/acheivement.dto";
+import { GetDomainQueryDto } from "@application/dto/mentor/domain.dto";
 import { EditEducationSchema } from "@application/dto/mentor/education.dto";
 import {
 	CreateExperienceSchema,
@@ -110,5 +111,11 @@ router.get(
 	ROUTES.MENTOR.LANGUAGE.ROOT,
 	validatetor(GetLanguagesQueryDto, "query"),
 	ProfileController.getAllLanguages,
+);
+
+router.get(
+	ROUTES.MENTOR.DOMAIN.ROOT,
+	validatetor(GetDomainQueryDto, "query"),
+	ProfileController.getAllDomains,
 );
 export default router;

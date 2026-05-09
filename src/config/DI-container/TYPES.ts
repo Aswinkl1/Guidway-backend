@@ -14,6 +14,7 @@ export const TYPES = {
 	MentorSkillRepository: Symbol.for("MentorSkillRepository"),
 	MentorLanguageRepository: Symbol.for("MentorLanguageRepository"),
 	LanguageRepository: Symbol.for("LanguageRepository"),
+	DomainRepository: Symbol.for("DomainRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
@@ -50,6 +51,7 @@ export const TYPES = {
 	DeleteMentorLanguageUsecase: Symbol.for("DeleteMentorLanguageUsecase"),
 	GetLanguageUsecase: Symbol.for("GetLanguageUsecase"),
 	EditUserProfileUsecase: Symbol.for("EditUserProfileUsecase"),
+	GetDomainUsecase: Symbol.for("GetDomainUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
