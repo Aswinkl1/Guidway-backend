@@ -49,6 +49,7 @@ export const TYPES = {
 	AddMentorLanguageUsecase: Symbol.for("AddMentorLanguageUsecase"),
 	DeleteMentorLanguageUsecase: Symbol.for("DeleteMentorLanguageUsecase"),
 	GetLanguageUsecase: Symbol.for("GetLanguageUsecase"),
+	EditUserProfileUsecase: Symbol.for("EditUserProfileUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
