@@ -33,4 +33,8 @@ export const ROUTES = {
 			DETAIL: "/language/:id",
 		},
 	},
+	USER: {
+		ROOT: "/",
+		DETAIL: "/:id",
+	},
 } as const;
