@@ -64,6 +64,39 @@ export class User {
 			throw new Error(DOMAIN_ERRORS_MESSAGE.USER.NOT_BLOCKED);
 		this.isBlocked = false;
 	}
+	update(updatedProps: Partial<Omit<UserProps, "id" | "createdAt">>) {
+		if (updatedProps.email !== undefined) this.email = updatedProps.email;
+
+		if (updatedProps.name !== undefined) this.name = updatedProps.name;
+
+		if (updatedProps.password !== undefined)
+			this.password = updatedProps.password;
+
+		if (updatedProps.phoneNumber !== undefined)
+			this.phoneNumber = updatedProps.phoneNumber;
+
+		if (updatedProps.profileImageKey !== undefined)
+			this.profileImageKey = updatedProps.profileImageKey;
+
+		if (updatedProps.authProviderId !== undefined)
+			this.authProviderId = updatedProps.authProviderId;
+
+		if (updatedProps.role !== undefined) this.role = updatedProps.role;
+
+		if (updatedProps.deletedAt !== undefined)
+			this.deletedAt = updatedProps.deletedAt;
+
+		if (updatedProps.isVerified !== undefined)
+			this.isVerified = updatedProps.isVerified;
+
+		if (updatedProps.isBlocked !== undefined)
+			this.isBlocked = updatedProps.isBlocked;
+
+		if (updatedProps.timezone !== undefined)
+			this.timezone = updatedProps.timezone;
+
+		this.updatedAt = new Date();
+	}
 }
 
 export const Role = {

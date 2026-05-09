@@ -15,4 +15,5 @@ export interface IProfileController {
 	addOrUpdateMentorLanguage(req: Request, res: Response): Promise<void>;
 	removeMentorLanguage(req: Request, res: Response): Promise<void>;
 	getAllLanguages(req: Request, res: Response): Promise<void>;
+	EditUserProfile(req: Request, res: Response): Promise<void>;
 }

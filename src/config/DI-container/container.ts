@@ -21,6 +21,7 @@ import type { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdmin
 import type { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
 import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdateBlockStatus";
 import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
+import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import type { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
 import type { IOAuthUseCase } from "@application/ports/usecase/IOAuth.usecase";
@@ -61,6 +62,7 @@ import { GetLanguageUsecase } from "@application/useCases/mentor/language/GetLan
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
+import { EditUserProfileUsecase } from "@application/useCases/user/EditUserProfile.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
 import { OAuthUseCase } from "@application/useCases/user/OAuth.usecase";
@@ -289,6 +291,11 @@ container
 container
 	.bind<IGetLanguagesUsecase>(TYPES.GetLanguageUsecase)
 	.to(GetLanguageUsecase)
+	.inSingletonScope();
+
+container
+	.bind<IEditUserProfileUsecase>(TYPES.EditUserProfileUsecase)
+	.to(EditUserProfileUsecase)
 	.inSingletonScope();
 // services
 container
