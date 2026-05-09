@@ -1,4 +1,5 @@
 import type { CreateAchievementDTO } from "@application/dto/mentor/acheivement.dto";
+import type { GetDomainQueryDto } from "@application/dto/mentor/domain.dto";
 import {
 	CreateEducationSchema,
 	DeleteEducationSchema,
@@ -23,6 +24,7 @@ import { NotFoundError } from "@application/errors/NotFoundError";
 import { UnAuthenticatedError } from "@application/errors/UnAuthenticatedError";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
+import type { IGetDomainUsecase } from "@application/ports/usecase/mentor/Domian/IGetDomain.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
 import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/education/IEdit-Education.usecase";
@@ -77,6 +79,8 @@ export class ProfileController implements IProfileController {
 		private readonly _getLanguageUsecase: IGetLanguagesUsecase,
 		@inject(TYPES.EditUserProfileUsecase)
 		private readonly _editUserProfileUsecase: IEditUserProfileUsecase,
+		@inject(TYPES.GetDomainUsecase)
+		private readonly _getDomainUsecase: IGetDomainUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -302,5 +306,13 @@ export class ProfileController implements IProfileController {
 		const record = await this._editUserProfileUsecase.execute(userId, parsed);
 
 		res.status(HTTPSTATUS.OK).json(createSuccess("suscess", record));
+	};
+
+	getAllDomains = async (req: Request, res: Response): Promise<void> => {
+		const parsed = req.validated?.query as GetDomainQueryDto;
+
+		const records = await this._getDomainUsecase.execute(parsed);
+
+		res.status(HTTPSTATUS.OK).json(createSuccess("success", records));
 	};
 }
