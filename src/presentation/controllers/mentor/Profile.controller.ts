@@ -18,7 +18,10 @@ import {
 	type MentorSkillDTO,
 } from "@application/dto/mentor/mentorSkill.dto";
 import type { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
+import type { editProfileDTO } from "@application/dto/user/EditProfile.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
+import { UnAuthenticatedError } from "@application/errors/UnAuthenticatedError";
+import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
@@ -72,6 +75,8 @@ export class ProfileController implements IProfileController {
 		private readonly _deleteMentorLanguageUsecase: IDeleteMentorLanguageUsecase,
 		@inject(TYPES.GetLanguageUsecase)
 		private readonly _getLanguageUsecase: IGetLanguagesUsecase,
+		@inject(TYPES.EditUserProfileUsecase)
+		private readonly _editUserProfileUsecase: IEditUserProfileUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -286,5 +291,16 @@ export class ProfileController implements IProfileController {
 		console.log(record);
 
 		res.status(HTTPSTATUS.OK).json(createSuccess("", record));
+	};
+	EditUserProfile = async (req: Request, res: Response): Promise<void> => {
+		const userId = req.user?.userId;
+		const parsed = req.validated?.body as editProfileDTO;
+		if (!userId) {
+			throw new UnAuthenticatedError("user not authenticated");
+		}
+
+		const record = await this._editUserProfileUsecase.execute(userId, parsed);
+
+		res.status(HTTPSTATUS.OK).json(createSuccess("suscess", record));
 	};
 }
