@@ -9,3 +9,14 @@ export const UpdateMentorOverviewSchema = z.object({
 export type UpdateMentorOverviewDTO = z.infer<
 	typeof UpdateMentorOverviewSchema
 >;
+
+export const UpdateMentorOverviewOutputDTO =
+	UpdateMentorOverviewSchema.required({
+		shortBio: true,
+		headline: true,
+		domainId: true,
+	});
+
+export type UpdateMentorOverviewOutputDTO = z.infer<
+	typeof UpdateMentorOverviewOutputDTO
+>;
