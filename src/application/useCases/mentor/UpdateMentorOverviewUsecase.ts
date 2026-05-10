@@ -30,7 +30,7 @@ export class UpdateMentorOverviewUsecase
 
 		mentor.update(dto);
 
-		const updatedMentor = await this._mentorRepoitory.save(mentorId, mentor);
+		const updatedMentor = await this._mentorRepoitory.update(mentorId, mentor);
 
 		return {
 			domainId: updatedMentor.domainId!,

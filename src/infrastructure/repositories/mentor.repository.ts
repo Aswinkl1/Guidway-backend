@@ -86,9 +86,10 @@ export default class MentorRepository
 	}
 
 	async update(userId: string, data: Partial<Mentor>): Promise<Mentor> {
+		const persitenceData = this.toPersistence(data);
 		const record = await this._prisma.mentor.update({
 			where: { userId },
-			data,
+			data: persitenceData,
 		});
 
 		return this.toDomain(record);
