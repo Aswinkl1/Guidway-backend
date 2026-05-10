@@ -6,11 +6,17 @@ import type {
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/mentor/IUpdateMentorOverview.usecase";
+import { TYPES } from "@config/DI-container/TYPES";
+import { inject, injectable } from "inversify";
 
+@injectable()
 export class UpdateMentorOverviewUsecase
 	implements IUpdateMentorOverviewUsecase
 {
-	constructor(private readonly _mentorRepoitory: IMentorRepository) {}
+	constructor(
+		@inject(TYPES.MentorRepository)
+		private readonly _mentorRepoitory: IMentorRepository,
+	) {}
 
 	async execute(
 		mentorId: string,
