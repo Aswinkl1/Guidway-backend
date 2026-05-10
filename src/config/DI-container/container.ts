@@ -40,6 +40,7 @@ import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/ex
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
+import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/mentor/IUpdateMentorOverview.usecase";
 import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
 import type { IDeleteMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IDeleteMentorLanguage.usecase";
 import type { IGetLanguagesUsecase } from "@application/ports/usecase/mentor/language/IGetLanguage.usecase";
@@ -65,6 +66,7 @@ import { GetLanguageUsecase } from "@application/useCases/mentor/language/GetLan
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
+import { UpdateMentorOverviewUsecase } from "@application/useCases/mentor/UpdateMentorOverviewUsecase";
 import { EditUserProfileUsecase } from "@application/useCases/user/EditUserProfile.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
@@ -309,6 +311,10 @@ container
 container
 	.bind<IGetDomainUsecase>(TYPES.GetDomainUsecase)
 	.to(GetDomainUsecase)
+	.inSingletonScope();
+container
+	.bind<IUpdateMentorOverviewUsecase>(TYPES.UpdateMentorOverviewUsecase)
+	.to(UpdateMentorOverviewUsecase)
 	.inSingletonScope();
 // services
 container

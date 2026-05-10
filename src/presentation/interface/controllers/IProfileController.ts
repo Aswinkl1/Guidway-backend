@@ -17,4 +17,5 @@ export interface IProfileController {
 	getAllLanguages(req: Request, res: Response): Promise<void>;
 	EditUserProfile(req: Request, res: Response): Promise<void>;
 	getAllDomains(req: Request, res: Response): Promise<void>;
+	updateMentorOverview(req: Request, res: Response): Promise<void>;
 }
