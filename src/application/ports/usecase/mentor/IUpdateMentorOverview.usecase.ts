@@ -1,5 +1,11 @@
-import type { UpdateMentorOverviewDTO } from "@application/dto/mentor/updateMentorOverview.dto";
+import type {
+	UpdateMentorOverviewDTO,
+	UpdateMentorOverviewOutputDTO,
+} from "@application/dto/mentor/updateMentorOverview.dto";
 
 export interface IUpdateMentorOverviewUsecase {
-	execute(mentorId: string, dto: UpdateMentorOverviewDTO): Promise<void>;
+	execute(
+		mentorId: string,
+		dto: UpdateMentorOverviewDTO,
+	): Promise<UpdateMentorOverviewOutputDTO>;
 }
