@@ -97,6 +97,39 @@ export class Mentor {
 		}
 	}
 
+	update(updatedProps: Partial<Omit<mentorProp, "userId" | "createdAt">>) {
+		if (updatedProps.headline !== undefined)
+			this.props.headline = updatedProps.headline;
+
+		if (updatedProps.shortBio !== undefined)
+			this.props.shortBio = updatedProps.shortBio;
+
+		if (updatedProps.isVerified !== undefined)
+			this.props.isVerified = updatedProps.isVerified;
+
+		if (updatedProps.domainId !== undefined)
+			this.props.domainId = updatedProps.domainId;
+
+		if (updatedProps.status !== undefined)
+			this.props.status = updatedProps.status;
+
+		if (updatedProps.stripeAccountId !== undefined)
+			this.props.stripeAccountId = updatedProps.stripeAccountId;
+
+		if (updatedProps.stripeOnboardingComplete !== undefined)
+			this.props.stripeOnboardingComplete =
+				updatedProps.stripeOnboardingComplete;
+
+		if (updatedProps.averageRating !== undefined)
+			this.props.averageRating = updatedProps.averageRating;
+
+		if (updatedProps.reviewCount !== undefined)
+			this.props.reviewCount = updatedProps.reviewCount;
+
+		if (updatedProps.updatedAt !== undefined)
+			this.props.updatedAt = updatedProps.updatedAt;
+	}
+
 	toPrimitive() {
 		return {
 			...this.props,
