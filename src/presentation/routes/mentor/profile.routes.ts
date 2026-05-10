@@ -9,6 +9,7 @@ import { GetLanguagesQueryDto } from "@application/dto/mentor/language.dto";
 import { MentorLanguageSchema } from "@application/dto/mentor/mentorLanguage.dto";
 import { MentorSkillSchema } from "@application/dto/mentor/mentorSkill.dto";
 import { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
+import { UpdateMentorOverviewSchema } from "@application/dto/mentor/updateMentorOverview.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -117,5 +118,12 @@ router.get(
 	ROUTES.MENTOR.DOMAIN.ROOT,
 	validatetor(GetDomainQueryDto, "query"),
 	ProfileController.getAllDomains,
+);
+
+router.patch(
+	ROUTES.MENTOR.PROFILE.ROOT,
+	isAuthenticate,
+	validatetor(UpdateMentorOverviewSchema, "body"),
+	ProfileController.updateMentorOverview,
 );
 export default router;

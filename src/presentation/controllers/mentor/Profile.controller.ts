@@ -19,6 +19,7 @@ import {
 	type MentorSkillDTO,
 } from "@application/dto/mentor/mentorSkill.dto";
 import type { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
+import type { UpdateMentorOverviewDTO } from "@application/dto/mentor/updateMentorOverview.dto";
 import type { editProfileDTO } from "@application/dto/user/EditProfile.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import { UnAuthenticatedError } from "@application/errors/UnAuthenticatedError";
@@ -32,6 +33,7 @@ import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/ex
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
+import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/mentor/IUpdateMentorOverview.usecase";
 import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
 import type { IDeleteMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IDeleteMentorLanguage.usecase";
 import type { IGetLanguagesUsecase } from "@application/ports/usecase/mentor/language/IGetLanguage.usecase";
@@ -81,6 +83,8 @@ export class ProfileController implements IProfileController {
 		private readonly _editUserProfileUsecase: IEditUserProfileUsecase,
 		@inject(TYPES.GetDomainUsecase)
 		private readonly _getDomainUsecase: IGetDomainUsecase,
+		@inject(TYPES.UpdateMentorOverviewUsecase)
+		private readonly _updateMentorOverviewUsecase: IUpdateMentorOverviewUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -314,5 +318,19 @@ export class ProfileController implements IProfileController {
 		const records = await this._getDomainUsecase.execute(parsed);
 
 		res.status(HTTPSTATUS.OK).json(createSuccess("success", records));
+	};
+
+	updateMentorOverview = async (req: Request, res: Response): Promise<void> => {
+		const parsed = req.validated?.body as UpdateMentorOverviewDTO;
+		const mentorId = req.user?.userId;
+		if (!mentorId) {
+			throw new NotFoundError("mentorId not found");
+		}
+		const record = await this._updateMentorOverviewUsecase.execute(
+			mentorId,
+			parsed,
+		);
+
+		res.status(HTTPSTATUS.OK).json(createSuccess("success", record));
 	};
 }
