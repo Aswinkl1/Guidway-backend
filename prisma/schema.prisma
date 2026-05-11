@@ -27,18 +27,7 @@ enum MentorStatus {
   SUSPENDED
 }
 
-enum SocialPlatform {
-  LINKEDIN
-  GITHUB
-  TWITTER
-  INSTAGRAM
-  FACEBOOK
-  WEBSITE
-  BEHANCE
-  DRIBBBLE
-  YOUTUBE
-  OTHER
-}
+
 
 enum ProficiencyLevel {
   NATIVE
@@ -215,7 +204,7 @@ model SocialLink {
   id       String         @id @default(uuid())
   mentorId String
   mentor   Mentor         @relation(fields: [mentorId], references: [userId])
-  platform SocialPlatform
+  platform String
   url      String
 
   // @@unique([mentorId, platform]) // A mentor can only have one link per platform
