@@ -1,12 +1,14 @@
 import type { ISocialLinkRepository } from "@application/ports/repository/ISocialLinks.reposiroty";
+import { TYPES } from "@config/DI-container/TYPES";
 import { SocialLinks } from "@domain/mentor/entities/socialLink.entity";
 import type {
 	Prisma,
 	PrismaClient,
 	SocialLink as PrismaSocialLink,
 } from "generated/prisma/client";
+import { inject, injectable } from "inversify";
 import { BaseRepository } from "./BaseRepository";
-
+@injectable()
 export class SocaiLinkRepository
 	extends BaseRepository<
 		PrismaSocialLink,
@@ -16,6 +18,23 @@ export class SocaiLinkRepository
 	>
 	implements ISocialLinkRepository
 {
+	constructor(
+		@inject(TYPES.PrismaClient) private readonly _prisma: PrismaClient,
+	) {
+		super(_prisma.socialLink);
+	}
+	async deleteAll(mentorId: string): Promise<void> {
+		await this._prisma.socialLink.deleteMany({ where: { mentorId } });
+	}
+	async createMany(
+		data: Pick<SocialLinks, "mentorId" | "platform" | "url">[],
+	): Promise<SocialLinks[]> {
+		const record = await this._prisma.socialLink.createManyAndReturn({
+			data,
+		});
+		return record.map((v) => this.toDomain(v));
+	}
+
 	protected toDomain(record: {
 		platform: string;
 		url: string;
@@ -33,19 +52,5 @@ export class SocaiLinkRepository
 			platform: entity.platform,
 			url: entity.url,
 		};
-	}
-	constructor(private readonly _prisma: PrismaClient) {
-		super(_prisma.socialLink);
-	}
-	async deleteAll(mentorId: string): Promise<void> {
-		await this._prisma.socialLink.deleteMany({ where: { mentorId } });
-	}
-	async createMany(
-		data: Pick<SocialLinks, "mentorId" | "platform" | "url">[],
-	): Promise<SocialLinks[]> {
-		const record = await this._prisma.socialLink.createManyAndReturn({
-			data,
-		});
-		return record.map((v) => this.toDomain(v));
 	}
 }
