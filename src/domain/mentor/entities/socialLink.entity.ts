@@ -26,4 +26,17 @@ export class SocialLinks {
 
 		return new SocialLinks(finalProps);
 	}
+
+	get platform() {
+		return this.props.platform;
+	}
+	get url() {
+		return this.props.url;
+	}
+	get id() {
+		return this.props.id;
+	}
+	get mentorId() {
+		return this.props.mentorId;
+	}
 }
