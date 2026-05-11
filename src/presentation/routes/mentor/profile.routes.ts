@@ -9,6 +9,7 @@ import { GetLanguagesQueryDto } from "@application/dto/mentor/language.dto";
 import { MentorLanguageSchema } from "@application/dto/mentor/mentorLanguage.dto";
 import { MentorSkillSchema } from "@application/dto/mentor/mentorSkill.dto";
 import { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
+import { CreateSocialLinkSchema } from "@application/dto/mentor/socialLink.dto";
 import { UpdateMentorOverviewSchema } from "@application/dto/mentor/updateMentorOverview.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
@@ -125,5 +126,12 @@ router.patch(
 	isAuthenticate,
 	validatetor(UpdateMentorOverviewSchema, "body"),
 	ProfileController.updateMentorOverview,
+);
+
+router.put(
+	ROUTES.MENTOR.SOCIALMEDIA_LINKS.ROOT,
+	isAuthenticate,
+	validatetor(CreateSocialLinkSchema, "body"),
+	ProfileController.updateSocailMediaLinks,
 );
 export default router;

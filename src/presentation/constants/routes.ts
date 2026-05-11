@@ -36,6 +36,9 @@ export const ROUTES = {
 			ROOT: "/domain",
 			DETAIL: "/domian/:id",
 		},
+		SOCIALMEDIA_LINKS: {
+			ROOT: "/socialMediaLink",
+		},
 	},
 	USER: {
 		ROOT: "/",

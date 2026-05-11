@@ -19,6 +19,7 @@ import {
 	type MentorSkillDTO,
 } from "@application/dto/mentor/mentorSkill.dto";
 import type { GetSkillsQueryDto } from "@application/dto/mentor/skill.dto";
+import type { CreateSocialLinkDTO } from "@application/dto/mentor/socialLink.dto";
 import type { UpdateMentorOverviewDTO } from "@application/dto/mentor/updateMentorOverview.dto";
 import type { editProfileDTO } from "@application/dto/user/EditProfile.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
@@ -32,6 +33,7 @@ import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/ed
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
+import type { ICreateSocaiLinksUsecase } from "@application/ports/usecase/mentor/ICreateSocailLinks.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
 import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/mentor/IUpdateMentorOverview.usecase";
 import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
@@ -85,6 +87,8 @@ export class ProfileController implements IProfileController {
 		private readonly _getDomainUsecase: IGetDomainUsecase,
 		@inject(TYPES.UpdateMentorOverviewUsecase)
 		private readonly _updateMentorOverviewUsecase: IUpdateMentorOverviewUsecase,
+		@inject(TYPES.CreateSocialLinksUsecse)
+		private readonly _createSocialLinksUsecase: ICreateSocaiLinksUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -327,6 +331,23 @@ export class ProfileController implements IProfileController {
 			throw new NotFoundError("mentorId not found");
 		}
 		const record = await this._updateMentorOverviewUsecase.execute(
+			mentorId,
+			parsed,
+		);
+
+		res.status(HTTPSTATUS.OK).json(createSuccess("success", record));
+	};
+	updateSocailMediaLinks = async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		const parsed = req.validated?.body as CreateSocialLinkDTO;
+		const mentorId = req.user?.userId;
+		if (!mentorId) {
+			throw new NotFoundError("mentorId not found");
+		}
+
+		const record = await this._createSocialLinksUsecase.execute(
 			mentorId,
 			parsed,
 		);
