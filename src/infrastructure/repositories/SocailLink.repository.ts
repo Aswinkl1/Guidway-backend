@@ -44,13 +44,10 @@ export class SocaiLinkRepository
 		await this._prisma.socialLink.deleteMany({ where: { mentorId } });
 	}
 	async createMany(
-		mentorId: string,
-		data: Pick<ISocialLinks, "mentorId" | "platform" | "url">[],
+		data: Pick<SocialLinks, "mentorId" | "platform" | "url">[],
 	): Promise<SocialLinks[]> {
 		const record = await this._prisma.socialLink.createManyAndReturn({
-			data: data.map((item) => {
-				return { ...item, mentorId };
-			}),
+			data,
 		});
 		return record.map((v) => this.toDomain(v));
 	}

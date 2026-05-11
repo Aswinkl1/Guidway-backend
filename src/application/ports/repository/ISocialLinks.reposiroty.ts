@@ -1,7 +1,4 @@
-import type {
-	ISocialLinks,
-	SocialLinks,
-} from "@domain/mentor/entities/socialLink.entity";
+import type { SocialLinks } from "@domain/mentor/entities/socialLink.entity";
 import type { IBaseRepository } from "./IBaseRepository";
 
 export interface ISocialLinkRepository
@@ -12,7 +9,6 @@ export interface ISocialLinkRepository
 	> {
 	deleteAll(metornId: string): Promise<void>;
 	createMany(
-		mentorId: string,
-		data: Pick<ISocialLinks, "platform" | "url">[],
+		data: Pick<SocialLinks, "platform" | "url">[],
 	): Promise<SocialLinks[]>;
 }
