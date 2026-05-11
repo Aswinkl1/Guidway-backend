@@ -1,8 +1,5 @@
 import type { ISocialLinkRepository } from "@application/ports/repository/ISocialLinks.reposiroty";
-import {
-	type ISocialLinks,
-	SocialLinks,
-} from "@domain/mentor/entities/socialLink.entity";
+import { SocialLinks } from "@domain/mentor/entities/socialLink.entity";
 import type {
 	Prisma,
 	PrismaClient,
