@@ -346,11 +346,13 @@ export class ProfileController implements IProfileController {
 		if (!mentorId) {
 			throw new NotFoundError("mentorId not found");
 		}
+		console.log("i am here bfore");
 
 		const record = await this._createSocialLinksUsecase.execute(
 			mentorId,
 			parsed,
 		);
+		console.log("i am here after");
 
 		res.status(HTTPSTATUS.OK).json(createSuccess("success", record));
 	};

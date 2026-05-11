@@ -29,6 +29,8 @@ export class CreateSocialLinksUsecse implements ICreateSocaiLinksUsecase {
 			throw new NotFoundError("mentor not found");
 		}
 
+		await this._socailLinkRepository.deleteAll(mentorId);
+
 		const data = dto.links.map((url: string) => {
 			const platform = SocialPlatform.fromUrl(url);
 			return { url, platform: platform.value, mentorId };

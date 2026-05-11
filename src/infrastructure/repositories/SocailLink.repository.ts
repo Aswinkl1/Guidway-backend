@@ -24,7 +24,11 @@ export class SocaiLinkRepository
 		super(_prisma.socialLink);
 	}
 	async deleteAll(mentorId: string): Promise<void> {
-		await this._prisma.socialLink.deleteMany({ where: { mentorId } });
+		console.log(mentorId);
+
+		await this._prisma.socialLink.deleteMany({
+			where: { mentorId },
+		});
 	}
 	async createMany(
 		data: Pick<SocialLinks, "mentorId" | "platform" | "url">[],
