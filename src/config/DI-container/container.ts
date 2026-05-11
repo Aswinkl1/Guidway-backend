@@ -40,6 +40,7 @@ import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/ed
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
+import type { ICreateSocaiLinksUsecase } from "@application/ports/usecase/mentor/ICreateSocailLinks.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
 import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/mentor/IUpdateMentorOverview.usecase";
 import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
@@ -53,6 +54,7 @@ import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
+import { CreateSocialLinksUsecse } from "@application/useCases/mentor/CreateSocialLink.usecase";
 import { GetDomainUsecase } from "@application/useCases/mentor/domain/GetDomain.usecase";
 import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-Education.usecase";
 import { DeleteEducationUsecase } from "@application/useCases/mentor/education/Delete-Education.usecase";
@@ -321,6 +323,10 @@ container
 container
 	.bind<IUpdateMentorOverviewUsecase>(TYPES.UpdateMentorOverviewUsecase)
 	.to(UpdateMentorOverviewUsecase)
+	.inSingletonScope();
+container
+	.bind<ICreateSocaiLinksUsecase>(TYPES.CreateSocialLinksUsecse)
+	.to(CreateSocialLinksUsecse)
 	.inSingletonScope();
 // services
 container
