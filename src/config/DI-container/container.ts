@@ -12,6 +12,7 @@ import type { IMentorRepository } from "@application/ports/repository/IMentorRep
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
+import type { ISocialLinkRepository } from "@application/ports/repository/ISocialLinks.reposiroty";
 // Types
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { IEmailService } from "@application/ports/services/IEmailService";
@@ -94,6 +95,7 @@ import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
+import { SocaiLinkRepository } from "@infrastructure/repositories/SocailLink.repository";
 //
 import { UserRepository } from "@infrastructure/repositories/UserRepository";
 import { ArgonPasswordHasher } from "@infrastructure/services/ArgonHashService";
@@ -173,6 +175,10 @@ container
 container
 	.bind<IDomainRepository>(TYPES.DomainRepository)
 	.to(DomainRepository)
+	.inSingletonScope();
+container
+	.bind<ISocialLinkRepository>(TYPES.SocaiLinkRepository)
+	.to(SocaiLinkRepository)
 	.inSingletonScope();
 //usecase
 

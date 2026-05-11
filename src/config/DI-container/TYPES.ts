@@ -15,6 +15,7 @@ export const TYPES = {
 	MentorLanguageRepository: Symbol.for("MentorLanguageRepository"),
 	LanguageRepository: Symbol.for("LanguageRepository"),
 	DomainRepository: Symbol.for("DomainRepository"),
+	SocaiLinkRepository: Symbol.for("SocaiLinkRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
