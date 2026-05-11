@@ -12,6 +12,7 @@ import type { IMentorRepository } from "@application/ports/repository/IMentorRep
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
+import type { ISocialLinkRepository } from "@application/ports/repository/ISocialLinks.reposiroty";
 // Types
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { IEmailService } from "@application/ports/services/IEmailService";
@@ -39,6 +40,7 @@ import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/ed
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
+import type { ICreateSocaiLinksUsecase } from "@application/ports/usecase/mentor/ICreateSocailLinks.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
 import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/mentor/IUpdateMentorOverview.usecase";
 import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
@@ -52,6 +54,7 @@ import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
+import { CreateSocialLinksUsecse } from "@application/useCases/mentor/CreateSocialLink.usecase";
 import { GetDomainUsecase } from "@application/useCases/mentor/domain/GetDomain.usecase";
 import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-Education.usecase";
 import { DeleteEducationUsecase } from "@application/useCases/mentor/education/Delete-Education.usecase";
@@ -94,6 +97,7 @@ import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
+import { SocaiLinkRepository } from "@infrastructure/repositories/SocailLink.repository";
 //
 import { UserRepository } from "@infrastructure/repositories/UserRepository";
 import { ArgonPasswordHasher } from "@infrastructure/services/ArgonHashService";
@@ -173,6 +177,10 @@ container
 container
 	.bind<IDomainRepository>(TYPES.DomainRepository)
 	.to(DomainRepository)
+	.inSingletonScope();
+container
+	.bind<ISocialLinkRepository>(TYPES.SocaiLinkRepository)
+	.to(SocaiLinkRepository)
 	.inSingletonScope();
 //usecase
 
@@ -315,6 +323,10 @@ container
 container
 	.bind<IUpdateMentorOverviewUsecase>(TYPES.UpdateMentorOverviewUsecase)
 	.to(UpdateMentorOverviewUsecase)
+	.inSingletonScope();
+container
+	.bind<ICreateSocaiLinksUsecase>(TYPES.CreateSocialLinksUsecse)
+	.to(CreateSocialLinksUsecse)
 	.inSingletonScope();
 // services
 container

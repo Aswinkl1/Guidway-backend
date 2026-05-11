@@ -15,6 +15,7 @@ export const TYPES = {
 	MentorLanguageRepository: Symbol.for("MentorLanguageRepository"),
 	LanguageRepository: Symbol.for("LanguageRepository"),
 	DomainRepository: Symbol.for("DomainRepository"),
+	SocaiLinkRepository: Symbol.for("SocaiLinkRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
@@ -53,6 +54,7 @@ export const TYPES = {
 	EditUserProfileUsecase: Symbol.for("EditUserProfileUsecase"),
 	GetDomainUsecase: Symbol.for("GetDomainUsecase"),
 	UpdateMentorOverviewUsecase: Symbol.for("UpdateMentorOverviewUsecase"),
+	CreateSocialLinksUsecse: Symbol.for("CreateSocialLinksUsecse"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
