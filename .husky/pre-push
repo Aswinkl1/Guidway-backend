@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# 1. Get the name of the current branch
+current_branch=$(git branch --show-current)
+
+# 2. Check if the current branch is protected
+if [ "$current_branch" = "develop" ] || [ "$current_branch" = "main" ]; then
+  echo ""
+  echo "🚫 ======================================================= 🚫"
+  echo " ❌ ERROR: Direct pushes to '$current_branch' are forbidden!"
+  echo " 👉 Please create a feature branch, commit there, and raise a PR."
+  echo "🚫 ======================================================= 🚫"
+  echo ""
+
+  # Exit with a non-zero status to kill the git push process
+  exit 1
+fi
+
+# If it's any other branch, exit 0 to allow the push to continue
+exit 0
