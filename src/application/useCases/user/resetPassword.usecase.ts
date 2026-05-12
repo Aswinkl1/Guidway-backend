@@ -21,23 +21,20 @@ export class ResetPasswordUsecase implements IResetPassswordUsecase {
 		private readonly _tokenService: ITokenService,
 	) {}
 	execute = async (dto: resetPasswordDTO): Promise<void> => {
-		// hash the token
-		console.log("hdhid");
 		const hashedToken = this._tokenService.hashToken(dto.token);
-		// check if the hash exist in the db
+
 		const userId = await this._tokenRepository.getUserIdByToken(hashedToken);
-		console.log(userId);
-		// if not then thorow an errro invalid token
+
 		if (!userId) {
 			throw new InvalidTokenError(APP_ERRORS_MESSAGES.TOKEN.INVALID_OR_EXPIRED);
 		}
-		// hash the password
+
 		const hashedPassword = await this._hashService.hash(dto.password);
-		// store the hashed  password in the db
+
 		await this._userRepository.update(userId, {
 			password: hashedPassword,
 		});
-		// delete the token
+
 		await this._tokenRepository.deleteToken(hashedToken);
 	};
 }
