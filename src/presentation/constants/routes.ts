@@ -39,6 +39,11 @@ export const ROUTES = {
 		SOCIALMEDIA_LINKS: {
 			ROOT: "/socialMediaLink",
 		},
+		SETTINGS: {
+			ROOT: "/settings",
+			BOOKINGRULES: "/settings/bookingrules",
+			NOTIFICAION_RULES: "/settings/notificationrules",
+		},
 	},
 	USER: {
 		ROOT: "/",
