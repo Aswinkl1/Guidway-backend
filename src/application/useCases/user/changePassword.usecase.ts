@@ -25,8 +25,8 @@ export class ChangePasswordUsecase implements IChangePasswordUsecase {
 			throw new Error("password not found user is a social media auth user");
 		}
 		const isValid = await this._hashService.compare(
-			user.password,
 			dto.oldPassword,
+			user.password,
 		);
 
 		if (!isValid) {
