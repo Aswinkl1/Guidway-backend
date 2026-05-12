@@ -22,6 +22,14 @@ export const MentorStatus = {
 	SUSPENDED: "SUSPENDED",
 } as const;
 
+const VALID_TRANSITIONS: Record<MentorStatus, MentorStatus[]> = {
+	[MentorStatus.DRAFT]: [MentorStatus.PENDING],
+	[MentorStatus.PENDING]: [MentorStatus.ACTIVE, MentorStatus.SUSPENDED],
+	[MentorStatus.ACTIVE]: [MentorStatus.PAUSED, MentorStatus.SUSPENDED],
+	[MentorStatus.PAUSED]: [MentorStatus.ACTIVE, MentorStatus.SUSPENDED],
+	[MentorStatus.SUSPENDED]: [MentorStatus.ACTIVE],
+};
+
 export type MentorStatus = (typeof MentorStatus)[keyof typeof MentorStatus];
 export class Mentor {
 	constructor(private props: mentorProp) {}
@@ -128,6 +136,17 @@ export class Mentor {
 
 		if (updatedProps.updatedAt !== undefined)
 			this.props.updatedAt = updatedProps.updatedAt;
+	}
+
+	public transitionTo(newStatus: MentorStatus) {
+		const allowedStatus = VALID_TRANSITIONS[this.props.status];
+		if (!allowedStatus.includes(newStatus)) {
+			throw new Error(
+				`Cannot transition from ${this.props.status} to ${newStatus}`,
+			);
+		}
+
+		this.props.status = newStatus;
 	}
 
 	toPrimitive() {
