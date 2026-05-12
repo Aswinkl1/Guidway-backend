@@ -24,7 +24,7 @@ export class EditUserProfileUsecase implements IEditUserProfileUsecase {
 		if (!user) {
 			throw new NotFoundError("user not found");
 		}
-
+		console.log(dto);
 		user.update(dto);
 
 		const updatedUser = await this._userRepository.save(user.id, user);
