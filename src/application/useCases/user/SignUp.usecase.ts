@@ -1,5 +1,6 @@
 import type { signupUserDTO } from "@application/dto/user/signupUser.dto";
 import type { ITokenCache } from "@application/ports/cache/ITokenCache";
+import type { IMentorBookingRulesRepository } from "@application/ports/repository/IMentorBookingRules.repositoty";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { IEmailService } from "@application/ports/services/IEmailService";
@@ -22,6 +23,8 @@ export class SignUpUser implements ISignUpUsecase {
 		@inject(TYPES.EmailService) private _emailService: IEmailService,
 		@inject(TYPES.MentorRepository)
 		private _mentorRepository: IMentorRepository,
+		@inject(TYPES.MentorBookingRulesRepository)
+		private readonly _mentorBookingRulesRepository: IMentorBookingRulesRepository,
 	) {}
 
 	execute = async (data: signupUserDTO): Promise<void> => {
@@ -38,6 +41,7 @@ export class SignUpUser implements ISignUpUsecase {
 		if (savedUser.role === Role.MENTOR) {
 			const mentor = Mentor.create({ userId: savedUser.id });
 			await this._mentorRepository.create(mentor);
+			await this._mentorBookingRulesRepository.createDefault(savedUser.id);
 		}
 
 		const verificationToken = this._tokenService.getVerifyToken(savedUser.id);

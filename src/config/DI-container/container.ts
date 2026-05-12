@@ -7,6 +7,7 @@ import type { IDomainRepository } from "@application/ports/repository/IDomain.re
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
 import type { ILanguageRepository } from "@application/ports/repository/ILanguage.repository";
+import type { IMentorBookingRulesRepository } from "@application/ports/repository/IMentorBookingRules.repositoty";
 import type { IMentorLanguageRepository } from "@application/ports/repository/IMentorLanguage.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
@@ -42,6 +43,7 @@ import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import type { ICreateSocaiLinksUsecase } from "@application/ports/usecase/mentor/ICreateSocailLinks.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
+import type { IUpdateMentorBookingRulesUsecase } from "@application/ports/usecase/mentor/IUpdateMentorBookingRules.usecase";
 import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/mentor/IUpdateMentorOverview.usecase";
 import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
 import type { IDeleteMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IDeleteMentorLanguage.usecase";
@@ -69,6 +71,7 @@ import { GetLanguageUsecase } from "@application/useCases/mentor/language/GetLan
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
+import { UpdateMentorBookingRulesUsecase } from "@application/useCases/mentor/UpdateMentorBookingRules.usecase";
 import { UpdateMentorOverviewUsecase } from "@application/useCases/mentor/UpdateMentorOverviewUsecase";
 import { EditUserProfileUsecase } from "@application/useCases/user/EditUserProfile.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
@@ -92,6 +95,7 @@ import { DomainRepository } from "@infrastructure/repositories/Domain.repoisitot
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
 import { LanguageRepository } from "@infrastructure/repositories/language.repository";
+import { MentorBookingRulesRepository } from "@infrastructure/repositories/MentorBookingRules.repository";
 import { MentorLanguageRepository } from "@infrastructure/repositories/MentorLanguage.repository";
 import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
@@ -108,8 +112,10 @@ import { TokenService } from "@infrastructure/services/TokenServices";
 import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
 import { AuthController } from "@presentation/controllers/auth.controller";
 import { ProfileController } from "@presentation/controllers/mentor/Profile.controller";
+import { SettingController } from "@presentation/controllers/mentor/Settings.controller";
 import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import type { IProfileController } from "@presentation/interface/controllers/IProfileController";
+import type { ISettingsController } from "@presentation/interface/controllers/ISettings.controller";
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
@@ -182,8 +188,15 @@ container
 	.bind<ISocialLinkRepository>(TYPES.SocaiLinkRepository)
 	.to(SocaiLinkRepository)
 	.inSingletonScope();
+container
+	.bind<IMentorBookingRulesRepository>(TYPES.MentorBookingRulesRepository)
+	.to(MentorBookingRulesRepository)
+	.inSingletonScope();
 //usecase
-
+container
+	.bind<IUpdateMentorBookingRulesUsecase>(TYPES.UpdateMentorBookingRulesUsecase)
+	.to(UpdateMentorBookingRulesUsecase)
+	.inSingletonScope();
 container
 	.bind<IForgetPasswordUsecase>(TYPES.ForgetPasswordUseCase)
 	.to(ForgetPasswordUsecase)
@@ -360,7 +373,10 @@ container
 	.bind<IProfileController>(TYPES.ProfileMentorController)
 	.to(ProfileController)
 	.inSingletonScope();
-
+container
+	.bind<ISettingsController>(TYPES.SettingController)
+	.to(SettingController)
+	.inSingletonScope();
 // queries
 
 container
