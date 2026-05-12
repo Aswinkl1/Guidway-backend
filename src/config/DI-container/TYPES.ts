@@ -56,11 +56,15 @@ export const TYPES = {
 	GetDomainUsecase: Symbol.for("GetDomainUsecase"),
 	UpdateMentorOverviewUsecase: Symbol.for("UpdateMentorOverviewUsecase"),
 	CreateSocialLinksUsecse: Symbol.for("CreateSocialLinksUsecse"),
+	UpdateMentorBookingRulesUsecase: Symbol.for(
+		"UpdateMentorBookingRulesUsecase",
+	),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
 	AdminLoginUseCase: Symbol.for("AdminLoginUseCase"),
 	ProfileMentorController: Symbol.for("ProfileMentorController"),
+	SettingController: Symbol.for("SettingController"),
 	// Infrastructure Clients
 	PrismaClient: Symbol.for("PrismaClient"),
 	RedisClient: Symbol.for("RedisClient"),
