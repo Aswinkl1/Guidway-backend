@@ -3,4 +3,5 @@ import type { MentorBookingRuleVO } from "@domain/mentor/value_object/mentor.boo
 export interface IMentorBookingRulesRepository {
 	findByUserId(userId: string): Promise<MentorBookingRuleVO | null>;
 	upsert(rules: MentorBookingRuleVO): Promise<MentorBookingRuleVO>;
+	createDefault(userId: string): Promise<MentorBookingRuleVO>;
 }

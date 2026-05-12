@@ -37,6 +37,14 @@ export class MentorBookingRulesRepository
 		return this.toDomain(record);
 	}
 
+	async createDefault(userId: string): Promise<MentorBookingRuleVO> {
+		const record = await this._prisma.mentorBookingSettings.create({
+			data: { userId },
+		});
+
+		return this.toDomain(record);
+	}
+
 	private toDomain(data: mentorBookingType): MentorBookingRuleVO {
 		return MentorBookingRuleVO.create({
 			userId: data.userId,
