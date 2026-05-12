@@ -41,6 +41,7 @@ import type { IEditEducationUsecase } from "@application/ports/usecase/mentor/ed
 import type { IAddExperienceUsecase } from "@application/ports/usecase/mentor/experience/IAdd-Experience.usecase";
 import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor/experience/IDelete-Experience.usecase";
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
+import type { IChangePasswordUsecase } from "@application/ports/usecase/mentor/IChangePassword.usecase";
 import type { ICreateSocaiLinksUsecase } from "@application/ports/usecase/mentor/ICreateSocailLinks.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
 import type { IMentorStatusUpdateUsecase } from "@application/ports/usecase/mentor/IMentorStatusUpdate.usecase";
@@ -75,6 +76,7 @@ import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/Del
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
 import { UpdateMentorBookingRulesUsecase } from "@application/useCases/mentor/UpdateMentorBookingRules.usecase";
 import { UpdateMentorOverviewUsecase } from "@application/useCases/mentor/UpdateMentorOverviewUsecase";
+import { ChangePasswordUsecase } from "@application/useCases/user/changePassword.usecase";
 import { EditUserProfileUsecase } from "@application/useCases/user/EditUserProfile.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
@@ -196,6 +198,10 @@ container
 	.inSingletonScope();
 //usecase
 
+container
+	.bind<IChangePasswordUsecase>(TYPES.ChangePasswordUsecase)
+	.to(ChangePasswordUsecase)
+	.inSingletonScope();
 container
 	.bind<IMentorStatusUpdateUsecase>(TYPES.MentorStatusUpdateUsecase)
 	.to(MentorStatusUpdateUsecase)
