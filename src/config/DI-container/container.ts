@@ -7,6 +7,7 @@ import type { IDomainRepository } from "@application/ports/repository/IDomain.re
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
 import type { ILanguageRepository } from "@application/ports/repository/ILanguage.repository";
+import type { IMentorBookingRulesRepository } from "@application/ports/repository/IMentorBookingRules.repositoty";
 import type { IMentorLanguageRepository } from "@application/ports/repository/IMentorLanguage.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
@@ -92,6 +93,7 @@ import { DomainRepository } from "@infrastructure/repositories/Domain.repoisitot
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
 import { LanguageRepository } from "@infrastructure/repositories/language.repository";
+import { MentorBookingRulesRepository } from "@infrastructure/repositories/MentorBookingRules.repository";
 import { MentorLanguageRepository } from "@infrastructure/repositories/MentorLanguage.repository";
 import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
@@ -181,6 +183,10 @@ container
 container
 	.bind<ISocialLinkRepository>(TYPES.SocaiLinkRepository)
 	.to(SocaiLinkRepository)
+	.inSingletonScope();
+container
+	.bind<IMentorBookingRulesRepository>(TYPES.MentorBookingRulesRepository)
+	.to(MentorBookingRulesRepository)
 	.inSingletonScope();
 //usecase
 
