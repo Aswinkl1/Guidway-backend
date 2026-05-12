@@ -50,9 +50,35 @@ export class MentorBookingRuleVO {
 		return new MentorBookingRuleVO(updatedProps);
 	}
 
+	get userId(): string {
+		return this.props.userId;
+	}
+	get leadTimeHours(): number {
+		return this.props.leadTimeHours;
+	}
+	get futureLimitDays(): number {
+		return this.props.futureLimitDays;
+	}
+	get maxSessionsDaily(): number {
+		return this.props.maxSessionsDaily;
+	}
+	get bufferTimeMinutes(): number {
+		return this.props.bufferTimeMinutes;
+	}
+	get cancellationCutoffHours(): number {
+		return this.props.cancellationCutoffHours;
+	}
+	get updatedAt(): Date {
+		return this.props.updatedAt;
+	}
+
 	private static validate(props: IMentorBookingRulesProps) {
 		if (!props.userId) {
 			throw new NotFoundError("userId required");
 		}
+	}
+
+	public toJSON() {
+		return { ...this.props };
 	}
 }
