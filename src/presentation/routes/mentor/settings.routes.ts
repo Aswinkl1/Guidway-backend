@@ -1,5 +1,6 @@
 import { MentorStatusUpdateSchema } from "@application/dto/mentor/MentorStatusUpdate.dto";
 import { UpdateBookingRulesSchema } from "@application/dto/mentor/mentorBookingRules.dto";
+import { ChangePasswordSchema } from "@application/dto/user/changePassword.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -24,6 +25,13 @@ router.patch(
 	isAuthenticate,
 	validatetor(MentorStatusUpdateSchema, "body"),
 	SettingController.updateMentorStatus,
+);
+
+router.patch(
+	ROUTES.MENTOR.SETTINGS.CHANGE_PASSWORD,
+	isAuthenticate,
+	validatetor(ChangePasswordSchema, "body"),
+	SettingController.resetPassword,
 );
 
 export default router;

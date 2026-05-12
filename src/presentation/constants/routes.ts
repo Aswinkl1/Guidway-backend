@@ -44,6 +44,7 @@ export const ROUTES = {
 			BOOKINGRULES: "/settings/bookingrules",
 			NOTIFICAION_RULES: "/settings/notificationrules",
 			STATUS: "/settings/status",
+			CHANGE_PASSWORD: "/settings/change_password",
 		},
 	},
 	USER: {

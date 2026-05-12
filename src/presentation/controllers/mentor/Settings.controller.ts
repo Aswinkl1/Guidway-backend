@@ -1,5 +1,7 @@
 import type { MentorStatusUpdateDTO } from "@application/dto/mentor/MentorStatusUpdate.dto";
 import type { UpdateBookingRulesDTO } from "@application/dto/mentor/mentorBookingRules.dto";
+import type { ChangePasswordDTO } from "@application/dto/user/changePassword.dto";
+import type { IChangePasswordUsecase } from "@application/ports/usecase/mentor/IChangePassword.usecase";
 import type { IMentorStatusUpdateUsecase } from "@application/ports/usecase/mentor/IMentorStatusUpdate.usecase";
 import type { IUpdateMentorBookingRulesUsecase } from "@application/ports/usecase/mentor/IUpdateMentorBookingRules.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
@@ -17,6 +19,8 @@ export class SettingController implements ISettingsController {
 		private readonly _mentorBookingRulesUsecase: IUpdateMentorBookingRulesUsecase,
 		@inject(TYPES.MentorStatusUpdateUsecase)
 		private readonly _mentorStatusUpdateUsecase: IMentorStatusUpdateUsecase,
+		@inject(TYPES.ChangePasswordUsecase)
+		private readonly _changePasswordUsecase: IChangePasswordUsecase,
 	) {}
 
 	updateMentorBookingRules = async (
@@ -45,5 +49,18 @@ export class SettingController implements ISettingsController {
 		await this._mentorStatusUpdateUsecase.execute(mentorId, parsed);
 
 		res.status(HTTPSTATUS.OK).json(createSuccess("success", {}));
+	};
+
+	resetPassword = async (req: Request, res: Response): Promise<void> => {
+		const parsed = req.validated?.body as ChangePasswordDTO;
+		const userId = req.user?.userId;
+
+		if (!userId) {
+			throw new NotFoundError("mentor id not found");
+		}
+
+		await this._changePasswordUsecase.execute(userId, parsed);
+
+		res.status(HTTPSTATUS.OK).json(createSuccess("succss", {}));
 	};
 }
