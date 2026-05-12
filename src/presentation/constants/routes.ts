@@ -43,6 +43,7 @@ export const ROUTES = {
 			ROOT: "/settings",
 			BOOKINGRULES: "/settings/bookingrules",
 			NOTIFICAION_RULES: "/settings/notificationrules",
+			STATUS: "/settings/status",
 		},
 	},
 	USER: {

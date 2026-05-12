@@ -59,6 +59,7 @@ export const TYPES = {
 	UpdateMentorBookingRulesUsecase: Symbol.for(
 		"UpdateMentorBookingRulesUsecase",
 	),
+	MentorStatusUpdateUsecase: Symbol.for("MentorStatusUpdateUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
