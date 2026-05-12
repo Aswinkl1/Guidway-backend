@@ -43,6 +43,7 @@ import type { IDeleteExperienceUsecase } from "@application/ports/usecase/mentor
 import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/experience/IEdit-Experience.usecase";
 import type { ICreateSocaiLinksUsecase } from "@application/ports/usecase/mentor/ICreateSocailLinks.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
+import type { IMentorStatusUpdateUsecase } from "@application/ports/usecase/mentor/IMentorStatusUpdate.usecase";
 import type { IUpdateMentorBookingRulesUsecase } from "@application/ports/usecase/mentor/IUpdateMentorBookingRules.usecase";
 import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/mentor/IUpdateMentorOverview.usecase";
 import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
@@ -68,6 +69,7 @@ import { GetMentorProfileUsecase } from "@application/useCases/mentor/GetMentorP
 import { AddMentorLanguageUsecase } from "@application/useCases/mentor/language/AddMentorLanguage.usecase";
 import { DeleteMentorLanguageUsecase } from "@application/useCases/mentor/language/DeleteMentorLanguage.usecase";
 import { GetLanguageUsecase } from "@application/useCases/mentor/language/GetLanguage.usecase";
+import { MentorStatusUpdateUsecase } from "@application/useCases/mentor/MentorStatusUpdate.usecase";
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
@@ -193,6 +195,11 @@ container
 	.to(MentorBookingRulesRepository)
 	.inSingletonScope();
 //usecase
+
+container
+	.bind<IMentorStatusUpdateUsecase>(TYPES.MentorStatusUpdateUsecase)
+	.to(MentorStatusUpdateUsecase)
+	.inSingletonScope();
 container
 	.bind<IUpdateMentorBookingRulesUsecase>(TYPES.UpdateMentorBookingRulesUsecase)
 	.to(UpdateMentorBookingRulesUsecase)
