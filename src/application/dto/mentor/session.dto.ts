@@ -18,5 +18,14 @@ export const DeleteSessionSchema = z.object({
 	mentorId: z.uuid().optional(),
 });
 
+export const ToggleSessionVisibilitySchema = z.object({
+	id: z.uuid(),
+	isActive: z.boolean(),
+});
+
+export type ToggleSessionVisibilityDTO = z.infer<
+	typeof ToggleSessionVisibilitySchema
+>;
+
 export type editSessionDTO = z.infer<typeof editSessionSchema>;
 export type DeleteSessionDTO = z.infer<typeof DeleteSessionSchema>;
