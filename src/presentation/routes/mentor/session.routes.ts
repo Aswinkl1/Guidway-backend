@@ -1,6 +1,7 @@
 import {
 	CreateSessionSchema,
 	editSessionSchema,
+	ToggleSessionVisibilitySchema,
 } from "@application/dto/mentor/session.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
@@ -21,7 +22,7 @@ router.post(
 	SessionController.addSession,
 );
 
-router.patch(
+router.put(
 	ROUTES.MENTOR.SESSION.DETAIL,
 	isAuthenticate,
 	validatetor(editSessionSchema, "body"),
@@ -32,5 +33,12 @@ router.delete(
 	ROUTES.MENTOR.SESSION.DETAIL,
 	isAuthenticate,
 	SessionController.deleteSession,
+);
+
+router.patch(
+	ROUTES.MENTOR.SESSION.VISIBILITY,
+	isAuthenticate,
+	validatetor(ToggleSessionVisibilitySchema, "body"),
+	SessionController.toggleVisibilitySession,
 );
 export default router;

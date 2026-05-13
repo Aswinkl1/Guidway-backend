@@ -54,6 +54,7 @@ import type { IGetLanguagesUsecase } from "@application/ports/usecase/mentor/lan
 import type { IAddSessionUsecase } from "@application/ports/usecase/mentor/session/IAddSession.usecase";
 import type { IDeleteSessionUsecase } from "@application/ports/usecase/mentor/session/IDeleteSession.usecase";
 import type { IEditSessionUsecase } from "@application/ports/usecase/mentor/session/IEditSession.usecase";
+import type { IToggleSessionVisibilityUseCase } from "@application/ports/usecase/mentor/session/IToggleSessionVisibility.usecase";
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
 import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
@@ -78,6 +79,7 @@ import { MentorStatusUpdateUsecase } from "@application/useCases/mentor/MentorSt
 import { AddSessionUsecase } from "@application/useCases/mentor/session/AddSession.usecase";
 import { DeleteSessionUsecase } from "@application/useCases/mentor/session/DeleteSession.usecase";
 import { EditSessionUsecase } from "@application/useCases/mentor/session/EditSession.usecase";
+import { ToggleSessionVisibilityUsecase } from "@application/useCases/mentor/session/ToggleSessionVisibility.usecase";
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
@@ -209,7 +211,13 @@ container
 	.bind<ISessionRepository>(TYPES.SessionRepository)
 	.to(SessionRepository)
 	.inSingletonScope();
+
 //usecase
+
+container
+	.bind<IToggleSessionVisibilityUseCase>(TYPES.ToggleSessionVisibilityUsecase)
+	.to(ToggleSessionVisibilityUsecase)
+	.inSingletonScope();
 container
 	.bind<IDeleteSessionUsecase>(TYPES.DeleteSessionUsecase)
 	.to(DeleteSessionUsecase)
