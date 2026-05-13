@@ -4,4 +4,5 @@ export interface ISessionController {
 	addSession(req: Request, res: Response): Promise<void>;
 	editSession(req: Request, res: Response): Promise<void>;
 	deleteSession(req: Request, res: Response): Promise<void>;
+	toggleVisibilitySession(req: Request, res: Response): Promise<void>;
 }
