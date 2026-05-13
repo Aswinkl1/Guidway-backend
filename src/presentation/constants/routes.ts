@@ -46,6 +46,9 @@ export const ROUTES = {
 			STATUS: "/settings/status",
 			CHANGE_PASSWORD: "/settings/change_password",
 		},
+		SESSION: {
+			ROOT: "/session",
+		},
 	},
 	USER: {
 		ROOT: "/",

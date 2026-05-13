@@ -12,6 +12,7 @@ import type { IMentorLanguageRepository } from "@application/ports/repository/IM
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
+import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
 import type { ISocialLinkRepository } from "@application/ports/repository/ISocialLinks.reposiroty";
 // Types
@@ -50,6 +51,7 @@ import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/me
 import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
 import type { IDeleteMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IDeleteMentorLanguage.usecase";
 import type { IGetLanguagesUsecase } from "@application/ports/usecase/mentor/language/IGetLanguage.usecase";
+import type { IAddSessionUsecase } from "@application/ports/usecase/mentor/session/IAddSession.usecase";
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
 import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
@@ -71,6 +73,7 @@ import { AddMentorLanguageUsecase } from "@application/useCases/mentor/language/
 import { DeleteMentorLanguageUsecase } from "@application/useCases/mentor/language/DeleteMentorLanguage.usecase";
 import { GetLanguageUsecase } from "@application/useCases/mentor/language/GetLanguage.usecase";
 import { MentorStatusUpdateUsecase } from "@application/useCases/mentor/MentorStatusUpdate.usecase";
+import { AddSessionUsecase } from "@application/useCases/mentor/session/AddSession.usecase";
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
@@ -104,6 +107,7 @@ import { MentorLanguageRepository } from "@infrastructure/repositories/MentorLan
 import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
+import { SessionRepository } from "@infrastructure/repositories/Session.repository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
 import { SocaiLinkRepository } from "@infrastructure/repositories/SocailLink.repository";
 //
@@ -116,9 +120,11 @@ import { TokenService } from "@infrastructure/services/TokenServices";
 import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
 import { AuthController } from "@presentation/controllers/auth.controller";
 import { ProfileController } from "@presentation/controllers/mentor/Profile.controller";
+import { SessionController } from "@presentation/controllers/mentor/Session.controller";
 import { SettingController } from "@presentation/controllers/mentor/Settings.controller";
 import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import type { IProfileController } from "@presentation/interface/controllers/IProfileController";
+import type { ISessionController } from "@presentation/interface/controllers/ISession.controller";
 import type { ISettingsController } from "@presentation/interface/controllers/ISettings.controller";
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
 import type { PrismaClient } from "generated/prisma/client";
@@ -196,8 +202,19 @@ container
 	.bind<IMentorBookingRulesRepository>(TYPES.MentorBookingRulesRepository)
 	.to(MentorBookingRulesRepository)
 	.inSingletonScope();
+container
+	.bind<ISessionRepository>(TYPES.SessionRepository)
+	.to(SessionRepository)
+	.inSingletonScope();
 //usecase
-
+container
+	.bind<ISessionController>(TYPES.SessionController)
+	.to(SessionController)
+	.inSingletonScope();
+container
+	.bind<IAddSessionUsecase>(TYPES.AddSessionUsecase)
+	.to(AddSessionUsecase)
+	.inSingletonScope();
 container
 	.bind<IChangePasswordUsecase>(TYPES.ChangePasswordUsecase)
 	.to(ChangePasswordUsecase)
@@ -354,6 +371,7 @@ container
 	.bind<ICreateSocaiLinksUsecase>(TYPES.CreateSocialLinksUsecse)
 	.to(CreateSocialLinksUsecse)
 	.inSingletonScope();
+
 // services
 container
 	.bind<IEmailService>(TYPES.EmailService)

@@ -17,6 +17,7 @@ export const TYPES = {
 	DomainRepository: Symbol.for("DomainRepository"),
 	SocaiLinkRepository: Symbol.for("SocaiLinkRepository"),
 	MentorBookingRulesRepository: Symbol.for("MentorBookingRulesRepository"),
+	SessionRepository: Symbol.for("SessionRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
@@ -61,12 +62,14 @@ export const TYPES = {
 	),
 	MentorStatusUpdateUsecase: Symbol.for("MentorStatusUpdateUsecase"),
 	ChangePasswordUsecase: Symbol.for("ChangePasswordUsecase"),
+	AddSessionUsecase: Symbol.for("AddSessionUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
 	AdminLoginUseCase: Symbol.for("AdminLoginUseCase"),
 	ProfileMentorController: Symbol.for("ProfileMentorController"),
 	SettingController: Symbol.for("SettingController"),
+	SessionController: Symbol.for("SessionController"),
 	// Infrastructure Clients
 	PrismaClient: Symbol.for("PrismaClient"),
 	RedisClient: Symbol.for("RedisClient"),
