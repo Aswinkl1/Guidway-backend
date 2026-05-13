@@ -12,6 +12,7 @@ import type { IMentorLanguageRepository } from "@application/ports/repository/IM
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
+import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
 import type { ISocialLinkRepository } from "@application/ports/repository/ISocialLinks.reposiroty";
 // Types
@@ -104,6 +105,7 @@ import { MentorLanguageRepository } from "@infrastructure/repositories/MentorLan
 import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
+import { SessionRepository } from "@infrastructure/repositories/Session.repository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
 import { SocaiLinkRepository } from "@infrastructure/repositories/SocailLink.repository";
 //
@@ -195,6 +197,10 @@ container
 container
 	.bind<IMentorBookingRulesRepository>(TYPES.MentorBookingRulesRepository)
 	.to(MentorBookingRulesRepository)
+	.inSingletonScope();
+container
+	.bind<ISessionRepository>(TYPES.SessionRepository)
+	.to(SessionRepository)
 	.inSingletonScope();
 //usecase
 
@@ -354,6 +360,7 @@ container
 	.bind<ICreateSocaiLinksUsecase>(TYPES.CreateSocialLinksUsecse)
 	.to(CreateSocialLinksUsecse)
 	.inSingletonScope();
+
 // services
 container
 	.bind<IEmailService>(TYPES.EmailService)
