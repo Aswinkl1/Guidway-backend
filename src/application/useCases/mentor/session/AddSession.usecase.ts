@@ -29,7 +29,7 @@ export class AddSessionUsecase implements IAddSessionUsecase {
 		}
 
 		const sessionEntity = Session.create({ ...dto, mentorId });
-
+		console.log(sessionEntity);
 		const record = await this._sessionRepository.create(sessionEntity);
 
 		return SessionMapper.toOutput(record);

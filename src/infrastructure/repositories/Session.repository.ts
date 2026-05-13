@@ -1,6 +1,12 @@
 import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
+import { TYPES } from "@config/DI-container/TYPES";
 import { Session } from "@domain/session/session.entitiy";
-import type { Prisma, Session as PrismaSession } from "generated/prisma/client";
+import type {
+	Prisma,
+	PrismaClient,
+	Session as PrismaSession,
+} from "generated/prisma/client";
+import { inject } from "inversify";
 import { BaseRepository } from "./BaseRepository";
 
 export class SessionRepository
@@ -12,6 +18,9 @@ export class SessionRepository
 	>
 	implements ISessionRepository
 {
+	constructor(@inject(TYPES.PrismaClient) private _prisma: PrismaClient) {
+		super(_prisma.session);
+	}
 	protected toDomain(record: PrismaSession): Session {
 		return Session.create(record);
 	}

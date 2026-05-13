@@ -69,6 +69,7 @@ export const TYPES = {
 	AdminLoginUseCase: Symbol.for("AdminLoginUseCase"),
 	ProfileMentorController: Symbol.for("ProfileMentorController"),
 	SettingController: Symbol.for("SettingController"),
+	SessionController: Symbol.for("SessionController"),
 	// Infrastructure Clients
 	PrismaClient: Symbol.for("PrismaClient"),
 	RedisClient: Symbol.for("RedisClient"),
