@@ -51,6 +51,7 @@ import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/me
 import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IAddMentorLanguage.usecase";
 import type { IDeleteMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IDeleteMentorLanguage.usecase";
 import type { IGetLanguagesUsecase } from "@application/ports/usecase/mentor/language/IGetLanguage.usecase";
+import type { IAddSessionUsecase } from "@application/ports/usecase/mentor/session/IAddSession.usecase";
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
 import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
@@ -72,6 +73,7 @@ import { AddMentorLanguageUsecase } from "@application/useCases/mentor/language/
 import { DeleteMentorLanguageUsecase } from "@application/useCases/mentor/language/DeleteMentorLanguage.usecase";
 import { GetLanguageUsecase } from "@application/useCases/mentor/language/GetLanguage.usecase";
 import { MentorStatusUpdateUsecase } from "@application/useCases/mentor/MentorStatusUpdate.usecase";
+import { AddSessionUsecase } from "@application/useCases/mentor/session/AddSession.usecase";
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
@@ -204,6 +206,10 @@ container
 	.inSingletonScope();
 //usecase
 
+container
+	.bind<IAddSessionUsecase>(TYPES.AddSessionUsecase)
+	.to(AddSessionUsecase)
+	.inSingletonScope();
 container
 	.bind<IChangePasswordUsecase>(TYPES.ChangePasswordUsecase)
 	.to(ChangePasswordUsecase)
