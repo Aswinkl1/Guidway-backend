@@ -27,4 +27,10 @@ router.patch(
 	validatetor(editSessionSchema, "body"),
 	SessionController.editSession,
 );
+
+router.delete(
+	ROUTES.MENTOR.SESSION.DETAIL,
+	isAuthenticate,
+	SessionController.deleteSession,
+);
 export default router;

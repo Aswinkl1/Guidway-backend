@@ -13,5 +13,10 @@ export type CreateSessionDTO = z.infer<typeof CreateSessionSchema>;
 export const editSessionSchema = CreateSessionSchema.partial().extend({
 	id: z.uuid(),
 });
+export const DeleteSessionSchema = z.object({
+	id: z.uuid(),
+	mentorId: z.uuid().optional(),
+});
 
 export type editSessionDTO = z.infer<typeof editSessionSchema>;
+export type DeleteSessionDTO = z.infer<typeof DeleteSessionSchema>;

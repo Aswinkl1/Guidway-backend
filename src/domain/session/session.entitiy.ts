@@ -67,6 +67,9 @@ export class Session {
 		return this.props.price;
 	}
 
+	delete() {
+		this.props.deletedAt = new Date();
+	}
 	update(
 		updatedProps: Partial<
 			Omit<

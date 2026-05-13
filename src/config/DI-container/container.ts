@@ -52,6 +52,7 @@ import type { IAddMentorLanguageUsecase } from "@application/ports/usecase/mento
 import type { IDeleteMentorLanguageUsecase } from "@application/ports/usecase/mentor/language/IDeleteMentorLanguage.usecase";
 import type { IGetLanguagesUsecase } from "@application/ports/usecase/mentor/language/IGetLanguage.usecase";
 import type { IAddSessionUsecase } from "@application/ports/usecase/mentor/session/IAddSession.usecase";
+import type { IDeleteSessionUsecase } from "@application/ports/usecase/mentor/session/IDeleteSession.usecase";
 import type { IEditSessionUsecase } from "@application/ports/usecase/mentor/session/IEditSession.usecase";
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
 import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
@@ -75,6 +76,7 @@ import { DeleteMentorLanguageUsecase } from "@application/useCases/mentor/langua
 import { GetLanguageUsecase } from "@application/useCases/mentor/language/GetLanguage.usecase";
 import { MentorStatusUpdateUsecase } from "@application/useCases/mentor/MentorStatusUpdate.usecase";
 import { AddSessionUsecase } from "@application/useCases/mentor/session/AddSession.usecase";
+import { DeleteSessionUsecase } from "@application/useCases/mentor/session/DeleteSession.usecase";
 import { EditSessionUsecase } from "@application/useCases/mentor/session/EditSession.usecase";
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
@@ -112,7 +114,6 @@ import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaToken
 import { SessionRepository } from "@infrastructure/repositories/Session.repository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
 import { SocaiLinkRepository } from "@infrastructure/repositories/SocailLink.repository";
-//
 import { UserRepository } from "@infrastructure/repositories/UserRepository";
 import { ArgonPasswordHasher } from "@infrastructure/services/ArgonHashService";
 import { NodemailerEmailService } from "@infrastructure/services/NodemailerEmailService";
@@ -209,6 +210,10 @@ container
 	.to(SessionRepository)
 	.inSingletonScope();
 //usecase
+container
+	.bind<IDeleteSessionUsecase>(TYPES.DeleteSessionUsecase)
+	.to(DeleteSessionUsecase)
+	.inSingletonScope();
 container
 	.bind<IEditSessionUsecase>(TYPES.EditSessionUsecase)
 	.to(EditSessionUsecase)
