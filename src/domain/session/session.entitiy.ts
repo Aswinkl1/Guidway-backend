@@ -100,4 +100,12 @@ export class Session {
 
 		this.props.updatedAt = new Date();
 	}
+
+	activate() {
+		this.props.isActive = true;
+	}
+
+	deactivate() {
+		this.props.isActive = false;
+	}
 }
