@@ -13,7 +13,7 @@ export class SessionRepository
 	implements ISessionRepository
 {
 	protected toDomain(record: PrismaSession): Session {
-		return Session.Create(record);
+		return Session.create(record);
 	}
 	protected toPersistence(
 		entity: Session,
@@ -26,6 +26,7 @@ export class SessionRepository
 			name: entity.name,
 			deletedAt: entity.deletedAt,
 			isActive: entity.isActive,
+			price: entity.price,
 		};
 	}
 }
