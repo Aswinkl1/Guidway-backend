@@ -48,6 +48,7 @@ export const ROUTES = {
 		},
 		SESSION: {
 			ROOT: "/session",
+			DETAIL: "/session/:id",
 		},
 	},
 	USER: {
