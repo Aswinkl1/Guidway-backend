@@ -5,6 +5,7 @@ export interface ISessionProps {
 	name: string;
 	mentorId: string;
 	duration: number;
+	price: number;
 	description: string;
 	isActive: boolean;
 	deletedAt?: Date | null;
@@ -23,7 +24,7 @@ interface CreateSessionProps
 export class Session {
 	constructor(private props: ISessionProps) {}
 
-	static Create(props: CreateSessionProps) {
+	static create(props: CreateSessionProps) {
 		const finalProps = {
 			...props,
 			id: props.id ?? uuid(),
@@ -61,5 +62,8 @@ export class Session {
 	}
 	get updatedAt() {
 		return this.props.updatedAt;
+	}
+	get price() {
+		return this.props.price;
 	}
 }
