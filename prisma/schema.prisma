@@ -356,6 +356,7 @@ model Achievement {
 model Session {
   id          String   @id @default(uuid())
   name        String
+  price       Int
   mentorId    String
   duration    Int      // in minutes
   description String
