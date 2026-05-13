@@ -129,7 +129,7 @@ model Mentor {
   experiences          Experience[]
   education            Education[]
   achievements         Achievement[]
-
+  sessions             Session[]
   @@index([status])
   @@index([domainId])
   // @@index([averageRating])
@@ -350,4 +350,19 @@ model Achievement {
 
   @@index([mentorId])
   @@map("achievements")
+}
+
+
+model Session {
+  id          String   @id @default(uuid())
+  name        String
+  mentorId    String
+  duration    Int      // in minutes
+  description String
+  isActive    Boolean  @default(true)
+  deletedAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+ mentor   Mentor   @relation(fields: [mentorId], references: [userId])
 }
