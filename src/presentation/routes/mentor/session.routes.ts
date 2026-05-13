@@ -1,4 +1,7 @@
-import { CreateSessionSchema } from "@application/dto/mentor/session.dto";
+import {
+	CreateSessionSchema,
+	editSessionSchema,
+} from "@application/dto/mentor/session.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -18,4 +21,10 @@ router.post(
 	SessionController.addSession,
 );
 
+router.patch(
+	ROUTES.MENTOR.SESSION.DETAIL,
+	isAuthenticate,
+	validatetor(editSessionSchema, "body"),
+	SessionController.editSession,
+);
 export default router;

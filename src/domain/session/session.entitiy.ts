@@ -66,4 +66,35 @@ export class Session {
 	get price() {
 		return this.props.price;
 	}
+
+	update(
+		updatedProps: Partial<
+			Omit<
+				ISessionProps,
+				"id" | "mentorId" | "createdAt" | "updatedAt" | "deletedAt"
+			>
+		>,
+	) {
+		if (updatedProps.name !== undefined) {
+			this.props.name = updatedProps.name;
+		}
+
+		if (updatedProps.duration !== undefined) {
+			this.props.duration = updatedProps.duration;
+		}
+
+		if (updatedProps.price !== undefined) {
+			this.props.price = updatedProps.price;
+		}
+
+		if (updatedProps.description !== undefined) {
+			this.props.description = updatedProps.description;
+		}
+
+		if (updatedProps.isActive !== undefined) {
+			this.props.isActive = updatedProps.isActive;
+		}
+
+		this.props.updatedAt = new Date();
+	}
 }
