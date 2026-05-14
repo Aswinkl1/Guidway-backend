@@ -5,6 +5,7 @@ import {
 } from "@application/mappers/session.mapper";
 import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
 import type { IGetSessionUsecase } from "@application/ports/usecase/mentor/session/IGetSession.usecase";
+import type { PaginatedResult } from "@application/types/paginationResult.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { inject, injectable } from "inversify";
 @injectable()
@@ -17,11 +18,10 @@ export class GetSessionUsecase implements IGetSessionUsecase {
 	async execute(
 		mentorId: string,
 		dto: GetAllSessionsDTO,
-	): Promise<SessionOutputDTO[]> {
-		const records = await this._sessionRepository.findManyByMentorId(
-			mentorId,
-			dto,
-		);
-		return records.map((r) => SessionMapper.toOutput(r));
+	): Promise<PaginatedResult<SessionOutputDTO>> {
+		const { data, totalItems } =
+			await this._sessionRepository.findManyByMentorId(mentorId, dto);
+
+		return { data: data.map((v) => SessionMapper.toOutput(v)), totalItems };
 	}
 }
