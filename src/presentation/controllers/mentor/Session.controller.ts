@@ -30,6 +30,7 @@ export class SessionController implements ISessionController {
 		private readonly _deleteSessionUsecase: IDeleteSessionUsecase,
 		@inject(TYPES.ToggleSessionVisibilityUsecase)
 		private readonly _toggleSessionUsecase: IToggleSessionVisibilityUseCase,
+		@inject(TYPES.GetSessionUsecase)
 		private readonly _getsessionUsecase: IGetSessionUsecase,
 	) {}
 
