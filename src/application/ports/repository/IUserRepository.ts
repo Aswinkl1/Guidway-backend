@@ -1,7 +1,5 @@
-import type {
-	getUsersDTO,
-	PaginatedResult,
-} from "@application/dto/admin/GetUsers.dto";
+import type { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
+import type { PaginatedResult } from "@application/types/paginationResult.types";
 // import type { signupUserDTO } from "@application/dto/user/signupUser.dto";
 import type { User } from "@domain/user/user";
 import type { IBaseRepository } from "./IBaseRepository";

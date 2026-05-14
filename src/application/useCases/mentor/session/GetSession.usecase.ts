@@ -1,13 +1,27 @@
 import type { GetAllSessionsDTO } from "@application/dto/mentor/session.dto";
-import type { SessionOutputDTO } from "@application/mappers/session.mapper";
+import {
+	SessionMapper,
+	type SessionOutputDTO,
+} from "@application/mappers/session.mapper";
 import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
 import type { IGetSessionUsecase } from "@application/ports/usecase/mentor/session/IGetSession.usecase";
-
+import { TYPES } from "@config/DI-container/TYPES";
+import { inject, injectable } from "inversify";
+@injectable()
 export class GetSessionUsecase implements IGetSessionUsecase {
-	constructor(private readonly _sessionRepository: ISessionRepository) {}
+	constructor(
+		@inject(TYPES.SessionRepository)
+		private readonly _sessionRepository: ISessionRepository,
+	) {}
 
-	execute(
+	async execute(
 		mentorId: string,
 		dto: GetAllSessionsDTO,
-	): Promise<SessionOutputDTO[]> {}
+	): Promise<SessionOutputDTO[]> {
+		const records = await this._sessionRepository.findManyByMentorId(
+			mentorId,
+			dto,
+		);
+		return records.map((r) => SessionMapper.toOutput(r));
+	}
 }

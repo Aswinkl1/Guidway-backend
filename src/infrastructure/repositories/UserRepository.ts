@@ -1,8 +1,6 @@
-import type {
-	getUsersDTO,
-	PaginatedResult,
-} from "@application/dto/admin/GetUsers.dto";
+import type { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
+import type { PaginatedResult } from "@application/types/paginationResult.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { User } from "@domain/user/user";
 import type {
