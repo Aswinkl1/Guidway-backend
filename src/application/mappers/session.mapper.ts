@@ -10,6 +10,7 @@ export interface SessionOutputDTO {
 	deletedAt?: Date | null;
 	createdAt: Date;
 	updatedAt: Date;
+	price: number;
 }
 
 export class SessionMapper {
@@ -24,6 +25,7 @@ export class SessionMapper {
 			createdAt: data.createdAt,
 			updatedAt: data.updatedAt,
 			deletedAt: data.deletedAt,
+			price: data.price,
 		};
 	}
 }
