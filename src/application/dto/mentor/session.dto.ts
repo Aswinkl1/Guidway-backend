@@ -35,6 +35,8 @@ export const GetAllSessionsSchema = z.object({
 	isActive: z.coerce.boolean().optional(),
 	page: z.coerce.number().int().positive().default(1),
 	limit: z.coerce.number().int().positive().max(100).default(10),
+	// page: z.string().transform(Number).pipe(z.number().int().positive()).default("1"),
+	// limit: z.string().transform(Number).pipe(z.number().int().positive().max(100)).default("10"),
 });
 
 export type GetAllSessionsDTO = z.infer<typeof GetAllSessionsSchema>;
