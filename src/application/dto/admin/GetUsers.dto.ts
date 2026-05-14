@@ -23,7 +23,3 @@ export const getUsersSchema = z.object({
 export type getUsersDTO = z.infer<typeof getUsersSchema>;
 
 // This is what the find all function returns for the user
-export interface PaginatedResult<T> {
-	data: T[];
-	totalItems: number;
-}

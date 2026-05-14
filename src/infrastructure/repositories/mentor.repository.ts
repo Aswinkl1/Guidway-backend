@@ -1,14 +1,11 @@
-import type {
-	getUsersDTO,
-	PaginatedResult,
-} from "@application/dto/admin/GetUsers.dto";
+import type { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
 import type {
 	IMentorRepository,
 	outputType,
 } from "@application/ports/repository/IMentorRepository";
+import type { PaginatedResult } from "@application/types/paginationResult.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Mentor } from "@domain/mentor/mentor.entity";
-
 import type {
 	Prisma,
 	PrismaClient,

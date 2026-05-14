@@ -1,4 +1,6 @@
+import type { GetAllSessionsDTO } from "@application/dto/mentor/session.dto";
 import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
+import type { PaginatedResult } from "@application/types/paginationResult.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Session } from "@domain/session/session.entitiy";
 import type {
@@ -20,6 +22,33 @@ export class SessionRepository
 {
 	constructor(@inject(TYPES.PrismaClient) private _prisma: PrismaClient) {
 		super(_prisma.session);
+	}
+
+	async findManyByMentorId(
+		mentorId: string,
+		filter: GetAllSessionsDTO,
+	): Promise<PaginatedResult<Session>> {
+		const { limit, page, isActive, search } = filter;
+		const where: Prisma.SessionWhereInput = {};
+		where.mentorId = mentorId;
+		if (search) {
+			where.name = { contains: search, mode: "insensitive" };
+		}
+		if (isActive !== undefined) {
+			where.isActive = isActive;
+		}
+
+		const [data, totalItems] = await Promise.all([
+			this._prisma.session.findMany({
+				where,
+				skip: (page - 1) * limit,
+				take: limit,
+				orderBy: { createdAt: "desc" },
+			}),
+			this._prisma.session.count({ where }),
+		]);
+
+		return { data: data.map((r) => this.toDomain(r)), totalItems };
 	}
 	protected toDomain(record: PrismaSession): Session {
 		return Session.create(record);

@@ -1,6 +1,7 @@
 import {
 	CreateSessionSchema,
 	editSessionSchema,
+	GetAllSessionsSchema,
 	ToggleSessionVisibilitySchema,
 } from "@application/dto/mentor/session.dto";
 import { container } from "@config/DI-container/container";
@@ -14,6 +15,12 @@ import { Router } from "express";
 const router = Router();
 const SessionController = container.get<ISessionController>(
 	TYPES.SessionController,
+);
+router.get(
+	ROUTES.MENTOR.SESSION.ROOT,
+	isAuthenticate,
+	validatetor(GetAllSessionsSchema, "query"),
+	SessionController.getSession,
 );
 router.post(
 	ROUTES.MENTOR.SESSION.ROOT,

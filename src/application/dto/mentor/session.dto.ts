@@ -29,3 +29,12 @@ export type ToggleSessionVisibilityDTO = z.infer<
 
 export type editSessionDTO = z.infer<typeof editSessionSchema>;
 export type DeleteSessionDTO = z.infer<typeof DeleteSessionSchema>;
+
+export const GetAllSessionsSchema = z.object({
+	search: z.string().optional(),
+	isActive: z.coerce.boolean().optional(),
+	page: z.number().int().positive().default(1),
+	limit: z.number().int().positive().max(100).default(10),
+});
+
+export type GetAllSessionsDTO = z.infer<typeof GetAllSessionsSchema>;

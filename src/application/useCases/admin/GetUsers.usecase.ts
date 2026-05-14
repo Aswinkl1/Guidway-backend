@@ -1,7 +1,4 @@
-import type {
-	getUsersDTO,
-	PaginatedResult,
-} from "@application/dto/admin/GetUsers.dto";
+import type { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
 import {
 	UserMapper,
 	type UserOutputDTO,
@@ -9,6 +6,7 @@ import {
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
+import type { PaginatedResult } from "@application/types/paginationResult.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Role } from "@domain/user/user";
 import { inject, injectable } from "inversify";

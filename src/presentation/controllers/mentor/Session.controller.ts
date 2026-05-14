@@ -2,11 +2,13 @@ import {
 	type CreateSessionDTO,
 	DeleteSessionSchema,
 	type editSessionDTO,
+	type GetAllSessionsDTO,
 	type ToggleSessionVisibilityDTO,
 } from "@application/dto/mentor/session.dto";
 import type { IAddSessionUsecase } from "@application/ports/usecase/mentor/session/IAddSession.usecase";
 import type { IDeleteSessionUsecase } from "@application/ports/usecase/mentor/session/IDeleteSession.usecase";
 import type { IEditSessionUsecase } from "@application/ports/usecase/mentor/session/IEditSession.usecase";
+import type { IGetSessionUsecase } from "@application/ports/usecase/mentor/session/IGetSession.usecase";
 import type { IToggleSessionVisibilityUseCase } from "@application/ports/usecase/mentor/session/IToggleSessionVisibility.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { NotFoundError } from "@domain/errors/UserError";
@@ -28,6 +30,8 @@ export class SessionController implements ISessionController {
 		private readonly _deleteSessionUsecase: IDeleteSessionUsecase,
 		@inject(TYPES.ToggleSessionVisibilityUsecase)
 		private readonly _toggleSessionUsecase: IToggleSessionVisibilityUseCase,
+		@inject(TYPES.GetSessionUsecase)
+		private readonly _getsessionUsecase: IGetSessionUsecase,
 	) {}
 
 	addSession = async (req: Request, res: Response): Promise<void> => {
@@ -76,6 +80,16 @@ export class SessionController implements ISessionController {
 		}
 
 		const record = await this._toggleSessionUsecase.execute(mentorId, parsed);
+		res.status(HTTPSTATUS.OK).json(createSuccess("success", record));
+	};
+	getSession = async (req: Request, res: Response): Promise<void> => {
+		const parsed = req.validated?.query as GetAllSessionsDTO;
+		const mentorId = req.user?.userId;
+		if (!mentorId) {
+			throw new NotFoundError("mentor id not found");
+		}
+
+		const record = await this._getsessionUsecase.execute(mentorId, parsed);
 		res.status(HTTPSTATUS.OK).json(createSuccess("success", record));
 	};
 }
