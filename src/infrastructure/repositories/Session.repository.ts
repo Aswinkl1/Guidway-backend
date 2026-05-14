@@ -31,6 +31,7 @@ export class SessionRepository
 		const { limit, page, isActive, search } = filter;
 		const where: Prisma.SessionWhereInput = {};
 		where.mentorId = mentorId;
+		where.deletedAt = null;
 		if (search) {
 			where.name = { contains: search, mode: "insensitive" };
 		}
