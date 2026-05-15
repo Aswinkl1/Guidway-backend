@@ -51,6 +51,7 @@ export const ROUTES = {
 			DETAIL: "/session/:id",
 			VISIBILITY: "/session/:id/visibility",
 		},
+		PROFILE_IMAGE: "/profile-image",
 	},
 	USER: {
 		ROOT: "/",

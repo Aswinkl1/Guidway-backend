@@ -134,4 +134,10 @@ router.put(
 	validatetor(CreateSocialLinkSchema, "body"),
 	ProfileController.updateSocailMediaLinks,
 );
+
+router.patch(
+	ROUTES.MENTOR.PROFILE_IMAGE,
+	isAuthenticate,
+	ProfileController.updateProfileKey,
+);
 export default router;
