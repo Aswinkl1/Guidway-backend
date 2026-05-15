@@ -32,6 +32,7 @@ import type { IOAuthUseCase } from "@application/ports/usecase/IOAuth.usecase";
 import type { IRefreshTokenUsecase } from "@application/ports/usecase/IRefreshToken.usecase";
 import type { IResetPassswordUsecase } from "@application/ports/usecase/IResetPassword.usecase";
 import type { ISignUpUsecase } from "@application/ports/usecase/ISignUpUsecase";
+import type { IUserUpdateProfileKeyUsecase } from "@application/ports/usecase/IUserUpdateProfileKey.usecase";
 import type { IUserUploadUrlUsecase } from "@application/ports/usecase/IUserUploadUrl.usecase";
 import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
 import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
@@ -95,6 +96,7 @@ import { OAuthUseCase } from "@application/useCases/user/OAuth.usecase";
 import { RefreshTokenUsecase } from "@application/useCases/user/refreshToken.usecase";
 import { ResetPasswordUsecase } from "@application/useCases/user/resetPassword.usecase";
 import { SignUpUser } from "@application/useCases/user/SignUp.usecase";
+import { UserUpdateProfileKeyUsecase } from "@application/useCases/user/UserUpdateProfileKey.usecase";
 import { UserUploadUrlUsecase } from "@application/useCases/user/UserUploadUrlUsecase";
 import { VerifyEmailUseCase } from "@application/useCases/user/verifyEmail.usecase";
 import { CacheService } from "@infrastructure/cache/Cache";
@@ -215,7 +217,10 @@ container
 	.inSingletonScope();
 
 //usecase
-
+container
+	.bind<IUserUpdateProfileKeyUsecase>(TYPES.UserUpdateProfileKeyUsecase)
+	.to(UserUpdateProfileKeyUsecase)
+	.inSingletonScope();
 container
 	.bind<IGetSessionUsecase>(TYPES.GetSessionUsecase)
 	.to(GetSessionUsecase)
