@@ -19,4 +19,5 @@ export interface IProfileController {
 	getAllDomains(req: Request, res: Response): Promise<void>;
 	updateMentorOverview(req: Request, res: Response): Promise<void>;
 	updateSocailMediaLinks(req: Request, res: Response): Promise<void>;
+	updateProfileKey(req: Request, res: Response): Promise<void>;
 }
