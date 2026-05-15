@@ -25,6 +25,7 @@ import type { editProfileDTO } from "@application/dto/user/EditProfile.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import { UnAuthenticatedError } from "@application/errors/UnAuthenticatedError";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
+import type { IUserUpdateProfileKeyUsecase } from "@application/ports/usecase/IUserUpdateProfileKey.usecase";
 import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
 import type { IGetDomainUsecase } from "@application/ports/usecase/mentor/Domian/IGetDomain.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
@@ -89,6 +90,8 @@ export class ProfileController implements IProfileController {
 		private readonly _updateMentorOverviewUsecase: IUpdateMentorOverviewUsecase,
 		@inject(TYPES.CreateSocialLinksUsecse)
 		private readonly _createSocialLinksUsecase: ICreateSocaiLinksUsecase,
+		@inject(TYPES.UserUpdateProfileKeyUsecase)
+		private readonly _updateProfileImageKeyUsecase: IUserUpdateProfileKeyUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -355,5 +358,21 @@ export class ProfileController implements IProfileController {
 		console.log("i am here after");
 
 		res.status(HTTPSTATUS.OK).json(createSuccess("success", record));
+	};
+
+	updateProfileKey = async (req: Request, res: Response): Promise<void> => {
+		console.log(req.body);
+		const imageKey = req.body.imageKey.trim();
+		const userId = req.user?.userId;
+
+		if (!imageKey) {
+			throw new NotFoundError("imageKey not found");
+		}
+		if (!userId) {
+			throw new NotFoundError("userid not found");
+		}
+
+		await this._updateProfileImageKeyUsecase.execute(userId, imageKey);
+		res.status(HTTPSTATUS.OK).json(createSuccess("success", {}));
 	};
 }
