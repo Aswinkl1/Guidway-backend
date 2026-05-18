@@ -57,4 +57,15 @@ export const ROUTES = {
 		ROOT: "/",
 		DETAIL: "/:id",
 	},
+
+	ADMIN: {
+		ROOT: "/",
+		MENTOR_PROFILE: "/mentor/:id",
+		MENTORS: {
+			BASE: "/admin/mentors",
+			BY_ID: "/admin/mentors/:id",
+			STATUS: "/admin/mentors/:id/status",
+			VERIFY: "/admin/mentors/:id/verify",
+		},
+	},
 } as const;

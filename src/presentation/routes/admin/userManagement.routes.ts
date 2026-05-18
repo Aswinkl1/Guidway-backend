@@ -3,6 +3,7 @@ import { updateBlockStatusSchema } from "@application/dto/admin/UpdateBlockStatu
 import { VerifyMentorSchema } from "@application/dto/admin/VerifyMentor.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
+import { ROUTES } from "@presentation/constants/routes";
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
 import validatetor from "@presentation/middleware/validation.middleware";
 import { Router } from "express";
@@ -29,4 +30,15 @@ router.patch(
 	validatetor(VerifyMentorSchema, "body"),
 	userManagementController.updateVerifyMentor,
 );
+
+router.get(
+	ROUTES.ADMIN.MENTOR_PROFILE,
+	userManagementController.getMentorDetail,
+);
+
+router.patch(
+	ROUTES.ADMIN.MENTORS.STATUS,
+	userManagementController.updateMentorStatus,
+);
+
 export default router;
