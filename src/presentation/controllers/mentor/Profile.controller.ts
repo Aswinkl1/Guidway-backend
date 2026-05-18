@@ -254,6 +254,7 @@ export class ProfileController implements IProfileController {
 			throw new NotFoundError("mentorid not foundS");
 		}
 		const profile = await this._getMentorProfileUsecase.execute(mentorId);
+		console.log(profile);
 		res.status(HTTPSTATUS.OK).json(createSuccess("succesfull", profile));
 	};
 
