@@ -68,6 +68,8 @@ export const TYPES = {
 	ToggleSessionVisibilityUsecase: Symbol.for("ToggleSessionVisibilityUsecase"),
 	GetSessionUsecase: Symbol.for("GetSessionUsecase"),
 	UserUpdateProfileKeyUsecase: Symbol.for("UserUpdateProfileKeyUsecase"),
+	EditAchievementUsecase: Symbol.for("EditAchievementUsecase"),
+	DeleteAchievementUsecase: Symbol.for("DeleteAchievementUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

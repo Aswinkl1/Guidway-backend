@@ -36,6 +36,8 @@ import type { IUserUpdateProfileKeyUsecase } from "@application/ports/usecase/IU
 import type { IUserUploadUrlUsecase } from "@application/ports/usecase/IUserUploadUrl.usecase";
 import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmail.usecase";
 import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
+import type { IDeleteAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IDelete-Achievement.usecase";
+import type { IEditAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IEdit-Achievement.usecase";
 import type { IGetDomainUsecase } from "@application/ports/usecase/mentor/Domian/IGetDomain.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
@@ -65,6 +67,8 @@ import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
+import { DeleteAchievementUsecase } from "@application/useCases/mentor/achievements/Delete-Achievement.usecase";
+import { EditAchievementUsecase } from "@application/useCases/mentor/achievements/Edit-Achievement.usecase";
 import { CreateSocialLinksUsecse } from "@application/useCases/mentor/CreateSocialLink.usecase";
 import { GetDomainUsecase } from "@application/useCases/mentor/domain/GetDomain.usecase";
 import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-Education.usecase";
@@ -217,6 +221,14 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IEditAchievementUsecase>(TYPES.EditAchievementUsecase)
+	.to(EditAchievementUsecase)
+	.inSingletonScope();
+container
+	.bind<IDeleteAchievementUsecase>(TYPES.DeleteAchievementUsecase)
+	.to(DeleteAchievementUsecase)
+	.inSingletonScope();
 container
 	.bind<IUserUpdateProfileKeyUsecase>(TYPES.UserUpdateProfileKeyUsecase)
 	.to(UserUpdateProfileKeyUsecase)
