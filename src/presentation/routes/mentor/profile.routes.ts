@@ -1,4 +1,7 @@
-import { CreateAchievementSchema } from "@application/dto/mentor/acheivement.dto";
+import {
+	CreateAchievementSchema,
+	EditAchievementSchema,
+} from "@application/dto/mentor/acheivement.dto";
 import { GetDomainQueryDto } from "@application/dto/mentor/domain.dto";
 import { EditEducationSchema } from "@application/dto/mentor/education.dto";
 import {
@@ -139,5 +142,18 @@ router.patch(
 	ROUTES.MENTOR.PROFILE_IMAGE,
 	isAuthenticate,
 	ProfileController.updateProfileKey,
+);
+
+router.put(
+	ROUTES.MENTOR.ACHIEVEMENT.DETAIL,
+	isAuthenticate,
+	validatetor(EditAchievementSchema, "body"),
+	ProfileController.updateAchievement,
+);
+
+router.delete(
+	ROUTES.MENTOR.ACHIEVEMENT.DETAIL,
+	isAuthenticate,
+	ProfileController.deleteAchievement,
 );
 export default router;

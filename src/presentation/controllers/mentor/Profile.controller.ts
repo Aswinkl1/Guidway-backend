@@ -1,4 +1,8 @@
-import type { CreateAchievementDTO } from "@application/dto/mentor/acheivement.dto";
+import {
+	type CreateAchievementDTO,
+	DeleteAchievementSchema,
+	type EditAchievementDTO,
+} from "@application/dto/mentor/acheivement.dto";
 import type { GetDomainQueryDto } from "@application/dto/mentor/domain.dto";
 import {
 	CreateEducationSchema,
@@ -27,6 +31,8 @@ import { UnAuthenticatedError } from "@application/errors/UnAuthenticatedError";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IUserUpdateProfileKeyUsecase } from "@application/ports/usecase/IUserUpdateProfileKey.usecase";
 import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
+import type { IDeleteAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IDelete-Achievement.usecase";
+import type { IEditAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IEdit-Achievement.usecase";
 import type { IGetDomainUsecase } from "@application/ports/usecase/mentor/Domian/IGetDomain.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
@@ -92,6 +98,11 @@ export class ProfileController implements IProfileController {
 		private readonly _createSocialLinksUsecase: ICreateSocaiLinksUsecase,
 		@inject(TYPES.UserUpdateProfileKeyUsecase)
 		private readonly _updateProfileImageKeyUsecase: IUserUpdateProfileKeyUsecase,
+		@inject(TYPES.EditAchievementUsecase)
+		private readonly _editAchievementUsecase: IEditAchievementUsecase,
+
+		@inject(TYPES.DeleteAchievementUsecase)
+		private readonly _deleteAchievementUsecase: IDeleteAchievementUsecase,
 	) {}
 
 	addEducation = async (req: Request, res: Response) => {
@@ -375,5 +386,40 @@ export class ProfileController implements IProfileController {
 
 		await this._updateProfileImageKeyUsecase.execute(userId, imageKey);
 		res.status(HTTPSTATUS.OK).json(createSuccess("success", {}));
+	};
+	updateAchievement = async (req: Request, res: Response) => {
+		const parsed = req.validated?.body as EditAchievementDTO;
+
+		const mentorId = req?.user?.userId;
+
+		if (!mentorId) {
+			throw new NotFoundError("mentor id not found");
+		}
+
+		const record = await this._editAchievementUsecase.execute(mentorId, parsed);
+
+		res
+			.status(HTTPSTATUS.OK)
+			.json(createSuccess("Achievement edit successful", record));
+	};
+
+	deleteAchievement = async (req: Request, res: Response) => {
+		const mentorId = req.user?.userId;
+		const achievementId = req.params.id;
+
+		const parsed = DeleteAchievementSchema.safeParse({
+			mentorId,
+			id: achievementId,
+		});
+
+		if (!parsed.success) {
+			throw new CustomZodValidationError(parsed.error);
+		}
+
+		await this._deleteAchievementUsecase.execute(parsed.data);
+
+		res
+			.status(HTTPSTATUS.NO_CONTENT)
+			.json(createSuccess("Achievement successfully deleted", {}));
 	};
 }
