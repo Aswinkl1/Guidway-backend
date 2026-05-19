@@ -20,4 +20,6 @@ export interface IProfileController {
 	updateMentorOverview(req: Request, res: Response): Promise<void>;
 	updateSocailMediaLinks(req: Request, res: Response): Promise<void>;
 	updateProfileKey(req: Request, res: Response): Promise<void>;
+	updateAchievement(req: Request, res: Response): Promise<void>;
+	deleteAchievement(req: Request, res: Response): Promise<void>;
 }
