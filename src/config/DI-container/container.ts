@@ -48,6 +48,7 @@ import type { IEditExperienceUsecase } from "@application/ports/usecase/mentor/e
 import type { IChangePasswordUsecase } from "@application/ports/usecase/mentor/IChangePassword.usecase";
 import type { ICreateSocaiLinksUsecase } from "@application/ports/usecase/mentor/ICreateSocailLinks.usecase";
 import type { IGetMentorProfileUsecase } from "@application/ports/usecase/mentor/IGetMentorProfile.usecase";
+import type { IGetSettingsUsecase } from "@application/ports/usecase/mentor/IGetSetting.usecase";
 import type { IMentorStatusUpdateUsecase } from "@application/ports/usecase/mentor/IMentorStatusUpdate.usecase";
 import type { IUpdateMentorBookingRulesUsecase } from "@application/ports/usecase/mentor/IUpdateMentorBookingRules.usecase";
 import type { IUpdateMentorOverviewUsecase } from "@application/ports/usecase/mentor/IUpdateMentorOverview.usecase";
@@ -78,6 +79,7 @@ import { AddExperienceUsecase } from "@application/useCases/mentor/experience/Ad
 import { DeleteExperienceUsecase } from "@application/useCases/mentor/experience/Delete-Experience.usecase";
 import { EditExperienceUsecase } from "@application/useCases/mentor/experience/Edit-Experience.usecase";
 import { GetMentorProfileUsecase } from "@application/useCases/mentor/GetMentorProfile.usecase";
+import { GetSettingsUsecase } from "@application/useCases/mentor/GetSettings.usecase";
 import { AddMentorLanguageUsecase } from "@application/useCases/mentor/language/AddMentorLanguage.usecase";
 import { DeleteMentorLanguageUsecase } from "@application/useCases/mentor/language/DeleteMentorLanguage.usecase";
 import { GetLanguageUsecase } from "@application/useCases/mentor/language/GetLanguage.usecase";
@@ -221,6 +223,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IGetSettingsUsecase>(TYPES.GetSettingsUsecase)
+	.to(GetSettingsUsecase)
+	.inSingletonScope();
 container
 	.bind<IEditAchievementUsecase>(TYPES.EditAchievementUsecase)
 	.to(EditAchievementUsecase)

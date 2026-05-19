@@ -70,6 +70,7 @@ export const TYPES = {
 	UserUpdateProfileKeyUsecase: Symbol.for("UserUpdateProfileKeyUsecase"),
 	EditAchievementUsecase: Symbol.for("EditAchievementUsecase"),
 	DeleteAchievementUsecase: Symbol.for("DeleteAchievementUsecase"),
+	GetSettingsUsecase: Symbol.for("GetSettingsUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
