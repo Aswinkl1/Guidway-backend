@@ -64,7 +64,7 @@ export const ROUTES = {
 		MENTORS: {
 			BASE: "/admin/mentors",
 			BY_ID: "/admin/mentors/:id",
-			STATUS: "/admin/mentors/:id/status",
+			STATUS: "/mentors/:id/status",
 			VERIFY: "/admin/mentors/:id/verify",
 		},
 	},
