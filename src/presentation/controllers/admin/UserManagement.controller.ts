@@ -79,8 +79,8 @@ export class UserManagementController implements IUserManagementController {
 
 	updateMentorStatus = async (req: Request, res: Response): Promise<void> => {
 		const parsed = req.validated?.body as MentorStatusUpdateDTO;
-		const mentorId = req.body.mentorId;
-
+		const mentorId = req.body.id;
+		console.log(parsed);
 		if (!mentorId) {
 			throw new NotFoundError("mentor id not found");
 		}

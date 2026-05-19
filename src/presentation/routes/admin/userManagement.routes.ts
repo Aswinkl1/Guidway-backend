@@ -1,6 +1,7 @@
 import { getUsersSchema } from "@application/dto/admin/GetUsers.dto";
 import { updateBlockStatusSchema } from "@application/dto/admin/UpdateBlockStatus.dto";
 import { VerifyMentorSchema } from "@application/dto/admin/VerifyMentor.dto";
+import { MentorStatusUpdateSchema } from "@application/dto/mentor/MentorStatusUpdate.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -38,6 +39,7 @@ router.get(
 
 router.patch(
 	ROUTES.ADMIN.MENTORS.STATUS,
+	validatetor(MentorStatusUpdateSchema, "body"),
 	userManagementController.updateMentorStatus,
 );
 
