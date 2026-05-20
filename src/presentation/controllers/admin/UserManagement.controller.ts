@@ -69,7 +69,7 @@ export class UserManagementController implements IUserManagementController {
 
 	getMentorDetail = async (req: Request, res: Response) => {
 		const mentorId = req.params.id;
-
+		console.log("jdklfkld");
 		if (!mentorId || typeof mentorId !== "string") {
 			throw new NotFoundError("mentorid not foundS");
 		}

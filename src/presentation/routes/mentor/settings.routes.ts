@@ -34,4 +34,10 @@ router.patch(
 	SettingController.resetPassword,
 );
 
+router.get(
+	ROUTES.MENTOR.SETTINGS.ROOT,
+	isAuthenticate,
+	SettingController.getSettings,
+);
+
 export default router;
