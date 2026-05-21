@@ -7,6 +7,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import nocache from "nocache";
 import passport from "passport";
 import { errorHandler } from "./middleware/errorHandler";
 import route from "./routes";
@@ -23,7 +24,7 @@ app.use(
 		credentials: true,
 	}),
 );
-
+app.use(nocache());
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(express.json());
