@@ -158,7 +158,7 @@ export class AuthController implements IAuthController {
 		logger.info("heloooo");
 		const { accessToken, role, name, profileImageKey } =
 			await this._refreshTokenUsecase.execute(token);
-
+		console.log("whatis running");
 		res.status(HTTPSTATUS.OK).json(
 			createSuccess(MESSAGES.AUTH.SUCCESS.TOKEN_REFRESHED, {
 				role,
