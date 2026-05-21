@@ -74,6 +74,12 @@ export class LoginUsecase implements ILoginUsecase {
 			this._tokenService.generateRefreshToken(payload);
 
 		// if everthing is okey send response
-		return { role: user.role, accessToken, refreshToken };
+		return {
+			role: user.role,
+			accessToken,
+			refreshToken,
+			name: user.name,
+			profileImageKey: user.profileImageKey,
+		};
 	};
 }
