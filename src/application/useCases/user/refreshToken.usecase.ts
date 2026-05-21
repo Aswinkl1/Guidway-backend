@@ -1,4 +1,5 @@
 import { APP_ERRORS_MESSAGES } from "@application/constant/errorMessage";
+import type { loginOutputDTO } from "@application/dto/user/loginUser.dto";
 import { NotFoundError } from "@application/errors/NotFoundError";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { ITokenService } from "@application/ports/services/ITokenService";
@@ -15,7 +16,7 @@ export class RefreshTokenUsecase implements IRefreshTokenUsecase {
 		@inject(TYPES.UserRepository)
 		private readonly _userRepo: IUserRepository,
 	) {}
-	async execute(token: string): Promise<{ accessToken: string; role: Role }> {
+	async execute(token: string): Promise<Omit<loginOutputDTO, "refreshToken">> {
 		try {
 			// check is the token is verifyed
 			const payload = await this._tokenService.verifyRefreshToken(token);
@@ -36,7 +37,12 @@ export class RefreshTokenUsecase implements IRefreshTokenUsecase {
 				role: user.role,
 			});
 			// if not then create a accesstoken and send it back
-			return { accessToken, role: user.role };
+			return {
+				accessToken,
+				role: user.role,
+				name: user.name,
+				profileImageKey: user.profileImageKey,
+			};
 		} catch (error) {
 			console.log(error);
 			// give a custom error for token expire so that we can just rend the res on that way
