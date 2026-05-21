@@ -100,7 +100,7 @@ export class AuthController implements IAuthController {
 
 	userLogin = async (req: Request, res: Response): Promise<void> => {
 		const data = req.validated?.body as loginUserInputDTO;
-		const { role, accessToken, refreshToken } =
+		const { role, accessToken, refreshToken, name, profileImageKey } =
 			await this._loginUsecase.execute(data);
 		res.cookie("refreshToken", refreshToken, {
 			httpOnly: true,
@@ -108,9 +108,14 @@ export class AuthController implements IAuthController {
 			sameSite: "strict",
 			maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
 		});
-		res
-			.status(HTTPSTATUS.OK)
-			.json(createSuccess(MESSAGES.AUTH.SUCCESS.LOGIN, { role, accessToken }));
+		res.status(HTTPSTATUS.OK).json(
+			createSuccess(MESSAGES.AUTH.SUCCESS.LOGIN, {
+				role,
+				accessToken,
+				name,
+				profileImageKey,
+			}),
+		);
 	};
 
 	mock = async (req: Request, res: Response): Promise<void> => {
@@ -151,13 +156,15 @@ export class AuthController implements IAuthController {
 	refreshToken = async (req: Request, res: Response): Promise<void> => {
 		const token = req.cookies.refreshToken;
 		logger.info("heloooo");
-		const { accessToken, role } =
+		const { accessToken, role, name, profileImageKey } =
 			await this._refreshTokenUsecase.execute(token);
 
 		res.status(HTTPSTATUS.OK).json(
 			createSuccess(MESSAGES.AUTH.SUCCESS.TOKEN_REFRESHED, {
 				role,
 				accessToken,
+				name,
+				profileImageKey,
 			}),
 		);
 	};
