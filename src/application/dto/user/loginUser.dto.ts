@@ -25,4 +25,6 @@ export interface loginOutputDTO {
 	role: Role;
 	accessToken: string;
 	refreshToken: string;
+	name: string;
+	profileImageKey: string | null;
 }
