@@ -3,6 +3,7 @@ import type {
 	loginOutputDTO,
 	loginUserInputDTO,
 } from "@application/dto/user/loginUser.dto";
+import { ForbiddenError } from "@application/errors/ForbidenError";
 import { InvalidCredentialsError } from "@application/errors/InvalidCredentialsError";
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { IHashService } from "@application/ports/services/IHashService";
@@ -51,7 +52,10 @@ export class LoginUsecase implements ILoginUsecase {
 				APP_ERRORS_MESSAGES.USER.INVALID_CREDENTIALS,
 			);
 		}
-
+		console.log(user);
+		if (user.isBlocked === true) {
+			throw new ForbiddenError("user blocked by the admin");
+		}
 		const payload: JWTTokenPaylod = {
 			userId: user.id,
 			role: user.role,
