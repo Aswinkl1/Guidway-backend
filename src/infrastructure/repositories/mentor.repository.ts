@@ -80,8 +80,8 @@ export default class MentorRepository
 
 	async findAllWithCursor(
 		filter: listMentorDto,
-	): Promise<CursorPaginatedResult<Mentor>> {
-		const { cursor, limit, search } = filter;
+	): Promise<CursorPaginatedResult<outputType>> {
+		const { cursor, limit, search, domainId, isVerified, status } = filter;
 		const where: Prisma.MentorWhereInput = {};
 		if (search) {
 			where.OR = [
@@ -95,6 +95,17 @@ export default class MentorRepository
 				},
 			];
 		}
+
+		if (domainId) {
+			where.domainId = domainId;
+		}
+		if (isVerified) {
+			where.isVerified = isVerified;
+		}
+
+		if (status) {
+			where.status = status;
+		}
 		const mentors = await this._prisma.mentor.findMany({
 			where,
 			take: limit + 1,
@@ -103,12 +114,30 @@ export default class MentorRepository
 				cursor: { userId: cursor },
 			}),
 			orderBy: [{ createdAt: "desc" }, { userId: "desc" }],
+			include: {
+				user: {
+					select: {
+						name: true,
+						email: true,
+						profileImageKey: true,
+						phoneNumber: true,
+						isBlocked: true,
+						isVerified: true,
+					},
+				},
+			},
 		});
 
 		const hasNext = mentors.length > limit;
 		if (hasNext) mentors.pop();
 		const nextCursor = hasNext ? mentors[mentors.length - 1].userId : null;
-		return { data: mentors.map((m) => this.toDomain(m)), hasNext, nextCursor };
+		return {
+			data: mentors.map((v) => {
+				return { mentor: this.toDomain(v), user: v.user };
+			}),
+			hasNext,
+			nextCursor,
+		};
 	}
 
 	async findMentorByUserId(userId: string): Promise<Mentor | null> {
