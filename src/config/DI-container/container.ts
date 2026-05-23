@@ -27,6 +27,7 @@ import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdat
 import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
+import type { IListMentorsUsecase } from "@application/ports/usecase/IListMentor.usecase";
 import type { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
 import type { IOAuthUseCase } from "@application/ports/usecase/IOAuth.usecase";
 import type { IRefreshTokenUsecase } from "@application/ports/usecase/IRefreshToken.usecase";
@@ -97,6 +98,7 @@ import { UpdateMentorOverviewUsecase } from "@application/useCases/mentor/Update
 import { ChangePasswordUsecase } from "@application/useCases/user/changePassword.usecase";
 import { EditUserProfileUsecase } from "@application/useCases/user/EditUserProfile.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
+import { ListMentorUsecase } from "@application/useCases/user/ListMentor.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
 import { OAuthUseCase } from "@application/useCases/user/OAuth.usecase";
 import { RefreshTokenUsecase } from "@application/useCases/user/refreshToken.usecase";
@@ -223,6 +225,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IListMentorsUsecase>(TYPES.ListMentorUsecase)
+	.to(ListMentorUsecase)
+	.inSingletonScope();
 container
 	.bind<IGetSettingsUsecase>(TYPES.GetSettingsUsecase)
 	.to(GetSettingsUsecase)
