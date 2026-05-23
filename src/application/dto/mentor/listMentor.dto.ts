@@ -4,7 +4,7 @@ import z from "zod";
 export const BaseListMentorSchema = z.object({
 	search: z.string().trim().optional(),
 	cursor: z.uuid().optional(),
-	limit: z.number().optional().default(5),
+	limit: z.number().optional().default(1),
 	domainId: z.uuid().optional(),
 	status: z.enum(MentorStatus).optional(),
 	isVerified: z.boolean().optional(),
