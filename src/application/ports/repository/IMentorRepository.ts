@@ -11,7 +11,14 @@ import type { IBaseRepository } from "./IBaseRepository";
 export type outputType = {
 	mentor: Pick<
 		Mentor,
-		"userId" | "isVerified" | "createdAt" | "averageRating" | "status"
+		| "userId"
+		| "isVerified"
+		| "createdAt"
+		| "averageRating"
+		| "status"
+		| "domainId"
+		| "headline"
+		| "reviewCount"
 	>;
 	user: Pick<
 		User,
@@ -31,5 +38,5 @@ export interface IMentorRepository
 	update(userId: string, data: Partial<Mentor>): Promise<Mentor>;
 	findAllWithCursor(
 		filter: listMentorDto,
-	): Promise<CursorPaginatedResult<Mentor>>;
+	): Promise<CursorPaginatedResult<outputType>>;
 }
