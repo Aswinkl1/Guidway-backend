@@ -6,4 +6,5 @@ export interface PaginatedResult<T> {
 export interface CursorPaginatedResult<T> {
 	data: T[];
 	hasNext: boolean;
+	nextCursor: string | null;
 }
