@@ -139,11 +139,13 @@ import { AuthController } from "@presentation/controllers/auth.controller";
 import { ProfileController } from "@presentation/controllers/mentor/Profile.controller";
 import { SessionController } from "@presentation/controllers/mentor/Session.controller";
 import { SettingController } from "@presentation/controllers/mentor/Settings.controller";
+import { UserController } from "@presentation/controllers/user/user.controller";
 import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import type { IProfileController } from "@presentation/interface/controllers/IProfileController";
 import type { ISessionController } from "@presentation/interface/controllers/ISession.controller";
 import type { ISettingsController } from "@presentation/interface/controllers/ISettings.controller";
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
+import type { IUserController } from "@presentation/interface/controllers/user/IUser.controller";
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
 import { TYPES } from "./TYPES";
@@ -461,6 +463,10 @@ container
 container
 	.bind<ISettingsController>(TYPES.SettingController)
 	.to(SettingController)
+	.inSingletonScope();
+container
+	.bind<IUserController>(TYPES.UserController)
+	.to(UserController)
 	.inSingletonScope();
 // queries
 

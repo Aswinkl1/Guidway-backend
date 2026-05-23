@@ -79,6 +79,7 @@ export const TYPES = {
 	ProfileMentorController: Symbol.for("ProfileMentorController"),
 	SettingController: Symbol.for("SettingController"),
 	SessionController: Symbol.for("SessionController"),
+	UserController: Symbol.for("UserController"),
 	// Infrastructure Clients
 	PrismaClient: Symbol.for("PrismaClient"),
 	RedisClient: Symbol.for("RedisClient"),
