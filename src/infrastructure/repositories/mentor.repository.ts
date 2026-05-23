@@ -1,9 +1,13 @@
 import type { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
+import type { listMentorDto } from "@application/dto/mentor/listMentor.dto";
 import type {
 	IMentorRepository,
 	outputType,
 } from "@application/ports/repository/IMentorRepository";
-import type { PaginatedResult } from "@application/types/paginationResult.types";
+import type {
+	CursorPaginatedResult,
+	PaginatedResult,
+} from "@application/types/paginationResult.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Mentor } from "@domain/mentor/mentor.entity";
 import type {
@@ -72,6 +76,39 @@ export default class MentorRepository
 			}),
 			totalItems,
 		};
+	}
+
+	async findAllWithCursor(
+		filter: listMentorDto,
+	): Promise<CursorPaginatedResult<Mentor>> {
+		const { cursor, limit, search } = filter;
+		const where: Prisma.MentorWhereInput = {};
+		if (search) {
+			where.OR = [
+				{
+					user: { name: { contains: search, mode: "insensitive" } },
+				},
+				{
+					domain: {
+						domainName: { contains: search, mode: "insensitive" },
+					},
+				},
+			];
+		}
+		const mentors = await this._prisma.mentor.findMany({
+			where,
+			take: limit + 1,
+			...(cursor && {
+				skip: 1,
+				cursor: { userId: cursor },
+			}),
+			orderBy: [{ createdAt: "desc" }, { userId: "desc" }],
+		});
+
+		const hasNext = mentors.length > limit;
+		if (hasNext) mentors.pop();
+		const nextCursor = hasNext ? mentors[mentors.length - 1].userId : null;
+		return { data: mentors.map((m) => this.toDomain(m)), hasNext, nextCursor };
 	}
 
 	async findMentorByUserId(userId: string): Promise<Mentor | null> {
