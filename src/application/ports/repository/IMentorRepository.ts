@@ -29,6 +29,7 @@ export type outputType = {
 		| "isVerified"
 		| "profileImageKey"
 	>;
+	startingAt?: number | null;
 };
 
 export interface IMentorRepository

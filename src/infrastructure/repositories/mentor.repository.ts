@@ -106,6 +106,10 @@ export default class MentorRepository
 		if (status) {
 			where.status = status;
 		}
+		where.user = {
+			isBlocked: false,
+		};
+
 		const mentors = await this._prisma.mentor.findMany({
 			where,
 			take: limit + 1,
@@ -125,6 +129,13 @@ export default class MentorRepository
 						isVerified: true,
 					},
 				},
+				sessions: {
+					select: {
+						price: true,
+					},
+					orderBy: { price: "asc" },
+					take: 1,
+				},
 			},
 		});
 
@@ -133,7 +144,11 @@ export default class MentorRepository
 		const nextCursor = hasNext ? mentors[mentors.length - 1].userId : null;
 		return {
 			data: mentors.map((v) => {
-				return { mentor: this.toDomain(v), user: v.user };
+				return {
+					mentor: this.toDomain(v),
+					user: v.user,
+					startingAt: v.sessions[0].price,
+				};
 			}),
 			hasNext,
 			nextCursor,

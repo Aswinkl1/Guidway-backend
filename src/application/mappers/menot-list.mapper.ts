@@ -9,6 +9,7 @@ type userData = {
 	isVerified: boolean;
 	avgRating: number;
 	reviewCount: number;
+	startingAt?: number | null;
 };
 export interface IMentorListOutputDto {
 	data: userData[];
@@ -27,6 +28,7 @@ export class MentorListMapper {
 			isVerified: data.mentor.isVerified,
 			profileImageKey: data.user.profileImageKey,
 			reviewCount: data.mentor.reviewCount,
+			startingAt: data.startingAt,
 		};
 	}
 
