@@ -1,5 +1,9 @@
 import type { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
-import type { PaginatedResult } from "@application/types/paginationResult.types";
+import type { listMentorDto } from "@application/dto/mentor/listMentor.dto";
+import type {
+	CursorPaginatedResult,
+	PaginatedResult,
+} from "@application/types/paginationResult.types";
 import type { Mentor } from "@domain/mentor/mentor.entity";
 import type { User } from "@domain/user/user";
 import type { IBaseRepository } from "./IBaseRepository";
@@ -7,7 +11,14 @@ import type { IBaseRepository } from "./IBaseRepository";
 export type outputType = {
 	mentor: Pick<
 		Mentor,
-		"userId" | "isVerified" | "createdAt" | "averageRating" | "status"
+		| "userId"
+		| "isVerified"
+		| "createdAt"
+		| "averageRating"
+		| "status"
+		| "domainId"
+		| "headline"
+		| "reviewCount"
 	>;
 	user: Pick<
 		User,
@@ -18,6 +29,7 @@ export type outputType = {
 		| "isVerified"
 		| "profileImageKey"
 	>;
+	startingAt?: number | null;
 };
 
 export interface IMentorRepository
@@ -25,4 +37,7 @@ export interface IMentorRepository
 	findAll(filter?: getUsersDTO): Promise<PaginatedResult<outputType>>;
 	findMentorByUserId(userId: string): Promise<Mentor | null>;
 	update(userId: string, data: Partial<Mentor>): Promise<Mentor>;
+	findAllWithCursor(
+		filter: listMentorDto,
+	): Promise<CursorPaginatedResult<outputType>>;
 }

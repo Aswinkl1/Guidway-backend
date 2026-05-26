@@ -292,8 +292,7 @@ model Experience {
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime? // Soft delete
-
+  deletedAt DateTime?
   @@index([mentorId])
   // @@index([deletedAt])
   @@map("experiences")
@@ -323,7 +322,7 @@ model Education {
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime? // Soft delete
+  deletedAt DateTime?
 
   @@index([mentorId])
   // @@index([deletedAt])
@@ -366,4 +365,5 @@ model Session {
   updatedAt   DateTime @updatedAt
 
  mentor   Mentor   @relation(fields: [mentorId], references: [userId])
+ @@index([mentorId,price])
 }

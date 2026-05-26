@@ -6,6 +6,7 @@ type RequestSource = "body" | "query" | "params";
 const validatetor = (schema: ZodType, source: RequestSource) => {
 	return (req: Request, _res: Response, next: NextFunction): void => {
 		const data = req[source];
+		console.log(data);
 		const parsed = schema.safeParse(data);
 		if (!parsed.success) {
 			throw new CustomZodValidationError(parsed.error);

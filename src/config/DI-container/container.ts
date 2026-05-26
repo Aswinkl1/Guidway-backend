@@ -27,6 +27,7 @@ import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdat
 import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
+import type { IListMentorsUsecase } from "@application/ports/usecase/IListMentor.usecase";
 import type { ILoginUsecase } from "@application/ports/usecase/ILogin.usecase";
 import type { IOAuthUseCase } from "@application/ports/usecase/IOAuth.usecase";
 import type { IRefreshTokenUsecase } from "@application/ports/usecase/IRefreshToken.usecase";
@@ -97,6 +98,7 @@ import { UpdateMentorOverviewUsecase } from "@application/useCases/mentor/Update
 import { ChangePasswordUsecase } from "@application/useCases/user/changePassword.usecase";
 import { EditUserProfileUsecase } from "@application/useCases/user/EditUserProfile.usecase";
 import { ForgetPasswordUsecase } from "@application/useCases/user/forgetPassword.usecase";
+import { ListMentorUsecase } from "@application/useCases/user/ListMentor.usecase";
 import { LoginUsecase } from "@application/useCases/user/loginUser.usercase";
 import { OAuthUseCase } from "@application/useCases/user/OAuth.usecase";
 import { RefreshTokenUsecase } from "@application/useCases/user/refreshToken.usecase";
@@ -137,11 +139,13 @@ import { AuthController } from "@presentation/controllers/auth.controller";
 import { ProfileController } from "@presentation/controllers/mentor/Profile.controller";
 import { SessionController } from "@presentation/controllers/mentor/Session.controller";
 import { SettingController } from "@presentation/controllers/mentor/Settings.controller";
+import { UserController } from "@presentation/controllers/user/user.controller";
 import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import type { IProfileController } from "@presentation/interface/controllers/IProfileController";
 import type { ISessionController } from "@presentation/interface/controllers/ISession.controller";
 import type { ISettingsController } from "@presentation/interface/controllers/ISettings.controller";
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
+import type { IUserController } from "@presentation/interface/controllers/user/IUser.controller";
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
 import { TYPES } from "./TYPES";
@@ -223,6 +227,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IListMentorsUsecase>(TYPES.ListMentorUsecase)
+	.to(ListMentorUsecase)
+	.inSingletonScope();
 container
 	.bind<IGetSettingsUsecase>(TYPES.GetSettingsUsecase)
 	.to(GetSettingsUsecase)
@@ -455,6 +463,10 @@ container
 container
 	.bind<ISettingsController>(TYPES.SettingController)
 	.to(SettingController)
+	.inSingletonScope();
+container
+	.bind<IUserController>(TYPES.UserController)
+	.to(UserController)
 	.inSingletonScope();
 // queries
 

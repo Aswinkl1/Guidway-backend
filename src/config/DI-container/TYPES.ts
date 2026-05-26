@@ -71,6 +71,7 @@ export const TYPES = {
 	EditAchievementUsecase: Symbol.for("EditAchievementUsecase"),
 	DeleteAchievementUsecase: Symbol.for("DeleteAchievementUsecase"),
 	GetSettingsUsecase: Symbol.for("GetSettingsUsecase"),
+	ListMentorUsecase: Symbol.for("ListMentorUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
@@ -78,6 +79,7 @@ export const TYPES = {
 	ProfileMentorController: Symbol.for("ProfileMentorController"),
 	SettingController: Symbol.for("SettingController"),
 	SessionController: Symbol.for("SessionController"),
+	UserController: Symbol.for("UserController"),
 	// Infrastructure Clients
 	PrismaClient: Symbol.for("PrismaClient"),
 	RedisClient: Symbol.for("RedisClient"),

@@ -1,9 +1,13 @@
 import type { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
+import type { listMentorDto } from "@application/dto/mentor/listMentor.dto";
 import type {
 	IMentorRepository,
 	outputType,
 } from "@application/ports/repository/IMentorRepository";
-import type { PaginatedResult } from "@application/types/paginationResult.types";
+import type {
+	CursorPaginatedResult,
+	PaginatedResult,
+} from "@application/types/paginationResult.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Mentor } from "@domain/mentor/mentor.entity";
 import type {
@@ -71,6 +75,83 @@ export default class MentorRepository
 				return { mentor: this.toDomain(user), user: user.user };
 			}),
 			totalItems,
+		};
+	}
+
+	async findAllWithCursor(
+		filter: listMentorDto,
+	): Promise<CursorPaginatedResult<outputType>> {
+		const { cursor, limit, search, domainId, isVerified, status } = filter;
+		const where: Prisma.MentorWhereInput = {};
+		if (search) {
+			where.OR = [
+				{
+					user: { name: { contains: search, mode: "insensitive" } },
+				},
+				{
+					domain: {
+						domainName: { contains: search, mode: "insensitive" },
+					},
+				},
+			];
+		}
+
+		if (domainId) {
+			where.domainId = domainId;
+		}
+		if (isVerified) {
+			where.isVerified = isVerified;
+		}
+
+		if (status) {
+			where.status = status;
+		}
+		where.user = {
+			isBlocked: false,
+		};
+
+		const mentors = await this._prisma.mentor.findMany({
+			where,
+			take: limit + 1,
+			...(cursor && {
+				skip: 1,
+				cursor: { userId: cursor },
+			}),
+			orderBy: [{ createdAt: "desc" }, { userId: "desc" }],
+			include: {
+				user: {
+					select: {
+						name: true,
+						email: true,
+						profileImageKey: true,
+						phoneNumber: true,
+						isBlocked: true,
+						isVerified: true,
+					},
+				},
+				sessions: {
+					select: {
+						price: true,
+					},
+					orderBy: { price: "asc" },
+					take: 1,
+				},
+			},
+		});
+
+		const hasNext = mentors.length > limit;
+		if (hasNext) mentors.pop();
+		const nextCursor = hasNext ? mentors[mentors.length - 1].userId : null;
+		return {
+			data: mentors.map((v) => {
+				return {
+					mentor: this.toDomain(v),
+					user: v.user,
+					startingAt: v.sessions[0].price,
+				};
+			}),
+			hasNext,
+			nextCursor,
 		};
 	}
 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import adminRouter from "./admin/userManagement.routes";
 import authRoute from "./auth.routes";
+import mentorRouter from "./mentor/mentor.routes";
 import profileRoutes from "./mentor/profile.routes";
 import sessionRouter from "./mentor/session.routes";
 import settingRoutes from "./mentor/settings.routes";
@@ -14,4 +15,5 @@ route.use("/mentor", profileRoutes);
 route.use("/user", userRouter);
 route.use("/mentor", settingRoutes);
 route.use("/mentor", sessionRouter);
+route.use("/mentor", mentorRouter);
 export default route;
