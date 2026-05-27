@@ -84,6 +84,17 @@ export class MentorQuery implements IMentorQuery {
 						year: true,
 					},
 				},
+				sessions: {
+					where: { deletedAt: null, isActive: true },
+					orderBy: { price: "asc" },
+					select: {
+						id: true,
+						description: true,
+						name: true,
+						price: true,
+						duration: true,
+					},
+				},
 			},
 		});
 
@@ -149,6 +160,13 @@ export class MentorQuery implements IMentorQuery {
 				title: a.title,
 				type: a.type,
 				year: a.year,
+			})),
+			sessions: record.sessions.map((s) => ({
+				id: s.id,
+				name: s.name,
+				description: s.description,
+				price: s.price,
+				duration: s.duration,
 			})),
 		};
 	}

@@ -73,4 +73,12 @@ export interface MentorProfileDto {
 		type: AchievementType;
 		year: number | null;
 	}[];
+
+	sessions: {
+		id: string;
+		name: string;
+		description: string;
+		price: number;
+		duration: number;
+	}[];
 }
