@@ -14,4 +14,6 @@ router.get(
 	validatetor(publicListMentorSchema, "query"),
 	UserController.getListMentors,
 );
+
+router.get(ROUTES.MENTOR.DETAIL, UserController.getMentorProfile);
 export default router;
