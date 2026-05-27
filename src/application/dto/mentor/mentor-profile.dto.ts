@@ -79,5 +79,6 @@ export interface MentorProfileDto {
 		name: string;
 		description: string;
 		price: number;
+		duration: number;
 	}[];
 }

@@ -92,6 +92,7 @@ export class MentorQuery implements IMentorQuery {
 						description: true,
 						name: true,
 						price: true,
+						duration: true,
 					},
 				},
 			},
@@ -165,6 +166,7 @@ export class MentorQuery implements IMentorQuery {
 				name: s.name,
 				description: s.description,
 				price: s.price,
+				duration: s.duration,
 			})),
 		};
 	}
