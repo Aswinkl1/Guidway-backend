@@ -2,6 +2,7 @@ import type { outputType } from "@application/ports/repository/IMentorRepository
 import type { CursorPaginatedResult } from "@application/types/paginationResult.types";
 
 type userData = {
+	id: string;
 	name: string;
 	profileImageKey: string | null;
 	domainId: string | null;
@@ -21,6 +22,7 @@ export interface IMentorListOutputDto {
 export class MentorListMapper {
 	static toOutput(data: outputType): userData {
 		return {
+			id: data.mentor.userId,
 			name: data.user.name,
 			avgRating: data.mentor.averageRating,
 			domainId: data.mentor.domainId,
