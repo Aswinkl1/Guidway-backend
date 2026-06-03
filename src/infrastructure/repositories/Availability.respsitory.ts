@@ -1,4 +1,5 @@
 import type { IAvailabilityRepository } from "@application/ports/repository/IAvailability.repository";
+import { TYPES } from "@config/DI-container/TYPES";
 import {
 	Availability,
 	type DayOfWeek,
@@ -9,8 +10,9 @@ import type {
 	Availability as PrismaAvailability,
 	PrismaClient,
 } from "generated/prisma/client";
+import { inject, injectable } from "inversify";
 import { BaseRepository } from "./BaseRepository";
-
+@injectable()
 export class AvailabilityRepository
 	extends BaseRepository<
 		PrismaAvailability,
@@ -20,7 +22,7 @@ export class AvailabilityRepository
 	>
 	implements IAvailabilityRepository
 {
-	constructor(private _prisma: PrismaClient) {
+	constructor(@inject(TYPES.PrismaClient) private _prisma: PrismaClient) {
 		super(_prisma.availability);
 	}
 	async checkOverlap(
