@@ -140,6 +140,7 @@ import { S3Service } from "@infrastructure/services/S3Service";
 import { TokenService } from "@infrastructure/services/TokenServices";
 import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
 import { AuthController } from "@presentation/controllers/auth.controller";
+import { AvailabilityController } from "@presentation/controllers/mentor/Availability.controller";
 import { ProfileController } from "@presentation/controllers/mentor/Profile.controller";
 import { SessionController } from "@presentation/controllers/mentor/Session.controller";
 import { SettingController } from "@presentation/controllers/mentor/Settings.controller";
@@ -149,6 +150,7 @@ import type { IProfileController } from "@presentation/interface/controllers/IPr
 import type { ISessionController } from "@presentation/interface/controllers/ISession.controller";
 import type { ISettingsController } from "@presentation/interface/controllers/ISettings.controller";
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
+import type { IAvailabilityController } from "@presentation/interface/controllers/mentor/IAvailability.controller";
 import type { IUserController } from "@presentation/interface/controllers/user/IUser.controller";
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
@@ -479,6 +481,10 @@ container
 container
 	.bind<IUserController>(TYPES.UserController)
 	.to(UserController)
+	.inSingletonScope();
+container
+	.bind<IAvailabilityController>(TYPES.AvailabilityController)
+	.to(AvailabilityController)
 	.inSingletonScope();
 // queries
 
