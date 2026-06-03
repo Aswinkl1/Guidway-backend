@@ -391,7 +391,7 @@ model Availability {
   isActive    Boolean   @default(true)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-
+  deletedAt   DateTime?
   @@index([mentorId])
 }
 
