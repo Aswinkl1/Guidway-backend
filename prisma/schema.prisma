@@ -130,6 +130,7 @@ model Mentor {
   education            Education[]
   achievements         Achievement[]
   sessions             Session[]
+  availability         Availability[]
   @@index([status])
   @@index([domainId])
   // @@index([averageRating])
@@ -379,7 +380,8 @@ enum DayOfWeek {
 }
 
 model Availability {
- id          String    @id @default(uuid())
+  id          String    @id @default(uuid())
+  mentor   Mentor   @relation(fields: [mentorId], references: [userId])
   mentorId    String
   dayOfWeek   DayOfWeek
   startTime   Int       // minutes since midnight
@@ -394,7 +396,7 @@ model Availability {
 }
 
 model AvailabilityException {
-  id         String   @id @default(cuid())
+  id         String   @id @default(uuid())
   mentorId   String
   date       DateTime
 }
