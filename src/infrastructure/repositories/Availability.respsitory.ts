@@ -6,6 +6,7 @@ import {
 import type {
 	Prisma,
 	Availability as PrismaAvailability,
+	PrismaClient,
 } from "generated/prisma/client";
 import { BaseRepository } from "./BaseRepository";
 
@@ -18,6 +19,9 @@ export class AvailabilityRepository
 	>
 	implements IAvailabilityRepository
 {
+	constructor(private _prisma: PrismaClient) {
+		super(_prisma.availability);
+	}
 	protected toDomain(record: PrismaAvailability): IAvailability {
 		return Availability.create(record);
 	}
