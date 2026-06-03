@@ -1,12 +1,15 @@
 import type { createAvailabilityDto } from "@application/dto/mentor/availability.dto";
 import type { IAddAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IAddAvailability.usecase";
+import { TYPES } from "@config/DI-container/TYPES";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
 import { createSuccess } from "@presentation/helper/response.util";
 import type { IAvailabilityController } from "@presentation/interface/controllers/mentor/IAvailability.controller";
 import type { Request, Response } from "express";
-
+import { inject, injectable } from "inversify";
+@injectable()
 export class AvailabilityController implements IAvailabilityController {
 	constructor(
+		@inject(TYPES.AddAvailabilityUsecase)
 		private readonly _addAvailabilityUsecase: IAddAvailabilityUsecase,
 	) {}
 	addAvalilability = async (req: Request, res: Response): Promise<void> => {
