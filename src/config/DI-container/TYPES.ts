@@ -18,6 +18,7 @@ export const TYPES = {
 	SocaiLinkRepository: Symbol.for("SocaiLinkRepository"),
 	MentorBookingRulesRepository: Symbol.for("MentorBookingRulesRepository"),
 	SessionRepository: Symbol.for("SessionRepository"),
+	AvailabilityRepository: Symbol.for("AvailabilityRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
@@ -72,6 +73,7 @@ export const TYPES = {
 	DeleteAchievementUsecase: Symbol.for("DeleteAchievementUsecase"),
 	GetSettingsUsecase: Symbol.for("GetSettingsUsecase"),
 	ListMentorUsecase: Symbol.for("ListMentorUsecase"),
+	AddAvailabilityUsecase: Symbol.for("AddAvailabilityUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
