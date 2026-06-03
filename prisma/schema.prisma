@@ -367,3 +367,34 @@ model Session {
  mentor   Mentor   @relation(fields: [mentorId], references: [userId])
  @@index([mentorId,price])
 }
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model Availability {
+ id          String    @id @default(uuid())
+  mentorId    String
+  dayOfWeek   DayOfWeek
+  startTime   Int       // minutes since midnight
+  endTime     Int       // minutes since midnight
+  // validFrom   DateTime?
+  // validUntil  DateTime?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([mentorId])
+}
+
+model AvailabilityException {
+  id         String   @id @default(cuid())
+  mentorId   String
+  date       DateTime
+}
