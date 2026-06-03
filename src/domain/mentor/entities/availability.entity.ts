@@ -31,7 +31,7 @@ export interface CreateAvailabilityProps
 	deletedAt?: Date | null;
 }
 export class Availability {
-	private constructor(private _props: IAvailability) {}
+	private constructor(private props: IAvailability) {}
 
 	static create(props: CreateAvailabilityProps) {
 		const finalProps: IAvailability = {
@@ -43,5 +43,41 @@ export class Availability {
 		};
 
 		return new Availability(finalProps);
+	}
+
+	get id() {
+		return this.props.id;
+	}
+
+	get mentorId() {
+		return this.props.mentorId;
+	}
+
+	get dayOfWeek() {
+		return this.props.dayOfWeek;
+	}
+
+	get startTime() {
+		return this.props.startTime;
+	}
+
+	get endTime() {
+		return this.props.endTime;
+	}
+
+	get isActive() {
+		return this.props.isActive;
+	}
+
+	get createdAt() {
+		return this.props.createdAt;
+	}
+
+	get updatedAt() {
+		return this.props.updatedAt;
+	}
+
+	get deletedAt() {
+		return this.props.deletedAt;
 	}
 }
