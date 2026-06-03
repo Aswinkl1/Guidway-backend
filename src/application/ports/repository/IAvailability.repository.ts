@@ -1,4 +1,7 @@
-import type { IAvailability } from "@domain/mentor/entities/availability.entity";
+import type {
+	DayOfWeek,
+	IAvailability,
+} from "@domain/mentor/entities/availability.entity";
 import type { IBaseRepository } from "./IBaseRepository";
 
 export interface IAvailabilityRepository
@@ -6,4 +9,11 @@ export interface IAvailabilityRepository
 		IAvailability,
 		Partial<IAvailability>,
 		Partial<IAvailability>
-	> {}
+	> {
+	checkOverlap(
+		mentorId: string,
+		dayOfWeek: DayOfWeek,
+		requestStartTime: number,
+		requestEndTime: number,
+	): Promise<IAvailability | null>;
+}
