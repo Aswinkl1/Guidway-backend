@@ -3,6 +3,7 @@ import type { ICacheService } from "@application/ports/cache/ICache";
 import type { ITokenCache } from "@application/ports/cache/ITokenCache";
 import type { IMentorQuery } from "@application/ports/queries/IMentor.query";
 import type { IAchievementRepository } from "@application/ports/repository/IAcheivement.repository";
+import type { IAvailabilityRepository } from "@application/ports/repository/IAvailability.repository";
 import type { IDomainRepository } from "@application/ports/repository/IDomain.repository";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
@@ -39,6 +40,7 @@ import type { IVerifyEmailUsecase } from "@application/ports/usecase/IVerifyEmai
 import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IAdd-Achievement.usecase";
 import type { IDeleteAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IDelete-Achievement.usecase";
 import type { IEditAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IEdit-Achievement.usecase";
+import type { IAddAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IAddAvailability.usecase";
 import type { IGetDomainUsecase } from "@application/ports/usecase/mentor/Domian/IGetDomain.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
@@ -71,6 +73,7 @@ import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecas
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
 import { DeleteAchievementUsecase } from "@application/useCases/mentor/achievements/Delete-Achievement.usecase";
 import { EditAchievementUsecase } from "@application/useCases/mentor/achievements/Edit-Achievement.usecase";
+import { AddAvailabilityUsecase } from "@application/useCases/mentor/availability/AddAvailability.usecase";
 import { CreateSocialLinksUsecse } from "@application/useCases/mentor/CreateSocialLink.usecase";
 import { GetDomainUsecase } from "@application/useCases/mentor/domain/GetDomain.usecase";
 import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-Education.usecase";
@@ -116,6 +119,7 @@ import {
 } from "@infrastructure/database/redisClient";
 import { MentorQuery } from "@infrastructure/queries/mentor.query";
 import AchievementRepository from "@infrastructure/repositories/Achievement.reository";
+import { AvailabilityRepository } from "@infrastructure/repositories/Availability.respsitory";
 import { DomainRepository } from "@infrastructure/repositories/Domain.repoisitoty";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
@@ -136,6 +140,7 @@ import { S3Service } from "@infrastructure/services/S3Service";
 import { TokenService } from "@infrastructure/services/TokenServices";
 import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
 import { AuthController } from "@presentation/controllers/auth.controller";
+import { AvailabilityController } from "@presentation/controllers/mentor/Availability.controller";
 import { ProfileController } from "@presentation/controllers/mentor/Profile.controller";
 import { SessionController } from "@presentation/controllers/mentor/Session.controller";
 import { SettingController } from "@presentation/controllers/mentor/Settings.controller";
@@ -145,6 +150,7 @@ import type { IProfileController } from "@presentation/interface/controllers/IPr
 import type { ISessionController } from "@presentation/interface/controllers/ISession.controller";
 import type { ISettingsController } from "@presentation/interface/controllers/ISettings.controller";
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
+import type { IAvailabilityController } from "@presentation/interface/controllers/mentor/IAvailability.controller";
 import type { IUserController } from "@presentation/interface/controllers/user/IUser.controller";
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
@@ -160,6 +166,10 @@ container
 
 //Repository
 
+container
+	.bind<IAvailabilityRepository>(TYPES.AvailabilityRepository)
+	.to(AvailabilityRepository)
+	.inSingletonScope();
 container
 	.bind<IUserRepository>(TYPES.UserRepository)
 	.to(UserRepository)
@@ -227,6 +237,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IAddAvailabilityUsecase>(TYPES.AddAvailabilityUsecase)
+	.to(AddAvailabilityUsecase)
+	.inSingletonScope();
 container
 	.bind<IListMentorsUsecase>(TYPES.ListMentorUsecase)
 	.to(ListMentorUsecase)
@@ -467,6 +481,10 @@ container
 container
 	.bind<IUserController>(TYPES.UserController)
 	.to(UserController)
+	.inSingletonScope();
+container
+	.bind<IAvailabilityController>(TYPES.AvailabilityController)
+	.to(AvailabilityController)
 	.inSingletonScope();
 // queries
 

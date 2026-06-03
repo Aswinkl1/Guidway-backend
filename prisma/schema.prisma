@@ -130,6 +130,7 @@ model Mentor {
   education            Education[]
   achievements         Achievement[]
   sessions             Session[]
+  availability         Availability[]
   @@index([status])
   @@index([domainId])
   // @@index([averageRating])
@@ -366,4 +367,36 @@ model Session {
 
  mentor   Mentor   @relation(fields: [mentorId], references: [userId])
  @@index([mentorId,price])
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model Availability {
+  id          String    @id @default(uuid())
+  mentor   Mentor   @relation(fields: [mentorId], references: [userId])
+  mentorId    String
+  dayOfWeek   DayOfWeek
+  startTime   Int       // minutes since midnight
+  endTime     Int       // minutes since midnight
+  // validFrom   DateTime?
+  // validUntil  DateTime?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  @@index([mentorId])
+}
+
+model AvailabilityException {
+  id         String   @id @default(uuid())
+  mentorId   String
+  date       DateTime
 }

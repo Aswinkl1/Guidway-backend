@@ -18,6 +18,10 @@ export const ROUTES = {
 	MENTOR: {
 		ROOT: "/",
 		DETAIL: "/:id",
+		AVAILABILITY: {
+			ROOT: "/availability",
+			DETAIL: "/availability/:id",
+		},
 		EDUCATION: { ROOT: "/education", DETAIL: "/education/:id" },
 		EXPERIENCE: { ROOT: "/experience", DETAIL: "/experience/:id" },
 		ACHIEVEMENT: { ROOT: "/achievement", DETAIL: "/achievement/:id" },
