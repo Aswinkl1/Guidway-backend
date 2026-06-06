@@ -12,10 +12,10 @@ const route = Router();
 
 route.use(authRoute);
 route.use("/admin", adminRouter);
+route.use("/mentor", availabilityRouter);
 route.use("/mentor", profileRoutes);
 route.use("/user", userRouter);
 route.use("/mentor", settingRoutes);
 route.use("/mentor", sessionRouter);
 route.use("/mentor", mentorRouter);
-route.use("/mentor", availabilityRouter);
 export default route;

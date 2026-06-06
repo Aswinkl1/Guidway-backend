@@ -46,7 +46,16 @@ export class AvailabilityRepository
 
 		return this.toDomain(record);
 	}
-	protected toDomain(record: PrismaAvailability): IAvailability {
+
+	async findAll(mentorId: string): Promise<Availability[]> {
+		const records = await this._prisma.availability.findMany({
+			where: { mentorId },
+		});
+
+		return records.map((m) => this.toDomain(m));
+	}
+
+	protected toDomain(record: PrismaAvailability): Availability {
 		return Availability.create(record);
 	}
 	protected toPersistence(
