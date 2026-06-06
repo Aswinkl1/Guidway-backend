@@ -13,6 +13,7 @@ export type GetAvailabilityPayload = Partial<Record<DayOfWeek, ITimeSlot[]>>;
 
 export class AvailabilityMapper {
 	static toResponse(data: Availability[]): GetAvailabilityPayload {
+		console.log(data);
 		const record = data.reduce(
 			(acc, cur) => {
 				const day = cur.dayOfWeek;

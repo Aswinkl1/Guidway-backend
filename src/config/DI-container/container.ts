@@ -453,6 +453,7 @@ container
 	.bind<IDeleteAvailabilityUsecase>(TYPES.DeleteAvailabilityUsecase)
 	.to(DeleteAvailabilityUsecase)
 	.inSingletonScope();
+
 // services
 container
 	.bind<IEmailService>(TYPES.EmailService)
