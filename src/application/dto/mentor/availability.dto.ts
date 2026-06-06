@@ -12,4 +12,10 @@ export const createAvailabilitySchema = z
 		path: ["endTime"],
 	});
 
+export const ToggleAvailabilitySchema = z.object({
+	id: z.uuid(),
+	dayOfWeek: z.enum(DAY_OF_WEEK),
+	isActive: z.boolean(),
+});
+export type ToggleAvailabilityDTO = z.infer<typeof ToggleAvailabilitySchema>;
 export type createAvailabilityDto = z.infer<typeof createAvailabilitySchema>;
