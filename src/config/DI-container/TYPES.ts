@@ -76,6 +76,7 @@ export const TYPES = {
 	ListMentorUsecase: Symbol.for("ListMentorUsecase"),
 	AddAvailabilityUsecase: Symbol.for("AddAvailabilityUsecase"),
 	GetAvailabilityUsecase: Symbol.for("GetAvailabilityUsecase"),
+	DeleteAvailabilityUsecase: Symbol.for("DeleteAvailabilityUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
