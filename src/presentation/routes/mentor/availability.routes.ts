@@ -26,4 +26,10 @@ router.get(
 	AvailabilityController.getAllAvailability,
 );
 
+router.delete(
+	ROUTES.MENTOR.AVAILABILITY.DETAIL,
+	isAuthenticate,
+	AvailabilityController.deleteAvailablity,
+);
+
 export default router;

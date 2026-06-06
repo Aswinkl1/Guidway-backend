@@ -1,10 +1,13 @@
 import { ForbiddenError } from "@application/errors/ForbidenError";
 import type { IAvailabilityRepository } from "@application/ports/repository/IAvailability.repository";
 import type { IDeleteAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IDeleteAvailability.usecase";
+import { TYPES } from "@config/DI-container/TYPES";
 import { NotFoundError } from "@domain/errors/UserError";
-
+import { inject, injectable } from "inversify";
+@injectable()
 export class DeleteAvailabilityUsecase implements IDeleteAvailabilityUsecase {
 	constructor(
+		@inject(TYPES.AvailabilityRepository)
 		private readonly _availabilityRepository: IAvailabilityRepository,
 	) {}
 	async execute(mentorId: string, availabilityId: string): Promise<void> {
