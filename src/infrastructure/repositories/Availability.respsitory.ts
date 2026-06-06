@@ -16,7 +16,7 @@ import { BaseRepository } from "./BaseRepository";
 export class AvailabilityRepository
 	extends BaseRepository<
 		PrismaAvailability,
-		IAvailability,
+		Availability,
 		Prisma.AvailabilityCreateInput,
 		Prisma.AvailabilityUpdateInput
 	>
@@ -30,7 +30,7 @@ export class AvailabilityRepository
 		dayOfWeek: DayOfWeek,
 		requestStartTime: number,
 		requestEndTime: number,
-	): Promise<IAvailability | null> {
+	): Promise<Availability | null> {
 		const record = await this._prisma.availability.findFirst({
 			where: {
 				mentorId,
