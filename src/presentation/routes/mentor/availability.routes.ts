@@ -1,4 +1,7 @@
-import { createAvailabilitySchema } from "@application/dto/mentor/availability.dto";
+import {
+	createAvailabilitySchema,
+	ToggleAvailabilitySchema,
+} from "@application/dto/mentor/availability.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -30,6 +33,13 @@ router.delete(
 	ROUTES.MENTOR.AVAILABILITY.DETAIL,
 	isAuthenticate,
 	AvailabilityController.deleteAvailablity,
+);
+
+router.patch(
+	ROUTES.MENTOR.AVAILABILITY.ROOT,
+	isAuthenticate,
+	validatetor(ToggleAvailabilitySchema, "body"),
+	AvailabilityController.toggleAvailability,
 );
 
 export default router;
