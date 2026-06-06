@@ -41,6 +41,7 @@ import type { IAddAchievementUsecase } from "@application/ports/usecase/mentor/a
 import type { IDeleteAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IDelete-Achievement.usecase";
 import type { IEditAchievementUsecase } from "@application/ports/usecase/mentor/achievements/IEdit-Achievement.usecase";
 import type { IAddAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IAddAvailability.usecase";
+import type { IGetAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IGetAvailability.usecase";
 import type { IGetDomainUsecase } from "@application/ports/usecase/mentor/Domian/IGetDomain.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
@@ -74,6 +75,7 @@ import { AddAchievementUsecase } from "@application/useCases/mentor/achievements
 import { DeleteAchievementUsecase } from "@application/useCases/mentor/achievements/Delete-Achievement.usecase";
 import { EditAchievementUsecase } from "@application/useCases/mentor/achievements/Edit-Achievement.usecase";
 import { AddAvailabilityUsecase } from "@application/useCases/mentor/availability/AddAvailability.usecase";
+import { GetAvailabilityUsecase } from "@application/useCases/mentor/availability/GetAvailability.usecase";
 import { CreateSocialLinksUsecse } from "@application/useCases/mentor/CreateSocialLink.usecase";
 import { GetDomainUsecase } from "@application/useCases/mentor/domain/GetDomain.usecase";
 import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-Education.usecase";
@@ -237,6 +239,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IGetAvailabilityUsecase>(TYPES.GetAvailabilityUsecase)
+	.to(GetAvailabilityUsecase)
+	.inSingletonScope();
 container
 	.bind<IAddAvailabilityUsecase>(TYPES.AddAvailabilityUsecase)
 	.to(AddAvailabilityUsecase)

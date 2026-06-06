@@ -80,4 +80,11 @@ export class Availability {
 	get deletedAt() {
 		return this.props.deletedAt;
 	}
+
+	delete() {
+		if (this.deletedAt !== null) {
+			throw new Error("confilit");
+		}
+		this.props.deletedAt = new Date();
+	}
 }

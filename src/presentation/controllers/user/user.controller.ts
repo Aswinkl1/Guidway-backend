@@ -29,6 +29,8 @@ export class UserController implements IUserController {
 		if (!id || typeof id !== "string") {
 			throw new NotFoundError("mentorid not foundS");
 		}
+		console.log(req.originalUrl);
+
 		const profile = await this._getMentorProfileUsecase.execute(id);
 		res.status(HTTPSTATUS.OK).json(createSuccess("succesfull", profile));
 	};

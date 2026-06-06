@@ -19,6 +19,7 @@ export const TYPES = {
 	MentorBookingRulesRepository: Symbol.for("MentorBookingRulesRepository"),
 	SessionRepository: Symbol.for("SessionRepository"),
 	AvailabilityRepository: Symbol.for("AvailabilityRepository"),
+
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
@@ -74,6 +75,7 @@ export const TYPES = {
 	GetSettingsUsecase: Symbol.for("GetSettingsUsecase"),
 	ListMentorUsecase: Symbol.for("ListMentorUsecase"),
 	AddAvailabilityUsecase: Symbol.for("AddAvailabilityUsecase"),
+	GetAvailabilityUsecase: Symbol.for("GetAvailabilityUsecase"),
 	//controller
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

@@ -20,4 +20,10 @@ router.post(
 	AvailabilityController.addAvalilability,
 );
 
+router.get(
+	ROUTES.MENTOR.AVAILABILITY.ROOT,
+	isAuthenticate,
+	AvailabilityController.getAllAvailability,
+);
+
 export default router;
