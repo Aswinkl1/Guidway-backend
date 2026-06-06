@@ -43,6 +43,7 @@ import type { IEditAchievementUsecase } from "@application/ports/usecase/mentor/
 import type { IAddAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IAddAvailability.usecase";
 import type { IDeleteAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IDeleteAvailability.usecase";
 import type { IGetAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IGetAvailability.usecase";
+import type { IToggleAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IToggleAvaliability.usecase";
 import type { IGetDomainUsecase } from "@application/ports/usecase/mentor/Domian/IGetDomain.usecase";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import type { IDeleteEducationUsecase } from "@application/ports/usecase/mentor/education/IDelete-Education.usecase";
@@ -78,6 +79,7 @@ import { EditAchievementUsecase } from "@application/useCases/mentor/achievement
 import { AddAvailabilityUsecase } from "@application/useCases/mentor/availability/AddAvailability.usecase";
 import { DeleteAvailabilityUsecase } from "@application/useCases/mentor/availability/DeleteAvailability.usecase";
 import { GetAvailabilityUsecase } from "@application/useCases/mentor/availability/GetAvailability.usecase";
+import { ToggleAvailabilityUsecase } from "@application/useCases/mentor/availability/ToggleAvailability.usecase";
 import { CreateSocialLinksUsecse } from "@application/useCases/mentor/CreateSocialLink.usecase";
 import { GetDomainUsecase } from "@application/useCases/mentor/domain/GetDomain.usecase";
 import { AddEducationUsecase } from "@application/useCases/mentor/education/Add-Education.usecase";
@@ -309,7 +311,10 @@ container
 	.bind<IForgetPasswordUsecase>(TYPES.ForgetPasswordUseCase)
 	.to(ForgetPasswordUsecase)
 	.inSingletonScope();
-
+container
+	.bind<IToggleAvailabilityUsecase>(TYPES.ToggleAvailabilityUsecase)
+	.to(ToggleAvailabilityUsecase)
+	.inSingletonScope();
 container
 	.bind<ILoginUsecase>(TYPES.LoginUseCase)
 	.to(LoginUsecase)
