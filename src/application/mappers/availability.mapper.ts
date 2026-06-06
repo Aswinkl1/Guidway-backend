@@ -4,6 +4,7 @@ import type {
 } from "@domain/mentor/entities/availability.entity";
 
 export interface ITimeSlot {
+	id: string;
 	startTime: number;
 	endTime: number;
 }
@@ -19,10 +20,14 @@ export class AvailabilityMapper {
 					acc[day] = [];
 				}
 
-				acc[day].push({ startTime: cur.startTime, endTime: cur.endTime });
+				acc[day].push({
+					id: cur.id,
+					startTime: cur.startTime,
+					endTime: cur.endTime,
+				});
 				return acc;
 			},
-			{} as Record<DayOfWeek, { startTime: number; endTime: number }[]>,
+			{} as Record<DayOfWeek, ITimeSlot[]>,
 		);
 
 		return record;
