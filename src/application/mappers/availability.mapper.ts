@@ -9,28 +9,37 @@ export interface ITimeSlot {
 	endTime: number;
 }
 
-export type GetAvailabilityPayload = Partial<Record<DayOfWeek, ITimeSlot[]>>;
-
+// export type GetAvailabilityPayload = Partial<Record<DayOfWeek, ITimeSlot[]>>;
+export interface GetAvailabilityPayload {
+	dayOfWeek: DayOfWeek;
+	slots: ITimeSlot[];
+	isActive: boolean;
+}
 export class AvailabilityMapper {
-	static toResponse(data: Availability[]): GetAvailabilityPayload {
+	static toResponse(data: Availability[]): GetAvailabilityPayload[] {
 		console.log(data);
 		const record = data.reduce(
 			(acc, cur) => {
 				const day = cur.dayOfWeek;
 				if (!acc[day]) {
-					acc[day] = [];
+					acc[day] = {
+						dayOfWeek: cur.dayOfWeek,
+						isActive: cur.isActive,
+						slots: [],
+					};
 				}
 
-				acc[day].push({
-					id: cur.id,
+				acc[day].slots.push({
 					startTime: cur.startTime,
 					endTime: cur.endTime,
+					id: cur.id,
 				});
+
 				return acc;
 			},
-			{} as Record<DayOfWeek, ITimeSlot[]>,
+			{} as Record<DayOfWeek, GetAvailabilityPayload>,
 		);
-
-		return record;
+		console.log(record);
+		return Object.values(record);
 	}
 }

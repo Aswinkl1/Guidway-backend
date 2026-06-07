@@ -13,7 +13,6 @@ export const createAvailabilitySchema = z
 	});
 
 export const ToggleAvailabilitySchema = z.object({
-	id: z.uuid(),
 	dayOfWeek: z.enum(DAY_OF_WEEK),
 	isActive: z.boolean(),
 });
