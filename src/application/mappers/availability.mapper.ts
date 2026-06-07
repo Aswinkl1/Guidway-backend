@@ -39,7 +39,7 @@ export class AvailabilityMapper {
 			},
 			{} as Record<DayOfWeek, GetAvailabilityPayload>,
 		);
-		console.log(record);
+
 		return Object.values(record);
 	}
 }
