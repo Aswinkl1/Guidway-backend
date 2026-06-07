@@ -37,6 +37,7 @@ export class AvailabilityRepository
 				dayOfWeek,
 				startTime: { lt: requestEndTime },
 				endTime: { gt: requestStartTime },
+				deletedAt: null,
 			},
 		});
 
@@ -49,10 +50,21 @@ export class AvailabilityRepository
 
 	async findAll(mentorId: string): Promise<Availability[]> {
 		const records = await this._prisma.availability.findMany({
-			where: { mentorId },
+			where: { mentorId, deletedAt: null },
 		});
 
 		return records.map((m) => this.toDomain(m));
+	}
+
+	async updateStatusForEntireDay(
+		mentorId: string,
+		dayOfWeek: DayOfWeek,
+		isActive: boolean,
+	): Promise<void> {
+		await this._prisma.availability.updateMany({
+			where: { mentorId, dayOfWeek },
+			data: { isActive },
+		});
 	}
 
 	protected toDomain(record: PrismaAvailability): Availability {

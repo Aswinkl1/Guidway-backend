@@ -1,7 +1,11 @@
-import type { createAvailabilityDto } from "@application/dto/mentor/availability.dto";
+import type {
+	createAvailabilityDto,
+	ToggleAvailabilityDTO,
+} from "@application/dto/mentor/availability.dto";
 import type { IAddAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IAddAvailability.usecase";
 import type { IDeleteAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IDeleteAvailability.usecase";
 import type { IGetAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IGetAvailability.usecase";
+import type { IToggleAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IToggleAvaliability.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { NotFoundError } from "@domain/errors/UserError";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
@@ -18,6 +22,8 @@ export class AvailabilityController implements IAvailabilityController {
 		private readonly _getAvailabilityUsecase: IGetAvailabilityUsecase,
 		@inject(TYPES.DeleteAvailabilityUsecase)
 		private readonly _deleteAvailabiltyUsecase: IDeleteAvailabilityUsecase,
+		@inject(TYPES.ToggleAvailabilityUsecase)
+		private readonly _toggleAvailabilityUsecase: IToggleAvailabilityUsecase,
 	) {}
 	addAvalilability = async (req: Request, res: Response): Promise<void> => {
 		const mentorId = req.user?.userId;
@@ -50,6 +56,18 @@ export class AvailabilityController implements IAvailabilityController {
 		}
 
 		await this._deleteAvailabiltyUsecase.execute(mentorId, availabilityId);
+		res.status(HTTPSTATUS.OK).json(createSuccess("success", {}));
+	};
+
+	toggleAvailability = async (req: Request, res: Response): Promise<void> => {
+		const mentorId = req.user?.userId;
+		if (!mentorId) {
+			throw new NotFoundError("mentor not found");
+		}
+
+		const parsed = req.validated?.body as ToggleAvailabilityDTO;
+
+		await this._toggleAvailabilityUsecase.execute(mentorId, parsed);
 		res.status(HTTPSTATUS.OK).json(createSuccess("success", {}));
 	};
 }

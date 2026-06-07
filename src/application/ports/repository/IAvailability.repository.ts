@@ -18,4 +18,10 @@ export interface IAvailabilityRepository
 	): Promise<Availability | null>;
 
 	findAll(mentorId: string): Promise<Availability[]>;
+
+	updateStatusForEntireDay(
+		mentorId: string,
+		dayOfWeek: DayOfWeek,
+		isActive: boolean,
+	): Promise<void>;
 }

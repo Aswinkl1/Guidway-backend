@@ -4,4 +4,5 @@ export interface IAvailabilityController {
 	addAvalilability(req: Request, res: Response): Promise<void>;
 	getAllAvailability(req: Request, res: Response): Promise<void>;
 	deleteAvailablity(req: Request, res: Response): Promise<void>;
+	toggleAvailability(req: Request, res: Response): Promise<void>;
 }
