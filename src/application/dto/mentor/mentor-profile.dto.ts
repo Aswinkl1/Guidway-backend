@@ -8,7 +8,7 @@ export interface MentorProfileDto {
 	email: string;
 	profileImageKey: string | null;
 	timezone: string | null;
-
+	slotDurationMinutes: number;
 	status: MentorStatus;
 	isVerified: boolean;
 	headline: string | null;
