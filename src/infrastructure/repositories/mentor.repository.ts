@@ -193,6 +193,7 @@ export default class MentorRepository
 			stripeAccountId: mentorDetails.stripeAccountId,
 			stripeOnboardingComplete: mentorDetails.stripeOnboardingComplete,
 			shortBio: mentorDetails.shortBio,
+			slotDurationMinutes: mentorDetails.slotDurationMinutes,
 		};
 	}
 }

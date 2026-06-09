@@ -115,6 +115,7 @@ model Mentor {
   // Denormalized cache columns — ONLY update via MentorService, never raw writes
   averageRating Float @default(0)
   reviewCount   Int   @default(0)
+  slotDurationMinutes Int @default(30)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

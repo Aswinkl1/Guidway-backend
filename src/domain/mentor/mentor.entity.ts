@@ -1,3 +1,5 @@
+import { number } from "zod";
+
 interface mentorProp {
 	// readonly id: string;
 	readonly userId: string;
@@ -6,6 +8,7 @@ interface mentorProp {
 	isVerified: boolean;
 	domainId: string | null;
 	status: MentorStatus;
+	slotDurationMinutes: number;
 	stripeAccountId: string | null;
 	stripeOnboardingComplete: boolean;
 	averageRating: number;
@@ -46,6 +49,7 @@ export class Mentor {
 			stripeOnboardingComplete: props.stripeOnboardingComplete || false,
 			averageRating: props.averageRating || 0,
 			reviewCount: props.reviewCount || 0,
+			slotDurationMinutes: props.slotDurationMinutes || 30,
 			createdAt: props.createdAt ?? new Date(),
 			updatedAt: props.updatedAt ?? new Date(),
 		});
@@ -99,6 +103,10 @@ export class Mentor {
 		return this.props.updatedAt;
 	}
 
+	get slotDurationMinutes() {
+		return this.props.slotDurationMinutes;
+	}
+
 	verifyMentor() {
 		if (this.isVerified === false) {
 			this.props.isVerified = true;
@@ -136,6 +144,10 @@ export class Mentor {
 
 		if (updatedProps.updatedAt !== undefined)
 			this.props.updatedAt = updatedProps.updatedAt;
+
+		if (updatedProps.slotDurationMinutes !== undefined) {
+			this.props.slotDurationMinutes = updatedProps.slotDurationMinutes;
+		}
 	}
 
 	public transitionTo(newStatus: MentorStatus) {

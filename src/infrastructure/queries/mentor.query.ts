@@ -104,6 +104,7 @@ export class MentorQuery implements IMentorQuery {
 			name: record.user.name,
 			email: record.user.email,
 			profileImageKey: record.user.profileImageKey,
+			slotDurationMinutes: record.slotDurationMinutes,
 			timezone: record.user.timezone,
 			userId: record.userId,
 			status: record.status,
