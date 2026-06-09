@@ -29,13 +29,14 @@ export class UpdateMentorOverviewUsecase
 		}
 
 		mentor.update(dto);
-
+		console.log(mentor);
 		const updatedMentor = await this._mentorRepoitory.update(mentorId, mentor);
 
 		return {
 			domainId: updatedMentor.domainId!,
 			headline: updatedMentor.headline!,
 			shortBio: updatedMentor.shortBio!,
+			slotDurationMinutes: updatedMentor.slotDurationMinutes,
 		};
 	}
 }

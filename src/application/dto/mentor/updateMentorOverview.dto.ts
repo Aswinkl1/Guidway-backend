@@ -4,6 +4,7 @@ export const UpdateMentorOverviewSchema = z.object({
 	shortBio: z.string().trim().optional(),
 	headline: z.string().trim().optional(),
 	domainId: z.uuid(),
+	slotDurationMinutes: z.number().default(30),
 });
 
 export type UpdateMentorOverviewDTO = z.infer<
@@ -15,6 +16,7 @@ export const UpdateMentorOverviewOutputDTO =
 		shortBio: true,
 		headline: true,
 		domainId: true,
+		slotDurationMinutes: true,
 	});
 
 export type UpdateMentorOverviewOutputDTO = z.infer<
