@@ -81,6 +81,7 @@ export class AvailabilityRepository
 				endTime: true,
 				mentor: { select: { slotDurationMinutes: true } },
 			},
+			orderBy: { startTime: "asc" },
 		});
 
 		return {
