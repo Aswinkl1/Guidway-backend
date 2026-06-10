@@ -48,9 +48,9 @@ export class AvailabilityRepository
 		return this.toDomain(record);
 	}
 
-	async findAll(mentorId: string): Promise<Availability[]> {
+	async findAll(mentorId: string, day?: DayOfWeek): Promise<Availability[]> {
 		const records = await this._prisma.availability.findMany({
-			where: { mentorId, deletedAt: null },
+			where: { mentorId, deletedAt: null, dayOfWeek: day },
 		});
 
 		return records.map((m) => this.toDomain(m));
@@ -65,6 +65,30 @@ export class AvailabilityRepository
 			where: { mentorId, dayOfWeek },
 			data: { isActive },
 		});
+	}
+
+	async getAvailabilityAndSessionDuration(
+		mentorId: string,
+		dayOfWeek: DayOfWeek,
+	): Promise<{
+		availability: { startTime: number; endTime: number }[];
+		slotDuration: number;
+	}> {
+		const record = await this._prisma.availability.findMany({
+			where: { mentorId, dayOfWeek, isActive: true, deletedAt: null },
+			select: {
+				startTime: true,
+				endTime: true,
+				mentor: { select: { slotDurationMinutes: true } },
+			},
+		});
+
+		return {
+			availability: record.map((v) => {
+				return { startTime: v.startTime, endTime: v.endTime };
+			}),
+			slotDuration: record.length ? record[0].mentor.slotDurationMinutes : 0,
+		};
 	}
 
 	protected toDomain(record: PrismaAvailability): Availability {
