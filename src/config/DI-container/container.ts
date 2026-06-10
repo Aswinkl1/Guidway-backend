@@ -69,6 +69,7 @@ import type { IToggleSessionVisibilityUseCase } from "@application/ports/usecase
 import type { IAddMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IAddMentorSkill.usecase";
 import type { IDeleteMentorSkillUsecase } from "@application/ports/usecase/mentor/skills/IDeleteMentorSkill.usecase";
 import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills/IGetSkills.usecase";
+import type { IGetAvailableSlotsByDate } from "@application/ports/usecase/mentor/slot/IGetAvailableSlotsByDate.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
@@ -102,6 +103,7 @@ import { ToggleSessionVisibilityUsecase } from "@application/useCases/mentor/ses
 import { AddMentorSkillUsecase } from "@application/useCases/mentor/skill/AddMentorSkill.usecase";
 import { DeleteMentorSkillUsecase } from "@application/useCases/mentor/skill/DeleteMentorSkill.usecase";
 import { GetSkillUsecase } from "@application/useCases/mentor/skill/GetSkill.usecase";
+import { GetAvailableSlotsByDate } from "@application/useCases/mentor/slots/GetAvailableSlotsByDate.usecase";
 import { UpdateMentorBookingRulesUsecase } from "@application/useCases/mentor/UpdateMentorBookingRules.usecase";
 import { UpdateMentorOverviewUsecase } from "@application/useCases/mentor/UpdateMentorOverviewUsecase";
 import { ChangePasswordUsecase } from "@application/useCases/user/changePassword.usecase";
@@ -243,6 +245,11 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IGetAvailableSlotsByDate>(TYPES.GetAvailableSlotsByDate)
+	.to(GetAvailableSlotsByDate)
+	.inSingletonScope();
+
 container
 	.bind<IGetAvailabilityUsecase>(TYPES.GetAvailabilityUsecase)
 	.to(GetAvailabilityUsecase)
