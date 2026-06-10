@@ -5,4 +5,5 @@ export interface IAvailabilityController {
 	getAllAvailability(req: Request, res: Response): Promise<void>;
 	deleteAvailablity(req: Request, res: Response): Promise<void>;
 	toggleAvailability(req: Request, res: Response): Promise<void>;
+	getSlotsByDate(req: Request, res: Response): Promise<void>;
 }

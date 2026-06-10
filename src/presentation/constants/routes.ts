@@ -56,6 +56,9 @@ export const ROUTES = {
 			VISIBILITY: "/session/:id/visibility",
 		},
 		PROFILE_IMAGE: "/profile-image",
+		SLOTS: {
+			ROOT: "/:mentorId/slots",
+		},
 	},
 	USER: {
 		ROOT: "/",

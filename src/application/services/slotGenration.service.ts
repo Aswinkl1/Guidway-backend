@@ -1,5 +1,4 @@
 import { SlotsVO } from "@domain/booking/slot.vo";
-import { Availability } from "@domain/mentor/entities/availability.entity";
 
 export class SlotGenerationService {
 	static generate(
@@ -11,7 +10,7 @@ export class SlotGenerationService {
 		for (const availabilityRule of availabilityRules) {
 			let curTime = availabilityRule.startTime;
 
-			while (curTime + sessionDuration < availabilityRule.endTime) {
+			while (curTime + sessionDuration <= availabilityRule.endTime) {
 				const slot: SlotsVO = SlotsVO.create({
 					startTime: curTime,
 					endTime: curTime + sessionDuration,
