@@ -2,10 +2,12 @@ import type {
 	createAvailabilityDto,
 	ToggleAvailabilityDTO,
 } from "@application/dto/mentor/availability.dto";
+import type { getSlotDto } from "@application/dto/mentor/slot.dto";
 import type { IAddAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IAddAvailability.usecase";
 import type { IDeleteAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IDeleteAvailability.usecase";
 import type { IGetAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IGetAvailability.usecase";
 import type { IToggleAvailabilityUsecase } from "@application/ports/usecase/mentor/availability/IToggleAvaliability.usecase";
+import type { IGetAvailableSlotsByDate } from "@application/ports/usecase/mentor/slot/IGetAvailableSlotsByDate.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { NotFoundError } from "@domain/errors/UserError";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
@@ -24,6 +26,8 @@ export class AvailabilityController implements IAvailabilityController {
 		private readonly _deleteAvailabiltyUsecase: IDeleteAvailabilityUsecase,
 		@inject(TYPES.ToggleAvailabilityUsecase)
 		private readonly _toggleAvailabilityUsecase: IToggleAvailabilityUsecase,
+		@inject(TYPES.GetAvailableSlotsByDate)
+		private readonly _getAvailableSlotsByDate: IGetAvailableSlotsByDate,
 	) {}
 	addAvalilability = async (req: Request, res: Response): Promise<void> => {
 		const mentorId = req.user?.userId;
@@ -69,5 +73,18 @@ export class AvailabilityController implements IAvailabilityController {
 
 		await this._toggleAvailabilityUsecase.execute(mentorId, parsed);
 		res.status(HTTPSTATUS.OK).json(createSuccess("success", {}));
+	};
+
+	getSlotsByDate = async (req: Request, res: Response) => {
+		const { mentorId } = req.params;
+		if (!mentorId || typeof mentorId !== "string") {
+			throw new NotFoundError("mentor not found");
+		}
+
+		const parsed = req.validated?.query as getSlotDto;
+
+		const slots = await this._getAvailableSlotsByDate.execute(mentorId, parsed);
+
+		res.status(HTTPSTATUS.OK).json(createSuccess("success", slots));
 	};
 }

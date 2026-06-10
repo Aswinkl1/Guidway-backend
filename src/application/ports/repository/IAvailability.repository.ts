@@ -17,11 +17,19 @@ export interface IAvailabilityRepository
 		requestEndTime: number,
 	): Promise<Availability | null>;
 
-	findAll(mentorId: string): Promise<Availability[]>;
+	findAll(mentorId: string, day?: DayOfWeek): Promise<Availability[]>;
 
 	updateStatusForEntireDay(
 		mentorId: string,
 		dayOfWeek: DayOfWeek,
 		isActive: boolean,
 	): Promise<void>;
+
+	getAvailabilityAndSessionDuration(
+		mentorId: string,
+		dayOfWeek: DayOfWeek,
+	): Promise<{
+		availability: { startTime: number; endTime: number }[];
+		slotDuration: number;
+	}>;
 }

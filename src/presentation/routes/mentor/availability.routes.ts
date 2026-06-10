@@ -2,6 +2,7 @@ import {
 	createAvailabilitySchema,
 	ToggleAvailabilitySchema,
 } from "@application/dto/mentor/availability.dto";
+import { getSlotSchema } from "@application/dto/mentor/slot.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import { ROUTES } from "@presentation/constants/routes";
@@ -42,4 +43,10 @@ router.patch(
 	AvailabilityController.toggleAvailability,
 );
 
+router.get(
+	ROUTES.MENTOR.SLOTS.ROOT,
+	isAuthenticate,
+	validatetor(getSlotSchema, "query"),
+	AvailabilityController.getSlotsByDate,
+);
 export default router;
