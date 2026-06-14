@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// import "dotenv/config";
 const envSchema = z.object({
 	DATABASE_URL: z.url("DATABASE_URL must be a valid connection string"),
 	NODE_ENV: z
