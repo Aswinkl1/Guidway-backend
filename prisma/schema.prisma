@@ -85,6 +85,7 @@ model User {
   updatedAt       DateTime  @updatedAt
 
   mentor Mentor?
+  booking Booking[]
 
   @@index([role])
   // @@index([deletedAt])
@@ -132,6 +133,7 @@ model Mentor {
   achievements         Achievement[]
   sessions             Session[]
   availability         Availability[]
+  booking Booking[]
   @@index([status])
   @@index([domainId])
   // @@index([averageRating])
@@ -367,6 +369,7 @@ model Session {
   updatedAt   DateTime @updatedAt
 
  mentor   Mentor   @relation(fields: [mentorId], references: [userId])
+ booking Booking[]
  @@index([mentorId,price])
 }
 
@@ -400,4 +403,30 @@ model AvailabilityException {
   id         String   @id @default(uuid())
   mentorId   String
   date       DateTime
+}
+
+model Booking {
+  id         String   @id @default(uuid())
+  mentorId String
+    mentor   Mentor @relation(fields: [mentorId], references: [userId])
+
+  userId String
+    user   User @relation(fields: [userId], references: [id])
+
+  sessionId String
+  session Session @relation(fields: [sessionId],references: [id])
+  StartTime Int
+  endTime Int
+  note String?
+  Status BOOKINGSTATUS
+  paymentId String
+
+
+}
+
+
+enum BOOKINGSTATUS {
+  PENDING
+  BOOKED
+  CANCELLED
 }

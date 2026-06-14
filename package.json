@@ -10,9 +10,9 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "lint:staged": "biome check --write --staged",
-    "dev": "tsx watch src/main.ts",
+    "dev": "doppler run -- tsx watch src/main.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "doppler run -- node dist/server.js",
     "type-check": "tsc --noEmit",
     "prepare": "husky"
   },
