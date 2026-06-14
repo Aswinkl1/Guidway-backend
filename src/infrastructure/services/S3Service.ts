@@ -17,7 +17,9 @@ export class S3Service implements IS3Service {
 			Key: fileKey,
 			ContentType: fileType,
 		});
-		const url = await getSignedUrl(s3, command, { expiresIn: 300 }); // URL valid for 5 minutes
+		const url = await getSignedUrl(s3, command, {
+			expiresIn: EnvConfig.AWS_S3_EXPIRES_IN,
+		}); // URL valid for 5 minutes
 		return url;
 	};
 }

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import "dotenv/config";
+
 const envSchema = z.object({
 	DATABASE_URL: z.url("DATABASE_URL must be a valid connection string"),
 	NODE_ENV: z
@@ -43,6 +43,7 @@ const envSchema = z.object({
 	LINKEDIN_TOKEN_URL: z.url("Invalid LinkedIn token URL"),
 	LINKEDIN_GET_USERINFO_URL: z.url("Invalid LinkedIn user info URL"),
 	GOOGLE_CALLBACK_URL: z.url("Invalid LinkedIn user info URL"),
+	AWS_S3_EXPIRES_IN: z.coerce.number().positive().int().default(300),
 });
 
 const parsedEnv = envSchema.parse(process.env);
@@ -53,6 +54,9 @@ export class EnvConfig {
 		return parsedEnv.NODE_ENV;
 	}
 
+	static get AWS_S3_EXPIRES_IN(): number {
+		return parsedEnv.AWS_S3_EXPIRES_IN;
+	}
 	static get PORT(): number {
 		return parsedEnv.PORT;
 	}
