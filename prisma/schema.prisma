@@ -85,8 +85,8 @@ model User {
   updatedAt       DateTime  @updatedAt
 
   mentor Mentor?
-  booking Booking[]
-
+  // booking Booking[]
+  slots Slots[]
   @@index([role])
   // @@index([deletedAt])
   // @@index([isBlocked])
@@ -133,7 +133,9 @@ model Mentor {
   achievements         Achievement[]
   sessions             Session[]
   availability         Availability[]
-  booking Booking[]
+  slots                Slots[]
+
+  // booking Booking[]
   @@index([status])
   @@index([domainId])
   // @@index([averageRating])
@@ -369,7 +371,7 @@ model Session {
   updatedAt   DateTime @updatedAt
 
  mentor   Mentor   @relation(fields: [mentorId], references: [userId])
- booking Booking[]
+//  booking Booking[]
  @@index([mentorId,price])
 }
 
@@ -405,28 +407,27 @@ model AvailabilityException {
   date       DateTime
 }
 
-model Booking {
-  id         String   @id @default(uuid())
-  mentorId String
-    mentor   Mentor @relation(fields: [mentorId], references: [userId])
+model Slots {
+  id         String     @id @default(uuid())
+  bookingId  String?
+  mentorId   String
+  mentor     Mentor     @relation(fields: [mentorId], references: [userId])
+  lockedBy   String
+  user       User       @relation(fields: [lockedBy], references: [id])
+  date       DateTime
+  startTime  Int
+  endTime    Int
+  expiresAt  DateTime
+  status     SlotStatus
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
-  userId String
-    user   User @relation(fields: [userId], references: [id])
-
-  sessionId String
-  session Session @relation(fields: [sessionId],references: [id])
-  StartTime Int
-  endTime Int
-  note String?
-  Status BOOKINGSTATUS
-  paymentId String
-
-
+  @@index([mentorId, date])
+  @@map("slots")
 }
 
-
-enum BOOKINGSTATUS {
-  PENDING
+enum SlotStatus {
+  LOCKED
   BOOKED
   CANCELLED
 }
