@@ -369,8 +369,8 @@ model Session {
   deletedAt   DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
- mentor   Mentor   @relation(fields: [mentorId], references: [userId])
+  bookingIntent BookingIntent[]
+  mentor   Mentor   @relation(fields: [mentorId], references: [userId])
 //  booking Booking[]
  @@index([mentorId,price])
 }
@@ -421,7 +421,7 @@ model Slots {
   status     SlotStatus
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
-
+  bookingIntent BookingIntent?
   @@index([mentorId, date])
   @@map("slots")
 }
@@ -430,4 +430,21 @@ enum SlotStatus {
   LOCKED
   BOOKED
   CANCELLED
+}
+
+
+model BookingIntent {
+  slotId String @id
+  slot Slots @relation(fields: [slotId],references: [id],onDelete: Cascade)
+  note String?
+  sessionId String
+  session Session @relation(fields: [sessionId],references: [id])
+  price Int
+  currensy String
+  gatewayOrderId String?
+  paymentProvider String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("booking_intents")
 }
