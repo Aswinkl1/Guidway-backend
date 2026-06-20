@@ -27,6 +27,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm prisma generate
+        env:
+          DATABASE_URL: "postgresql://user:password@localhost:5432/user_service?schema=public"
 
       - run: pnpm run lint
 
