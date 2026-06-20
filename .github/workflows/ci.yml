@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  code-quality:
+    name: code quality checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm prisma generate
+
+      - run: pnpm run lint
+
+      - run: pnpm run build
