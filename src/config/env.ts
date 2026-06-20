@@ -45,8 +45,8 @@ const envSchema = z.object({
 	GOOGLE_CALLBACK_URL: z.url("Invalid LinkedIn user info URL"),
 	AWS_S3_EXPIRES_IN: z.coerce.number().positive().int().default(300),
 });
-
-const parsedEnv = envSchema.parse(process.env);
+export const getEnv = () => envSchema.parse(process.env);
+const parsedEnv = getEnv();
 
 export class EnvConfig {
 	// --- Core Server ---
