@@ -432,6 +432,22 @@ enum SlotStatus {
   CANCELLED
 }
 
+enum Currency {
+  INR
+  USD
+  EUR
+  GBP
+  JPY
+  CNY
+  AUD
+  CAD
+  CHF
+  SGD
+
+  @@map("currency")
+}
+
+
 
 model BookingIntent {
   slotId String @id
@@ -440,7 +456,7 @@ model BookingIntent {
   sessionId String
   session Session @relation(fields: [sessionId],references: [id])
   price Int
-  currensy String
+  currency Currency
   gatewayOrderId String?
   paymentProvider String?
   createdAt DateTime @default(now())
