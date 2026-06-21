@@ -19,7 +19,7 @@ export const TYPES = {
 	MentorBookingRulesRepository: Symbol.for("MentorBookingRulesRepository"),
 	SessionRepository: Symbol.for("SessionRepository"),
 	AvailabilityRepository: Symbol.for("AvailabilityRepository"),
-
+	BookingIntentRepository: Symbol.for("BookingIntentRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),

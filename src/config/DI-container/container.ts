@@ -4,6 +4,7 @@ import type { ITokenCache } from "@application/ports/cache/ITokenCache";
 import type { IMentorQuery } from "@application/ports/queries/IMentor.query";
 import type { IAchievementRepository } from "@application/ports/repository/IAcheivement.repository";
 import type { IAvailabilityRepository } from "@application/ports/repository/IAvailability.repository";
+import type { IBookingIntentRepository } from "@application/ports/repository/IBookingIntent.repository";
 import type { IDomainRepository } from "@application/ports/repository/IDomain.repository";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
@@ -128,6 +129,7 @@ import {
 import { MentorQuery } from "@infrastructure/queries/mentor.query";
 import AchievementRepository from "@infrastructure/repositories/Achievement.reository";
 import { AvailabilityRepository } from "@infrastructure/repositories/Availability.respsitory";
+import { BookingIntentRepository } from "@infrastructure/repositories/BookingIntent.repository";
 import { DomainRepository } from "@infrastructure/repositories/Domain.repoisitoty";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
@@ -173,7 +175,10 @@ container
 	.inSingletonScope();
 
 //Repository
-
+container
+	.bind<IBookingIntentRepository>(TYPES.BookingIntentRepository)
+	.to(BookingIntentRepository)
+	.inSingletonScope();
 container
 	.bind<IAvailabilityRepository>(TYPES.AvailabilityRepository)
 	.to(AvailabilityRepository)
