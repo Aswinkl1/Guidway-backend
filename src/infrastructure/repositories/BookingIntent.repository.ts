@@ -1,31 +1,75 @@
-// import { IBookingIntentRepository } from "@application/ports/repository/IBookingIntent.repository";
-// import { TYPES } from "@config/DI-container/TYPES";
-// import { BookingIntent } from "@domain/booking/entities/bookingIntent.entity";
-// import { PrismaClient } from "generated/prisma/client";
-// import { inject } from "inversify";
+import type { IBookingIntentRepository } from "@application/ports/repository/IBookingIntent.repository";
+import { TYPES } from "@config/DI-container/TYPES";
+import {
+	BookingIntent,
+	type IBookingIntent,
+} from "@domain/booking/entities/bookingIntent.entity";
 
-// export class BookingIntent implements IBookingIntentRepository{
+import type {
+	BookingIntent as PrismaBookingIntent,
+	PrismaClient,
+} from "generated/prisma/client";
+import { inject, injectable } from "inversify";
 
-//   constructor(@inject(TYPES.)private readonly _prisma:PrismaClient){}
-//   create(data: BookingIntent): Promise<BookingIntent> {
-//     const record = await this._prisma.bookingIntent.create({data})
-//   }
-//   findBySlotId(slotId: string): Promise<BookingIntent | null> {
-//     throw new Error("Method not implemented.");
-//   }
-//   save(slotId: string, data: Partial<BookingIntent>): Promise<BookingIntent> {
-//     throw new Error("Method not implemented.");
-//   }
-//   findByGatewayOrderId(gatewayOrderId: string): Promise<BookingIntent | null> {
-//     throw new Error("Method not implemented.");
-//   }
-//   deleteBySlotId(slotId: string): Promise<void> {
-//     throw new Error("Method not implemented.");
-//   }
+@injectable()
+export class BookingIntentRepository implements IBookingIntentRepository {
+	constructor(
+		@inject(TYPES.PrismaClient) private readonly _prisma: PrismaClient,
+	) {}
+	async create(data: BookingIntent): Promise<BookingIntent> {
+		const dbData = this.toPersistence(data);
+		const record = await this._prisma.bookingIntent.create({ data: dbData });
+		return this.toDomain(record);
+	}
+	async findBySlotId(slotId: string): Promise<BookingIntent | null> {
+		const record = await this._prisma.bookingIntent.findUnique({
+			where: { slotId },
+		});
+		if (!record) {
+			return null;
+		}
+		return this.toDomain(record);
+	}
+	async save(slotId: string, entity: BookingIntent): Promise<BookingIntent> {
+		const data = this.toPersistence(entity);
 
-//   toPersistence(data:BookingIntent):{
-//     return {
+		const record = await this._prisma.bookingIntent.update({
+			where: { slotId },
+			data,
+		});
 
-//     }
-//   }
-// }
+		return this.toDomain(record);
+	}
+	async findByGatewayOrderId(
+		gatewayOrderId: string,
+	): Promise<BookingIntent | null> {
+		const record = await this._prisma.bookingIntent.findFirst({
+			where: { gatewayOrderId },
+		});
+		if (!record) {
+			return null;
+		}
+		return this.toDomain(record);
+	}
+	async deleteBySlotId(slotId: string): Promise<void> {
+		await this._prisma.bookingIntent.delete({ where: { slotId } });
+	}
+
+	toDomain(data: PrismaBookingIntent): BookingIntent {
+		return BookingIntent.create(data);
+	}
+
+	toPersistence(
+		data: BookingIntent,
+	): Omit<IBookingIntent, "createdAt" | "updatedAt"> {
+		return {
+			currency: data.currency,
+			gatewayOrderId: data.gatewayOrderId,
+			note: data.note,
+			paymentProvider: data.paymentProvider,
+			price: data.price,
+			sessionId: data.sessionId,
+			slotId: data.slotId,
+		};
+	}
+}

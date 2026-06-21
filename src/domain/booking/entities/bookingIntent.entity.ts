@@ -3,7 +3,7 @@ export interface IBookingIntent {
 	sessionId: string;
 	note: string | null;
 	price: number;
-	currency: string;
+	currency: Currency;
 	gatewayOrderId: string | null;
 	paymentProvider: string | null;
 	createdAt: Date;
@@ -16,6 +16,17 @@ export interface CreateBookingIntentProps
 	updatedAt?: Date;
 }
 
+export type Currency =
+	| "INR"
+	| "USD"
+	| "EUR"
+	| "GBP"
+	| "JPY"
+	| "CNY"
+	| "AUD"
+	| "CAD"
+	| "CHF"
+	| "SGD";
 export class BookingIntent {
 	private constructor(private props: IBookingIntent) {}
 
