@@ -16,17 +16,20 @@ export interface CreateBookingIntentProps
 	updatedAt?: Date;
 }
 
-export type Currency =
-	| "INR"
-	| "USD"
-	| "EUR"
-	| "GBP"
-	| "JPY"
-	| "CNY"
-	| "AUD"
-	| "CAD"
-	| "CHF"
-	| "SGD";
+export const CURRENCIES = {
+	INR: "INR", // India
+	USD: "USD", // United States
+	EUR: "EUR", // European Union
+	GBP: "GBP", // United Kingdom
+	JPY: "JPY", // Japan
+	CNY: "CNY", // China
+	AUD: "AUD", // Australia
+	CAD: "CAD", // Canada
+	CHF: "CHF", // Switzerland
+	SGD: "SGD", // Singapore
+} as const;
+
+export type Currency = (typeof CURRENCIES)[keyof typeof CURRENCIES];
 export class BookingIntent {
 	private constructor(private props: IBookingIntent) {}
 
