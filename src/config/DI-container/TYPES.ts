@@ -5,7 +5,6 @@ export const TYPES = {
 	//repository
 	UserRepository: Symbol.for("UserRepository"),
 	TokenRepository: Symbol.for("TokenRepository"),
-	PrismaTokenRepository: Symbol.for("PrismaTokenRepository"),
 	MentorRepository: Symbol.for("MentorRepository"),
 	EducationRepository: Symbol.for("EducationRepository"),
 	ExperienceRepository: Symbol.for("ExperienceRepository"),

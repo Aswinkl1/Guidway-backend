@@ -13,7 +13,6 @@ import type { IMentorBookingRulesRepository } from "@application/ports/repositor
 import type { IMentorLanguageRepository } from "@application/ports/repository/IMentorLanguage.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
-import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
 import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
 import type { ISlotRepository } from "@application/ports/repository/ISlot.repository";
