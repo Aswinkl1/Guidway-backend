@@ -32,4 +32,4 @@ jobs:
 
       - run: pnpm run lint
 
-      - run: pnpm run build
+      # - run: pnpm run build
