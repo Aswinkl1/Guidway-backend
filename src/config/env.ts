@@ -44,6 +44,10 @@ const envSchema = z.object({
 	LINKEDIN_GET_USERINFO_URL: z.url("Invalid LinkedIn user info URL"),
 	GOOGLE_CALLBACK_URL: z.url("Invalid LinkedIn user info URL"),
 	AWS_S3_EXPIRES_IN: z.coerce.number().positive().int().default(300),
+	RAZORPAY_KEY_ID: z.string().min(1, "RAZORPAY_KEY_ID is required in .env"),
+	RAZORPAY_KEY_SECRET: z
+		.string()
+		.min(1, "RAZORPAY_KEY_SECRET is required in .env"),
 });
 export const getEnv = () => envSchema.parse(process.env);
 const parsedEnv = getEnv();
@@ -52,6 +56,12 @@ export class EnvConfig {
 	// --- Core Server ---
 	static get NODE_ENV(): string {
 		return parsedEnv.NODE_ENV;
+	}
+	static get RAZORPAY_KEY_ID(): string {
+		return parsedEnv.RAZORPAY_KEY_ID;
+	}
+	static get RAZORPAY_KEY_SECRET(): string {
+		return parsedEnv.RAZORPAY_KEY_SECRET;
 	}
 
 	static get AWS_S3_EXPIRES_IN(): number {
