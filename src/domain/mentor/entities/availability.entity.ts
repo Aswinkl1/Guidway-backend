@@ -23,6 +23,16 @@ export const DAY_OF_WEEK = {
 } as const;
 export type DayOfWeek = (typeof DAY_OF_WEEK)[keyof typeof DAY_OF_WEEK];
 
+export const DayOfWeekIndex: Record<number, DayOfWeek> = {
+	0: DAY_OF_WEEK.SUNDAY,
+	1: DAY_OF_WEEK.MONDAY,
+	2: DAY_OF_WEEK.TUESDAY,
+	3: DAY_OF_WEEK.WEDNESDAY,
+	4: DAY_OF_WEEK.THURSDAY,
+	5: DAY_OF_WEEK.FRIDAY,
+	6: DAY_OF_WEEK.SATURDAY,
+} as const;
+
 export interface CreateAvailabilityProps
 	extends Omit<IAvailability, "id" | "createdAt" | "updatedAt" | "deletedAt"> {
 	id?: string;

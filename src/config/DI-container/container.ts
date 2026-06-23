@@ -4,6 +4,7 @@ import type { ITokenCache } from "@application/ports/cache/ITokenCache";
 import type { IMentorQuery } from "@application/ports/queries/IMentor.query";
 import type { IAchievementRepository } from "@application/ports/repository/IAcheivement.repository";
 import type { IAvailabilityRepository } from "@application/ports/repository/IAvailability.repository";
+import type { IBookingIntentRepository } from "@application/ports/repository/IBookingIntent.repository";
 import type { IDomainRepository } from "@application/ports/repository/IDomain.repository";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
 import type { IExperienceRepository } from "@application/ports/repository/IExperience.repository";
@@ -15,6 +16,7 @@ import type { IMentorSkillRepository } from "@application/ports/repository/IMent
 import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
 import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
+import type { ISlotRepository } from "@application/ports/repository/ISlot.repository";
 import type { ISocialLinkRepository } from "@application/ports/repository/ISocialLinks.reposiroty";
 // Types
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
@@ -26,6 +28,7 @@ import type { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdmin
 import type { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
 import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdateBlockStatus";
 import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
+import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import type { IListMentorsUsecase } from "@application/ports/usecase/IListMentor.usecase";
@@ -74,6 +77,7 @@ import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecas
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
+import { CreateBookingIntentUsecase } from "@application/useCases/booking/CreateBookingIntent.usecase";
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
 import { DeleteAchievementUsecase } from "@application/useCases/mentor/achievements/Delete-Achievement.usecase";
 import { EditAchievementUsecase } from "@application/useCases/mentor/achievements/Edit-Achievement.usecase";
@@ -128,6 +132,7 @@ import {
 import { MentorQuery } from "@infrastructure/queries/mentor.query";
 import AchievementRepository from "@infrastructure/repositories/Achievement.reository";
 import { AvailabilityRepository } from "@infrastructure/repositories/Availability.respsitory";
+import { BookingIntentRepository } from "@infrastructure/repositories/BookingIntent.repository";
 import { DomainRepository } from "@infrastructure/repositories/Domain.repoisitoty";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
@@ -139,6 +144,7 @@ import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 import { SessionRepository } from "@infrastructure/repositories/Session.repository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
+import { SlotRepository } from "@infrastructure/repositories/Slot.repository";
 import { SocaiLinkRepository } from "@infrastructure/repositories/SocailLink.repository";
 import { UserRepository } from "@infrastructure/repositories/UserRepository";
 import { ArgonPasswordHasher } from "@infrastructure/services/ArgonHashService";
@@ -148,11 +154,13 @@ import { S3Service } from "@infrastructure/services/S3Service";
 import { TokenService } from "@infrastructure/services/TokenServices";
 import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
 import { AuthController } from "@presentation/controllers/auth.controller";
+import { BookingController } from "@presentation/controllers/booking/booking.controller";
 import { AvailabilityController } from "@presentation/controllers/mentor/Availability.controller";
 import { ProfileController } from "@presentation/controllers/mentor/Profile.controller";
 import { SessionController } from "@presentation/controllers/mentor/Session.controller";
 import { SettingController } from "@presentation/controllers/mentor/Settings.controller";
 import { UserController } from "@presentation/controllers/user/user.controller";
+import type { IBookingController } from "@presentation/interface/controllers/booking/IBookingController";
 import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
 import type { IProfileController } from "@presentation/interface/controllers/IProfileController";
 import type { ISessionController } from "@presentation/interface/controllers/ISession.controller";
@@ -173,11 +181,21 @@ container
 	.inSingletonScope();
 
 //Repository
+container
+	.bind<ISlotRepository>(TYPES.SlotRepository)
+	.to(SlotRepository)
+	.inSingletonScope();
+
+container
+	.bind<IBookingIntentRepository>(TYPES.BookingIntentRepository)
+	.to(BookingIntentRepository)
+	.inSingletonScope();
 
 container
 	.bind<IAvailabilityRepository>(TYPES.AvailabilityRepository)
 	.to(AvailabilityRepository)
 	.inSingletonScope();
+
 container
 	.bind<IUserRepository>(TYPES.UserRepository)
 	.to(UserRepository)
@@ -245,6 +263,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<ICreateBookingIntentUsecase>(TYPES.CreateBookingIntentUsecase)
+	.to(CreateBookingIntentUsecase)
+	.inSingletonScope();
 container
 	.bind<IGetAvailableSlotsByDate>(TYPES.GetAvailableSlotsByDate)
 	.to(GetAvailableSlotsByDate)
@@ -509,6 +531,10 @@ container
 container
 	.bind<IAvailabilityController>(TYPES.AvailabilityController)
 	.to(AvailabilityController)
+	.inSingletonScope();
+container
+	.bind<IBookingController>(TYPES.BookingController)
+	.to(BookingController)
 	.inSingletonScope();
 // queries
 

@@ -19,7 +19,8 @@ export const TYPES = {
 	MentorBookingRulesRepository: Symbol.for("MentorBookingRulesRepository"),
 	SessionRepository: Symbol.for("SessionRepository"),
 	AvailabilityRepository: Symbol.for("AvailabilityRepository"),
-
+	BookingIntentRepository: Symbol.for("BookingIntentRepository"),
+	SlotRepository: Symbol.for("SlotRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
@@ -29,6 +30,7 @@ export const TYPES = {
 	//queries
 	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
+	CreateBookingIntentUsecase: Symbol.for("CreateBookingIntentUsecase"),
 	ForgetPasswordUseCase: Symbol.for("ForgetPasswordUseCase"),
 	LoginUseCase: Symbol.for("LoginUseCase"),
 	RefreshTokenUseCase: Symbol.for("RefreshTokenUseCase"),
@@ -88,6 +90,7 @@ export const TYPES = {
 	SessionController: Symbol.for("SessionController"),
 	UserController: Symbol.for("UserController"),
 	AvailabilityController: Symbol.for("AvailabilityController"),
+	BookingController: Symbol.for("BookingController"),
 	// Infrastructure Clients
 	PrismaClient: Symbol.for("PrismaClient"),
 	RedisClient: Symbol.for("RedisClient"),
