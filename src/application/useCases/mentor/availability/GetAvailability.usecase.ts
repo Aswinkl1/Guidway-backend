@@ -12,7 +12,7 @@ export class GetAvailabilityUsecase implements IGetAvailabilityUsecase {
 		@inject(TYPES.AvailabilityRepository)
 		private readonly _availabilityRepository: IAvailabilityRepository,
 	) {}
-	async execute(mentorId: string): Promise<GetAvailabilityPayload> {
+	async execute(mentorId: string): Promise<GetAvailabilityPayload[]> {
 		const records = await this._availabilityRepository.findAll(mentorId);
 
 		return AvailabilityMapper.toResponse(records);

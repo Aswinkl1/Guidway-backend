@@ -13,7 +13,6 @@ import type { IMentorBookingRulesRepository } from "@application/ports/repositor
 import type { IMentorLanguageRepository } from "@application/ports/repository/IMentorLanguage.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
-import type { IPrismaRepository } from "@application/ports/repository/IPrismaTokenRepository";
 import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
 import type { ISlotRepository } from "@application/ports/repository/ISlot.repository";
@@ -141,7 +140,6 @@ import { MentorBookingRulesRepository } from "@infrastructure/repositories/Mento
 import { MentorLanguageRepository } from "@infrastructure/repositories/MentorLanguage.repository";
 import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
-import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 import { SessionRepository } from "@infrastructure/repositories/Session.repository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
 import { SlotRepository } from "@infrastructure/repositories/Slot.repository";
@@ -204,11 +202,6 @@ container
 container
 	.bind<ITokenCache>(TYPES.TokenRepository)
 	.to(TokenCache)
-	.inSingletonScope();
-
-container
-	.bind<IPrismaRepository>(TYPES.PrismaTokenRepository)
-	.to(PrismaTokenRespository)
 	.inSingletonScope();
 
 container
