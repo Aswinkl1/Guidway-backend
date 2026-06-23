@@ -32,6 +32,7 @@ export const DayOfWeekIndex: Record<number, DayOfWeek> = {
 	5: DAY_OF_WEEK.FRIDAY,
 	6: DAY_OF_WEEK.SATURDAY,
 } as const;
+
 export interface CreateAvailabilityProps
 	extends Omit<IAvailability, "id" | "createdAt" | "updatedAt" | "deletedAt"> {
 	id?: string;
