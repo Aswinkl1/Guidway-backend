@@ -20,6 +20,7 @@ export const TYPES = {
 	SessionRepository: Symbol.for("SessionRepository"),
 	AvailabilityRepository: Symbol.for("AvailabilityRepository"),
 	BookingIntentRepository: Symbol.for("BookingIntentRepository"),
+	SlotRepository: Symbol.for("SlotRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
 	HashService: Symbol.for("HashService"),
@@ -29,6 +30,7 @@ export const TYPES = {
 	//queries
 	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
+	CreateBookingIntentUsecase: Symbol.for("CreateBookingIntentUsecase"),
 	ForgetPasswordUseCase: Symbol.for("ForgetPasswordUseCase"),
 	LoginUseCase: Symbol.for("LoginUseCase"),
 	RefreshTokenUseCase: Symbol.for("RefreshTokenUseCase"),
