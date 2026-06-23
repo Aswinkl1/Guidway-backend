@@ -141,7 +141,6 @@ import { MentorBookingRulesRepository } from "@infrastructure/repositories/Mento
 import { MentorLanguageRepository } from "@infrastructure/repositories/MentorLanguage.repository";
 import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
-import { PrismaTokenRespository } from "@infrastructure/repositories/PrismaTokenRepository";
 import { SessionRepository } from "@infrastructure/repositories/Session.repository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
 import { SlotRepository } from "@infrastructure/repositories/Slot.repository";
@@ -204,11 +203,6 @@ container
 container
 	.bind<ITokenCache>(TYPES.TokenRepository)
 	.to(TokenCache)
-	.inSingletonScope();
-
-container
-	.bind<IPrismaRepository>(TYPES.PrismaTokenRepository)
-	.to(PrismaTokenRespository)
 	.inSingletonScope();
 
 container

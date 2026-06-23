@@ -59,6 +59,12 @@ export class AdminLoginUsecase implements IAdminLoginUsecase {
 
 		const { token: refreshToken } =
 			this._tokenService.generateRefreshToken(payload);
-		return { accessToken, refreshToken, role: user.role };
+		return {
+			accessToken,
+			refreshToken,
+			role: user.role,
+			name: user.name,
+			profileImageKey: user.profileImageKey,
+		};
 	}
 }
