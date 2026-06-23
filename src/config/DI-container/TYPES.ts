@@ -90,6 +90,7 @@ export const TYPES = {
 	SessionController: Symbol.for("SessionController"),
 	UserController: Symbol.for("UserController"),
 	AvailabilityController: Symbol.for("AvailabilityController"),
+	BookingController: Symbol.for("BookingController"),
 	// Infrastructure Clients
 	PrismaClient: Symbol.for("PrismaClient"),
 	RedisClient: Symbol.for("RedisClient"),
