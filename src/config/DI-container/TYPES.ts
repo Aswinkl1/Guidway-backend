@@ -19,6 +19,8 @@ export const TYPES = {
 	SessionRepository: Symbol.for("SessionRepository"),
 	AvailabilityRepository: Symbol.for("AvailabilityRepository"),
 	BookingIntentRepository: Symbol.for("BookingIntentRepository"),
+	BookingRepository: Symbol.for("BookingRepository"),
+	PaymentRepository: Symbol.for("PaymentRepository"),
 	SlotRepository: Symbol.for("SlotRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),

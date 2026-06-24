@@ -4,6 +4,7 @@ import type { ITokenCache } from "@application/ports/cache/ITokenCache";
 import type { IMentorQuery } from "@application/ports/queries/IMentor.query";
 import type { IAchievementRepository } from "@application/ports/repository/IAcheivement.repository";
 import type { IAvailabilityRepository } from "@application/ports/repository/IAvailability.repository";
+import type { IBookingRepository } from "@application/ports/repository/IBooking.repository";
 import type { IBookingIntentRepository } from "@application/ports/repository/IBookingIntent.repository";
 import type { IDomainRepository } from "@application/ports/repository/IDomain.repository";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
@@ -13,6 +14,7 @@ import type { IMentorBookingRulesRepository } from "@application/ports/repositor
 import type { IMentorLanguageRepository } from "@application/ports/repository/IMentorLanguage.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
+import type { IPaymentRepository } from "@application/ports/repository/IPayment.repository";
 import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
 import type { ISlotRepository } from "@application/ports/repository/ISlot.repository";
@@ -135,6 +137,7 @@ import { MentorQuery } from "@infrastructure/queries/mentor.query";
 import AchievementRepository from "@infrastructure/repositories/Achievement.reository";
 import { AvailabilityRepository } from "@infrastructure/repositories/Availability.respsitory";
 import { BookingIntentRepository } from "@infrastructure/repositories/BookingIntent.repository";
+import BookingRepository from "@infrastructure/repositories/booking.repository";
 import { DomainRepository } from "@infrastructure/repositories/Domain.repoisitoty";
 import EducationRepository from "@infrastructure/repositories/Education.repository";
 import ExperienceRepository from "@infrastructure/repositories/Experience.repository";
@@ -143,6 +146,7 @@ import { MentorBookingRulesRepository } from "@infrastructure/repositories/Mento
 import { MentorLanguageRepository } from "@infrastructure/repositories/MentorLanguage.repository";
 import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
+import PaymentRepository from "@infrastructure/repositories/payment.repository";
 import { SessionRepository } from "@infrastructure/repositories/Session.repository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
 import { SlotRepository } from "@infrastructure/repositories/Slot.repository";
@@ -183,6 +187,15 @@ container
 	.inSingletonScope();
 
 //Repository
+container
+	.bind<IBookingRepository>(TYPES.BookingRepository)
+	.to(BookingRepository)
+	.inSingletonScope();
+
+container
+	.bind<IPaymentRepository>(TYPES.PaymentRepository)
+	.to(PaymentRepository)
+	.inSingletonScope();
 container
 	.bind<ISlotRepository>(TYPES.SlotRepository)
 	.to(SlotRepository)
