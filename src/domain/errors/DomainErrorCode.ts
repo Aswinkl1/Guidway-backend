@@ -4,6 +4,7 @@ export const DomainErrorCode = {
 	BAD_REQUEST: "BAD_REQUEST",
 	UNAUTHORIZED: "UNAUTHORIZED",
 	FORBIDDEN: "FORBIDDEN",
+	CONFLICT: "CONFLICT",
 } as const;
 
 // This extracts the values into a strict TypeScript type

@@ -10,6 +10,7 @@ const errorCodeToHttpStatusMap: Record<ErrorCode, HTTPSTATUSTYPE> = {
 	[DomainErrorCode.NOT_FOUND]: HTTPSTATUS.NOT_FOUND,
 	[DomainErrorCode.ALREADY_EXISTS]: HTTPSTATUS.CONFLICT,
 	[AppErrorCode.INVALID_CREDENTIALS]: HTTPSTATUS.BAD_REQUEST,
+	[DomainErrorCode.CONFLICT]: HTTPSTATUS.CONFLICT,
 };
 
 export const getHttpStatusForErrorCode = (code: ErrorCode): HTTPSTATUSTYPE => {
