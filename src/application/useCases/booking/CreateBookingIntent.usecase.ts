@@ -5,6 +5,7 @@ import type { IPaymentService } from "@application/ports/services/IPaymentServic
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
 import type { CreateOrderResponse } from "@application/types/PaymentService.types";
 import { TYPES } from "@config/DI-container/TYPES";
+import { ConflictError } from "@domain/errors/ConflictError";
 import { DayOfWeekIndex } from "@domain/mentor/entities/availability.entity";
 import { inject, injectable } from "inversify";
 @injectable()
@@ -31,17 +32,26 @@ export class CreateBookingIntentUsecase implements ICreateBookingIntentUsecase {
 		);
 
 		if (!availability) {
-			throw new Error("Requested time slot is not available.");
+			throw new ConflictError("Mentor is unavailable for the requested time");
 		}
+		console.log("date", data.date.toLocaleDateString("en-CA"));
+		// store the day with same time to avoid issues with data comparison
+		const date = new Date(
+			`${data.date.toLocaleDateString("en-CA")}T00:00:00.000Z`,
+		);
+		console.log(date);
+
 		const slot = await this._slotRepository.checkOverlap(
 			data.mentorId,
-			data.date,
+			date,
 			data.startTime,
 			data.endTime,
 		);
-
+		console.log("slot", slot);
 		if (slot) {
-			throw new Error("Requested time slot overlaps with an existing booking.");
+			throw new ConflictError(
+				"Requested time slot overlaps with an existing booking.",
+			);
 		}
 
 		const order = await this._paymentService.createOrder({
@@ -50,6 +60,7 @@ export class CreateBookingIntentUsecase implements ICreateBookingIntentUsecase {
 		});
 		const finalData = {
 			...data,
+			date,
 			orderId: order.orderId,
 			provider: this._paymentService.getPaymentProviderName(),
 		};

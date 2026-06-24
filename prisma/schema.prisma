@@ -414,7 +414,7 @@ model Slots {
   mentor     Mentor     @relation(fields: [mentorId], references: [userId])
   lockedBy   String
   user       User       @relation(fields: [lockedBy], references: [id])
-  date       DateTime
+  date       DateTime   @db.Date
   startTime  Int
   endTime    Int
   expiresAt  DateTime
