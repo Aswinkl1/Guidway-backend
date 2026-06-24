@@ -1,11 +1,12 @@
 import type { HoldSlotDto } from "@application/dto/booking/slotHold.dto";
 import type { IAvailabilityRepository } from "@application/ports/repository/IAvailability.repository";
 import type { ISlotRepository } from "@application/ports/repository/ISlot.repository";
+import type { IPaymentService } from "@application/ports/services/IPaymentService";
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
+import type { CreateOrderResponse } from "@application/types/PaymentService.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { DayOfWeekIndex } from "@domain/mentor/entities/availability.entity";
 import { inject, injectable } from "inversify";
-import { da } from "zod/locales";
 @injectable()
 export class CreateBookingIntentUsecase implements ICreateBookingIntentUsecase {
 	constructor(
@@ -13,12 +14,14 @@ export class CreateBookingIntentUsecase implements ICreateBookingIntentUsecase {
 		private readonly _slotRepository: ISlotRepository,
 		@inject(TYPES.AvailabilityRepository)
 		private readonly _availabilityRepository: IAvailabilityRepository,
+		@inject(TYPES.PaymentService)
+		private readonly _paymentService: IPaymentService,
 	) {}
 
 	async execute(
 		userId: string,
 		data: HoldSlotDto,
-	): Promise<{ slotId: string }> {
+	): Promise<CreateOrderResponse> {
 		const dayOfWeek = DayOfWeekIndex[new Date(data.date).getDay()];
 		const availability = await this._availabilityRepository.checkOverlap(
 			data.mentorId,
@@ -41,12 +44,21 @@ export class CreateBookingIntentUsecase implements ICreateBookingIntentUsecase {
 			throw new Error("Requested time slot overlaps with an existing booking.");
 		}
 
-		const result =
-			await this._slotRepository.transactionallySaveSlotAndBookingIntent(
-				userId,
-				data,
-			);
+		const order = await this._paymentService.createOrder({
+			amount: data.price * 100,
+			currency: "INR",
+		});
+		const finalData = {
+			...data,
+			orderId: order.orderId,
+			provider: this._paymentService.getPaymentProviderName(),
+		};
 
-		return result;
+		await this._slotRepository.transactionallySaveSlotAndBookingIntent(
+			userId,
+			finalData,
+		);
+
+		return order;
 	}
 }

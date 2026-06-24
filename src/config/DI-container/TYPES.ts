@@ -25,7 +25,7 @@ export const TYPES = {
 	HashService: Symbol.for("HashService"),
 	TokenService: Symbol.for("TokenService"),
 	S3Service: Symbol.for("S3Service"),
-
+	PaymentService: Symbol.for("PaymentService"),
 	//queries
 	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
