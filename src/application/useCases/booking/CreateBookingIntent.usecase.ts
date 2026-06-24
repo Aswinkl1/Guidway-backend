@@ -47,10 +47,15 @@ export class CreateBookingIntentUsecase implements ICreateBookingIntentUsecase {
 			amount: data.price * 100,
 			currency: "INR",
 		});
+		const finalData = {
+			...data,
+			orderId: order.orderId,
+			provider: this._paymentService.getPaymentProviderName(),
+		};
 		const result =
 			await this._slotRepository.transactionallySaveSlotAndBookingIntent(
 				userId,
-				data,
+				finalData,
 			);
 
 		return order;

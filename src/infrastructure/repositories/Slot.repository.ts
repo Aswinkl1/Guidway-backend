@@ -25,7 +25,7 @@ export class SlotRepository
 
 	async transactionallySaveSlotAndBookingIntent(
 		userId: string,
-		data: HoldSlotDto,
+		data: HoldSlotDto & { provider?: string; orderId?: string },
 	): Promise<{ slotId: string }> {
 		const record = await this._prisma.$transaction(async (tx) => {
 			const slotData = await tx.slots.create({
@@ -47,6 +47,8 @@ export class SlotRepository
 					price: data.price,
 					currency: data.currency,
 					note: data.note ?? null,
+					gatewayOrderId: data.orderId ?? null,
+					paymentProvider: data.provider ?? null,
 				},
 			});
 

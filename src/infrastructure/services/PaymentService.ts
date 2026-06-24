@@ -16,6 +16,10 @@ export class PaymentService implements IPaymentService {
 			key_secret: EnvConfig.RAZORPAY_KEY_SECRET,
 		});
 	}
+
+	getPaymentProviderName(): string {
+		return "Razorpay";
+	}
 	async createOrder(config: CreateOrderConfig): Promise<CreateOrderResponse> {
 		try {
 			const order = await this.razorpay.orders.create({
