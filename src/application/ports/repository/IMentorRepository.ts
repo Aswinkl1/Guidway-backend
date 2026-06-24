@@ -1,4 +1,5 @@
 import type { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
+import type { BookingSetupDetailsOutput } from "@application/dto/booking/getBookingSetup.dto";
 import type { listMentorDto } from "@application/dto/mentor/listMentor.dto";
 import type {
 	CursorPaginatedResult,
@@ -40,4 +41,8 @@ export interface IMentorRepository
 	findAllWithCursor(
 		filter: listMentorDto,
 	): Promise<CursorPaginatedResult<outputType>>;
+	getMentorWithSession(
+		mentorId: string,
+		sessionId: string,
+	): Promise<BookingSetupDetailsOutput | null>;
 }

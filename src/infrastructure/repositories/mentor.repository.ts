@@ -1,4 +1,5 @@
 import type { getUsersDTO } from "@application/dto/admin/GetUsers.dto";
+import type { BookingSetupDetailsOutput } from "@application/dto/booking/getBookingSetup.dto";
 import type { listMentorDto } from "@application/dto/mentor/listMentor.dto";
 import type {
 	IMentorRepository,
@@ -177,6 +178,58 @@ export default class MentorRepository
 		return Mentor.create(record);
 	}
 
+	async getMentorWithSession(
+		mentorId: string,
+		sessionId: string,
+	): Promise<BookingSetupDetailsOutput | null> {
+		const record = await this._prisma.mentor.findUnique({
+			where: { userId: mentorId },
+			select: {
+				userId: true,
+				slotDurationMinutes: true,
+				user: {
+					select: {
+						name: true,
+						profileImageKey: true,
+					},
+				},
+				sessions: {
+					where: { id: sessionId },
+					select: {
+						id: true,
+						title: true,
+						duration: true,
+						price: true,
+					},
+				},
+			},
+		});
+
+		if (!record) {
+			return null;
+		}
+
+		if (!record.sessions || record.sessions.length === 0) {
+			return null;
+		}
+
+		const sessionData = record.sessions[0];
+
+		return {
+			mentor: {
+				id: record.userId,
+				name: record.user.name,
+				avatarUrl: record.user.profileImageKey || undefined,
+				slotDurationMinutes: record.slotDurationMinutes,
+			},
+			session: {
+				id: sessionData.id,
+				title: sessionData.title,
+				duration: sessionData.duration,
+				price: sessionData.price,
+			},
+		};
+	}
 	protected toPersistence(
 		mentorDetails: Partial<Mentor>,
 	): Omit<Prisma.MentorCreateInput, "createdAt" | "updatedAt"> {
