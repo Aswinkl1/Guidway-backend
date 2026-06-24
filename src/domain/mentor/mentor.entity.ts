@@ -1,5 +1,3 @@
-import { number } from "zod";
-
 interface mentorProp {
 	// readonly id: string;
 	readonly userId: string;

@@ -29,6 +29,7 @@ import type { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUser
 import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdateBlockStatus";
 import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
+import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/booking/IGetBookingSetupDetails.usecase";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import type { IListMentorsUsecase } from "@application/ports/usecase/IListMentor.usecase";
@@ -78,6 +79,7 @@ import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
 import { CreateBookingIntentUsecase } from "@application/useCases/booking/CreateBookingIntent.usecase";
+import { GetBookingSetupDetailsUseCase } from "@application/useCases/booking/GetBookingSetupDetails.usecase";
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
 import { DeleteAchievementUsecase } from "@application/useCases/mentor/achievements/Delete-Achievement.usecase";
 import { EditAchievementUsecase } from "@application/useCases/mentor/achievements/Edit-Achievement.usecase";
@@ -258,6 +260,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IGetBookingSetupDetailsUseCase>(TYPES.GetBookingSetupDetailsUseCase)
+	.to(GetBookingSetupDetailsUseCase)
+	.inSingletonScope();
 container
 	.bind<ICreateBookingIntentUsecase>(TYPES.CreateBookingIntentUsecase)
 	.to(CreateBookingIntentUsecase)
