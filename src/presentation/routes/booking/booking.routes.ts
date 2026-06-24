@@ -11,7 +11,7 @@ const BookingController = container.get<IBookingController>(
 	TYPES.BookingController,
 );
 router.post(
-	"/booking-intent",
+	"/booking/initiate",
 	isAuthenticate,
 	validatetor(holdSlotSchema, "body"),
 	BookingController.createBookingIntent,
