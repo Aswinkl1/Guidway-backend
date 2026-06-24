@@ -1,3 +1,8 @@
+import type {
+	CreateOrderConfig,
+	CreateOrderResponse,
+} from "@application/types/PaymentService.types";
+
 export interface IPaymentService {
-	createOrder(amount: number, currency: string): Promise<{ orderId: string }>;
+	createOrder(config: CreateOrderConfig): Promise<CreateOrderResponse>;
 }
