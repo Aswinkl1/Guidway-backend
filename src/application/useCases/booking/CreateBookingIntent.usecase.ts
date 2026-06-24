@@ -14,6 +14,7 @@ export class CreateBookingIntentUsecase implements ICreateBookingIntentUsecase {
 		private readonly _slotRepository: ISlotRepository,
 		@inject(TYPES.AvailabilityRepository)
 		private readonly _availabilityRepository: IAvailabilityRepository,
+		@inject(TYPES.PaymentService)
 		private readonly _paymentService: IPaymentService,
 	) {}
 

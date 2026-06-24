@@ -21,6 +21,7 @@ import type { ISocialLinkRepository } from "@application/ports/repository/ISocia
 import type { IUserRepository } from "@application/ports/repository/IUserRepository";
 import type { IEmailService } from "@application/ports/services/IEmailService";
 import type { IHashService } from "@application/ports/services/IHashService";
+import type { IPaymentService } from "@application/ports/services/IPaymentService";
 import type { IS3Service } from "@application/ports/services/IS3Service";
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdminLogin.usecase";
@@ -148,6 +149,7 @@ import { UserRepository } from "@infrastructure/repositories/UserRepository";
 import { ArgonPasswordHasher } from "@infrastructure/services/ArgonHashService";
 import { NodemailerEmailService } from "@infrastructure/services/NodemailerEmailService";
 import { PassportConfig } from "@infrastructure/services/PassportService";
+import { PaymentService } from "@infrastructure/services/PaymentService";
 import { S3Service } from "@infrastructure/services/S3Service";
 import { TokenService } from "@infrastructure/services/TokenServices";
 import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
@@ -482,6 +484,10 @@ container
 	.inSingletonScope();
 
 // services
+container
+	.bind<IPaymentService>(TYPES.PaymentService)
+	.to(PaymentService)
+	.inSingletonScope();
 container
 	.bind<IEmailService>(TYPES.EmailService)
 	.to(NodemailerEmailService)

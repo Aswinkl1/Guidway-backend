@@ -1,6 +1,7 @@
 import type { HoldSlotDto } from "@application/dto/booking/slotHold.dto";
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
+import { createSuccess } from "@presentation/helper/response.util";
 import type { IBookingController } from "@presentation/interface/controllers/booking/IBookingController";
 import type { Request, Response } from "express";
 import { inject, injectable } from "inversify";
@@ -21,9 +22,8 @@ export class BookingController implements IBookingController {
 
 		const result = await this._createBookingIntentUsecase.execute(userId, data);
 
-		res.status(201).json({
-			message: "Booking intent created successfully",
-			slotId: result.slotId,
-		});
+		res
+			.status(201)
+			.json(createSuccess("Booking intent created successfully", result));
 	};
 }
