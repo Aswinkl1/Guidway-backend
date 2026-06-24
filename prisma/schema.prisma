@@ -471,6 +471,8 @@ model BookingIntent {
 model Booking {
   id String @id @default(uuid())
   slotId String
+  mentorId String
+  userId String
   slot Slots @relation(fields: [slotId],references: [id],onDelete: Cascade)
   sessionId String
   session Session @relation(fields: [sessionId],references: [id])
