@@ -36,7 +36,7 @@ export class BookingController implements IBookingController {
 		res: Response,
 	): Promise<void> => {
 		const { mentorId, sessionId } = req.validated
-			?.query as GetBookingSetupInputDto;
+			?.params as GetBookingSetupInputDto;
 		const result = await this._getBookingSetupDetailsUsecase.execute({
 			mentorId,
 			sessionId,

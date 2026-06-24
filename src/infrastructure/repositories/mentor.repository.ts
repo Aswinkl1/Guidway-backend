@@ -197,7 +197,7 @@ export default class MentorRepository
 					where: { id: sessionId },
 					select: {
 						id: true,
-						title: true,
+						name: true,
 						duration: true,
 						price: true,
 					},
@@ -224,7 +224,7 @@ export default class MentorRepository
 			},
 			session: {
 				id: sessionData.id,
-				title: sessionData.title,
+				title: sessionData.name,
 				duration: sessionData.duration,
 				price: sessionData.price,
 			},

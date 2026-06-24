@@ -21,7 +21,7 @@ router.post(
 router.get(
 	"/mentor/:mentorId/session/:sessionId",
 	isAuthenticate,
-	validatetor(getBookingSetupSchema, "query"),
+	validatetor(getBookingSetupSchema, "params"),
 	BookingController.getBookingSetupDetails,
 );
 export default router;
