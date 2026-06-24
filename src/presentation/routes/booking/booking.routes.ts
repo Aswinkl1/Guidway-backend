@@ -1,3 +1,4 @@
+import { getBookingSetupSchema } from "@application/dto/booking/getBookingSetup.dto";
 import { holdSlotSchema } from "@application/dto/booking/slotHold.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
@@ -15,5 +16,12 @@ router.post(
 	isAuthenticate,
 	validatetor(holdSlotSchema, "body"),
 	BookingController.createBookingIntent,
+);
+
+router.get(
+	"/mentor/:mentorId/session/:sessionId",
+	isAuthenticate,
+	validatetor(getBookingSetupSchema, "query"),
+	BookingController.getBookingSetupDetails,
 );
 export default router;
