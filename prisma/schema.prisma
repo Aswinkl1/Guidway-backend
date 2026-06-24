@@ -373,6 +373,7 @@ model Session {
   mentor   Mentor   @relation(fields: [mentorId], references: [userId])
 //  booking Booking[]
  @@index([mentorId,price])
+  bookings Booking[]
 }
 
 enum DayOfWeek {
@@ -424,6 +425,7 @@ model Slots {
   bookingIntent BookingIntent?
   @@index([mentorId, date])
   @@map("slots")
+  bookings Booking[]
 }
 
 enum SlotStatus {
@@ -463,4 +465,58 @@ model BookingIntent {
   updatedAt DateTime @updatedAt
 
   @@map("booking_intents")
+}
+
+
+model Booking {
+  id String @id @default(uuid())
+  slotId String
+  slot Slots @relation(fields: [slotId],references: [id],onDelete: Cascade)
+  sessionId String
+  session Session @relation(fields: [sessionId],references: [id])
+  sessionTitle String
+  startTime DateTime
+  endTime DateTime
+  amount Int
+  currency Currency
+  note String?
+  paymentId String
+  status BookingStatus @default(CONFIRMED)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  payment Payment[]
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model Payment {
+  id                String        @id @default(uuid())
+  bookingId         String
+  booking           Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  paymentProvider   String
+  paymentId         String
+  paymentOrderId    String
+  paymentSignature  String
+
+  amountInMinorUnit Int
+  currency          Currency
+
+  status            PaymentStatus @default(PENDING)
+
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
 }
