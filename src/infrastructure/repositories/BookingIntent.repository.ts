@@ -45,6 +45,10 @@ export class BookingIntentRepository implements IBookingIntentRepository {
 	): Promise<BookingIntent | null> {
 		const record = await this._prisma.bookingIntent.findFirst({
 			where: { gatewayOrderId },
+			include: {
+				slot: true,
+				session: true,
+			},
 		});
 		if (!record) {
 			return null;
