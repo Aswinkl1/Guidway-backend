@@ -14,6 +14,8 @@ export interface IBooking {
 	slotId: string;
 	sessionId: string;
 	sessionTitle: string;
+	mentorId: string;
+	userId: string;
 	startTime: Date;
 	endTime: Date;
 	amount: number;
@@ -54,6 +56,12 @@ export class Booking {
 		return this.props.slotId;
 	}
 
+	get mentorId() {
+		return this.props.mentorId;
+	}
+	get userId() {
+		return this.props.userId;
+	}
 	get sessionId() {
 		return this.props.sessionId;
 	}
