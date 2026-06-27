@@ -11,7 +11,7 @@ export type PaymentStatus =
 
 export interface IPayment {
 	id: string;
-	bookingId: string;
+	// bookingId: string;
 	paymentProvider: string;
 	paymentId: string;
 	paymentOrderId: string;
@@ -44,9 +44,9 @@ export class Payment {
 		return this.props.id;
 	}
 
-	get bookingId() {
-		return this.props.bookingId;
-	}
+	// get bookingId() {
+	//   return this.props.bookingId;
+	// }
 
 	get paymentProvider() {
 		return this.props.paymentProvider;

@@ -30,7 +30,7 @@ export default class PaymentRepository
 	): Omit<Partial<Payment>, "createdAt" | "updatedAt"> {
 		return {
 			id: paymentEntity.id,
-			bookingId: paymentEntity.bookingId,
+			// bookingId: paymentEntity.bookingId,
 			paymentProvider: paymentEntity.paymentProvider,
 			paymentId: paymentEntity.paymentId,
 			paymentOrderId: paymentEntity.paymentOrderId,
