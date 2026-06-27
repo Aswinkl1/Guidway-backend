@@ -4,9 +4,10 @@ import type { BookingIntentAggregate } from "@application/types/booking.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Booking } from "@domain/booking/booking.entity";
 import { SLOT_STATUS } from "@domain/booking/entities/slot.entity";
-import type {
-	Booking as PrismaBooking,
-	PrismaClient,
+import {
+	Prisma,
+	type Booking as PrismaBooking,
+	type PrismaClient,
 } from "generated/prisma/client";
 import { inject } from "inversify";
 import { BaseRepository } from "./BaseRepository";
