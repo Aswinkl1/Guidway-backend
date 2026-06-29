@@ -1,5 +1,7 @@
+import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.dto";
 import type { GetBookingSetupInputDto } from "@application/dto/booking/getBookingSetup.dto";
 import type { HoldSlotDto } from "@application/dto/booking/slotHold.dto";
+import type { IConfirmBookingUsecase } from "@application/ports/usecase/booking/IConfirmBooking.usecase";
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
 import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/booking/IGetBookingSetupDetails.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
@@ -14,6 +16,8 @@ export class BookingController implements IBookingController {
 		private readonly _createBookingIntentUsecase: ICreateBookingIntentUsecase,
 		@inject(TYPES.GetBookingSetupDetailsUseCase)
 		private readonly _getBookingSetupDetailsUsecase: IGetBookingSetupDetailsUseCase,
+		@inject(TYPES.ConfirmBookingUsecase)
+		private readonly _confirmBookingUsecase: IConfirmBookingUsecase,
 	) {}
 
 	createBookingIntent = async (req: Request, res: Response): Promise<void> => {
@@ -47,5 +51,13 @@ export class BookingController implements IBookingController {
 			.json(
 				createSuccess("Booking setup details fetched successfully", result),
 			);
+	};
+
+	confirmBooking = async (req: Request, res: Response): Promise<void> => {
+		const parsed = req.validated?.body as VerifyPaymentDto;
+
+		const result = await this._confirmBookingUsecase.execute(parsed);
+
+		res.status(200).json(createSuccess("success", result));
 	};
 }

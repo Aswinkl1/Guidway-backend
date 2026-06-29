@@ -2,7 +2,7 @@ import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.d
 import type { IBookingRepository } from "@application/ports/repository/IBooking.repository";
 import type { BookingIntentAggregate } from "@application/types/booking.types";
 import { TYPES } from "@config/DI-container/TYPES";
-import { Booking } from "@domain/booking/booking.entity";
+import { BOOKING_STATUS, Booking } from "@domain/booking/booking.entity";
 import { SLOT_STATUS } from "@domain/booking/entities/slot.entity";
 import {
 	Prisma,
@@ -27,7 +27,7 @@ export default class BookingRepository
 	async createBookingTransaction(
 		data: BookingIntentAggregate,
 		config: VerifyPaymentDto,
-	): Promise<void> {
+	): Promise<{ bookingId: string }> {
 		const record = await this._prisma.$transaction(async (tx) => {
 			const payment = await tx.payment.create({
 				data: {
@@ -44,12 +44,22 @@ export default class BookingRepository
 				data: {
 					amount: data.bookingIntent.price,
 					currency: data.bookingIntent.currency,
-					startTime: data.slot.startTime,
-					endTime: data.slot.endTime,
+					startTime: data.startTime,
+					endTime: data.endTime,
 					mentorId: data.slot.mentorId,
 					sessionTitle: data.session.name,
 					userId: data.slot.lockedBy,
-					paymentId: payment.id,
+
+					slot: {
+						connect: {
+							id: data.slot.id,
+						},
+					},
+					session: {
+						connect: { id: data.session.id },
+					},
+					payment: { connect: { id: payment.id } },
+					note: data.bookingIntent.note,
 				},
 			});
 
@@ -57,7 +67,11 @@ export default class BookingRepository
 				where: { id: data.slot.id },
 				data: { status: SLOT_STATUS.BOOKED },
 			});
+
+			return { bookingId: booking.id };
 		});
+
+		return record;
 	}
 
 	protected toDomain(record: PrismaBooking): Booking {

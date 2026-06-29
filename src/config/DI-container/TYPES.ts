@@ -31,6 +31,7 @@ export const TYPES = {
 	//queries
 	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
+	ConfirmBookingUsecase: Symbol.for("ConfirmBookingUsecase"),
 	GetBookingSetupDetailsUseCase: Symbol.for("GetBookingSetupDetailsUseCase"),
 	CreateBookingIntentUsecase: Symbol.for("CreateBookingIntentUsecase"),
 	ForgetPasswordUseCase: Symbol.for("ForgetPasswordUseCase"),

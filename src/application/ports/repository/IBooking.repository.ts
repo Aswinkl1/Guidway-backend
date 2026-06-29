@@ -8,5 +8,5 @@ export interface IBookingRepository
 	createBookingTransaction(
 		data: BookingIntentAggregate,
 		config: VerifyPaymentDto,
-	): Promise<void>;
+	): Promise<{ bookingId: string }>;
 }

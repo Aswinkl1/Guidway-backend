@@ -1,3 +1,4 @@
+import { verifyPaymentSchema } from "@application/dto/booking/confirmBooking.dto";
 import { getBookingSetupSchema } from "@application/dto/booking/getBookingSetup.dto";
 import { holdSlotSchema } from "@application/dto/booking/slotHold.dto";
 import { container } from "@config/DI-container/container";
@@ -23,5 +24,12 @@ router.get(
 	isAuthenticate,
 	validatetor(getBookingSetupSchema, "params"),
 	BookingController.getBookingSetupDetails,
+);
+
+router.post(
+	"/booking/confirm",
+	isAuthenticate,
+	validatetor(verifyPaymentSchema, "body"),
+	BookingController.confirmBooking,
 );
 export default router;
