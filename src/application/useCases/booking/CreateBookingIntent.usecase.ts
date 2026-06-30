@@ -39,20 +39,6 @@ export class CreateBookingIntentUsecase implements ICreateBookingIntentUsecase {
 		const date = new Date(
 			`${data.date.toLocaleDateString("en-CA")}T00:00:00.000Z`,
 		);
-		console.log(date);
-
-		const slot = await this._slotRepository.checkOverlap(
-			data.mentorId,
-			date,
-			data.startTime,
-			data.endTime,
-		);
-		console.log("slot", slot);
-		if (slot) {
-			throw new ConflictError(
-				"Requested time slot overlaps with an existing booking.",
-			);
-		}
 
 		const order = await this._paymentService.createOrder({
 			amount: data.price * 100,

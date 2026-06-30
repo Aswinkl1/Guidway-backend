@@ -1,9 +1,12 @@
 import type { IBookingIntentRepository } from "@application/ports/repository/IBookingIntent.repository";
+import type { BookingIntentAggregate } from "@application/types/booking.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import {
 	BookingIntent,
 	type IBookingIntent,
 } from "@domain/booking/entities/bookingIntent.entity";
+import { Slot } from "@domain/booking/entities/slot.entity";
+import { Session } from "@domain/session/session.entitiy";
 
 import type {
 	BookingIntent as PrismaBookingIntent,
@@ -42,14 +45,23 @@ export class BookingIntentRepository implements IBookingIntentRepository {
 	}
 	async findByGatewayOrderId(
 		gatewayOrderId: string,
-	): Promise<BookingIntent | null> {
+	): Promise<BookingIntentAggregate | null> {
 		const record = await this._prisma.bookingIntent.findFirst({
 			where: { gatewayOrderId },
+			include: {
+				slot: true,
+				session: true,
+			},
 		});
 		if (!record) {
 			return null;
 		}
-		return this.toDomain(record);
+
+		return {
+			bookingIntent: this.toDomain(record),
+			slot: Slot.create(record.slot),
+			session: Session.create(record.session),
+		};
 	}
 	async deleteBySlotId(slotId: string): Promise<void> {
 		await this._prisma.bookingIntent.delete({ where: { slotId } });

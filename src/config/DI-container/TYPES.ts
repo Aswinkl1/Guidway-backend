@@ -19,6 +19,8 @@ export const TYPES = {
 	SessionRepository: Symbol.for("SessionRepository"),
 	AvailabilityRepository: Symbol.for("AvailabilityRepository"),
 	BookingIntentRepository: Symbol.for("BookingIntentRepository"),
+	BookingRepository: Symbol.for("BookingRepository"),
+	PaymentRepository: Symbol.for("PaymentRepository"),
 	SlotRepository: Symbol.for("SlotRepository"),
 	//services
 	EmailService: Symbol.for("EmailService"),
@@ -29,6 +31,7 @@ export const TYPES = {
 	//queries
 	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
+	ConfirmBookingUsecase: Symbol.for("ConfirmBookingUsecase"),
 	GetBookingSetupDetailsUseCase: Symbol.for("GetBookingSetupDetailsUseCase"),
 	CreateBookingIntentUsecase: Symbol.for("CreateBookingIntentUsecase"),
 	ForgetPasswordUseCase: Symbol.for("ForgetPasswordUseCase"),
