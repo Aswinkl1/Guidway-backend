@@ -25,7 +25,7 @@ export default class BookingRepository
 		super(_prisma.booking);
 	}
 	async createBookingTransaction(
-		data: BookingIntentAggregate,
+		data: BookingIntentAggregate & { startTime: Date; endTime: Date },
 		config: VerifyPaymentDto,
 	): Promise<{ bookingId: string }> {
 		const record = await this._prisma.$transaction(async (tx) => {
@@ -49,7 +49,6 @@ export default class BookingRepository
 					mentorId: data.slot.mentorId,
 					sessionTitle: data.session.name,
 					userId: data.slot.lockedBy,
-
 					slot: {
 						connect: {
 							id: data.slot.id,
