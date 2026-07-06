@@ -1,9 +1,6 @@
+import type { getBookingDetailsDto } from "@application/dto/booking/bookingDetails.dto";
 import type { MenteeBookingDetailsOutput } from "@application/types/booking.types";
-import { Booking } from "@domain/booking/booking.entity";
 
 export interface IGetMenteeBookingDetailsUsecase {
-	execute(
-		userId: string,
-		bookingId: string,
-	): Promise<MenteeBookingDetailsOutput>;
+	execute(dto: getBookingDetailsDto): Promise<MenteeBookingDetailsOutput>;
 }

@@ -1,10 +1,13 @@
+import { getBookingDetailsSchema } from "@application/dto/booking/bookingDetails.dto";
 import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.dto";
 import type { GetBookingSetupInputDto } from "@application/dto/booking/getBookingSetup.dto";
 import type { HoldSlotDto } from "@application/dto/booking/slotHold.dto";
 import type { IConfirmBookingUsecase } from "@application/ports/usecase/booking/IConfirmBooking.usecase";
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
 import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/booking/IGetBookingSetupDetails.usecase";
+import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
+import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
 import { createSuccess } from "@presentation/helper/response.util";
 import type { IBookingController } from "@presentation/interface/controllers/booking/IBookingController";
 import type { Request, Response } from "express";
@@ -18,6 +21,8 @@ export class BookingController implements IBookingController {
 		private readonly _getBookingSetupDetailsUsecase: IGetBookingSetupDetailsUseCase,
 		@inject(TYPES.ConfirmBookingUsecase)
 		private readonly _confirmBookingUsecase: IConfirmBookingUsecase,
+		@inject(TYPES.GetMenteeBookingDetailsUsecase)
+		private readonly _getMenteeBookingDetailsUsecase: IGetMenteeBookingDetailsUsecase,
 	) {}
 
 	createBookingIntent = async (req: Request, res: Response): Promise<void> => {
@@ -59,5 +64,21 @@ export class BookingController implements IBookingController {
 		const result = await this._confirmBookingUsecase.execute(parsed);
 
 		res.status(200).json(createSuccess("success", result));
+	};
+
+	menteeBookingDetails = async (req: Request, res: Response): Promise<void> => {
+		const { id } = req.params;
+		const userId = req.user?.userId;
+
+		const parsed = getBookingDetailsSchema.safeParse({ userId, bookingId: id });
+		if (!parsed.success) {
+			throw new CustomZodValidationError(parsed.error);
+		}
+
+		const data = await this._getMenteeBookingDetailsUsecase.execute(
+			parsed.data,
+		);
+
+		res.status(200).json(createSuccess("success", data));
 	};
 }

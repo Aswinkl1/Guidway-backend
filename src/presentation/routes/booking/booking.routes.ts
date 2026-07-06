@@ -32,4 +32,12 @@ router.post(
 	validatetor(verifyPaymentSchema, "body"),
 	BookingController.confirmBooking,
 );
+
+router.get(
+	"/user/bookings/:id",
+	isAuthenticate,
+	BookingController.menteeBookingDetails,
+);
+
+router.get("/mentee/bookings/:id", isAuthenticate);
 export default router;

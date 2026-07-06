@@ -1,27 +1,33 @@
+import type { getBookingDetailsDto } from "@application/dto/booking/bookingDetails.dto";
 import { ForbiddenError } from "@application/errors/ForbidenError";
 import type { IBookingRepository } from "@application/ports/repository/IBooking.repository";
 import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
 import type { MenteeBookingDetailsOutput } from "@application/types/booking.types";
 import { formatDuration } from "@application/utils/time.utils";
-import { Booking } from "@domain/booking/booking.entity";
-import { NotFoundError } from "@domain/errors/UserError";
+import { TYPES } from "@config/DI-container/TYPES";
 
+import { NotFoundError } from "@domain/errors/UserError";
+import { inject, injectable } from "inversify";
+
+@injectable()
 export class GetMenteeBookingDetailsUsecase
 	implements IGetMenteeBookingDetailsUsecase
 {
-	constructor(private readonly _bookingRepository: IBookingRepository) {}
+	constructor(
+		@inject(TYPES.BookingRepository)
+		private readonly _bookingRepository: IBookingRepository,
+	) {}
 
 	async execute(
-		userId: string,
-		bookingId: string,
+		dto: getBookingDetailsDto,
 	): Promise<MenteeBookingDetailsOutput> {
-		const booking = await this._bookingRepository.findById(bookingId);
+		const booking = await this._bookingRepository.findById(dto.bookingId);
 
 		if (!booking) {
 			throw new NotFoundError("booking with this it not found");
 		}
 
-		if (booking?.userId !== userId) {
+		if (booking?.userId !== dto.userId) {
 			throw new ForbiddenError("you dont have access to this booking ");
 		}
 
