@@ -21,22 +21,15 @@ export class GetMenteeBookingDetailsUsecase
 	async execute(
 		dto: getBookingDetailsDto,
 	): Promise<MenteeBookingDetailsOutput> {
-		const booking = await this._bookingRepository.findById(dto.bookingId);
-
-		if (!booking) {
+		const record = await this._bookingRepository.findByIdWithUserDetails(
+			dto.bookingId,
+		);
+		if (!record) {
 			throw new NotFoundError("booking with this it not found");
 		}
 
-		if (booking?.userId !== dto.userId) {
+		if (record?.userId !== dto.userId) {
 			throw new ForbiddenError("you dont have access to this booking ");
-		}
-
-		const record = await this._bookingRepository.findByIdWithUserDetails(
-			booking.id,
-		);
-
-		if (!record) {
-			throw new NotFoundError("booking with this id is not found ");
 		}
 
 		return {
