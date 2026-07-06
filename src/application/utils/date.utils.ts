@@ -1,5 +1,5 @@
 import type { DayOfWeek } from "@domain/mentor/entities/availability.entity";
-import { addMinutes, parseISO } from "date-fns";
+import { addMinutes } from "date-fns";
 
 const DAYS: DayOfWeek[] = [
 	"SUNDAY",

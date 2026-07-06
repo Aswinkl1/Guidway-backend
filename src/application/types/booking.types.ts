@@ -1,3 +1,4 @@
+import type { BookingStatus } from "@domain/booking/booking.entity";
 import type { BookingIntent } from "@domain/booking/entities/bookingIntent.entity";
 import type { Slot } from "@domain/booking/entities/slot.entity";
 import type { Session } from "@domain/session/session.entitiy";
@@ -35,5 +36,39 @@ export interface BookingTransactionData {
 	};
 	session: {
 		name: string; // Used for the sessionTitle
+	};
+}
+
+export interface MenteeBookingDetailsOutput {
+	sessionTitle: string;
+	duration: string;
+	startDateTime: Date;
+	endDateTime: Date;
+	user: {
+		name: string;
+		profileImageKey: string;
+	};
+	note: string | null;
+}
+
+export interface BookingDetailsRepoOutput {
+	id: string;
+	amount: number;
+	currency: string;
+	startTime: Date;
+	endTime: Date;
+	status: BookingStatus;
+	sessionId: string | null;
+	sessionTitle: string | null;
+	note: string | null;
+	mentorId: string;
+	userId: string;
+	mentor: {
+		name: string;
+		profileImageKey: string | null;
+	};
+	user: {
+		name: string;
+		profileImageKey: string | null;
 	};
 }
