@@ -91,6 +91,7 @@ model User {
   // @@index([deletedAt])
   // @@index([isBlocked])
   @@map("users")
+  bookings Booking[]
 }
 
 // =============================================================
@@ -140,6 +141,7 @@ model Mentor {
   @@index([domainId])
   // @@index([averageRating])
   @@map("mentors")
+  bookings Booking[]
 }
 
 // =============================================================
@@ -472,7 +474,11 @@ model Booking {
   id String @id @default(uuid())
   slotId String
   mentorId String
+  mentor     Mentor     @relation(fields: [mentorId], references: [userId])
+
   userId String
+  user       User       @relation(fields: [userId], references: [id])
+
   slot Slots @relation(fields: [slotId],references: [id],onDelete: Cascade)
   sessionId String
   session Session @relation(fields: [sessionId],references: [id])

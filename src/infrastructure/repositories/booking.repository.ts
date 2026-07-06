@@ -1,6 +1,9 @@
 import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.dto";
 import type { IBookingRepository } from "@application/ports/repository/IBooking.repository";
-import type { BookingIntentAggregate } from "@application/types/booking.types";
+import type {
+	BookingDetailsRepoOutput,
+	BookingIntentAggregate,
+} from "@application/types/booking.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { BOOKING_STATUS, Booking } from "@domain/booking/booking.entity";
 import { SLOT_STATUS } from "@domain/booking/entities/slot.entity";
@@ -24,6 +27,69 @@ export default class BookingRepository
 	constructor(@inject(TYPES.PrismaClient) private _prisma: PrismaClient) {
 		super(_prisma.booking);
 	}
+
+	async findByIdWithUserDetails(
+		id: string,
+	): Promise<BookingDetailsRepoOutput | null> {
+		const record = await this._prisma.booking.findUnique({
+			where: { id },
+			select: {
+				amount: true,
+				id: true,
+				currency: true,
+				endTime: true,
+				mentor: {
+					select: {
+						user: {
+							select: {
+								name: true,
+								profileImageKey: true,
+							},
+						},
+					},
+				},
+				mentorId: true,
+				user: {
+					select: {
+						name: true,
+						profileImageKey: true,
+					},
+				},
+				userId: true,
+				sessionId: true,
+				sessionTitle: true,
+				note: true,
+				startTime: true,
+				status: true,
+			},
+		});
+
+		if (!record) {
+			return null;
+		}
+
+		return {
+			id: record.id,
+			amount: record.amount,
+			currency: record.currency,
+			startTime: record.startTime,
+			endTime: record.endTime,
+			mentor: {
+				name: record.mentor.user.name,
+				profileImageKey: record.mentor.user.profileImageKey,
+			},
+			user: {
+				name: record.user.name,
+				profileImageKey: record.user.profileImageKey,
+			},
+			mentorId: record.mentorId,
+			userId: record.userId,
+			note: record.note,
+			sessionId: record.sessionId,
+			sessionTitle: record.sessionTitle,
+			status: record.status,
+		};
+	}
 	async createBookingTransaction(
 		data: BookingIntentAggregate & { startTime: Date; endTime: Date },
 		config: VerifyPaymentDto,
@@ -46,9 +112,11 @@ export default class BookingRepository
 					currency: data.bookingIntent.currency,
 					startTime: data.startTime,
 					endTime: data.endTime,
-					mentorId: data.slot.mentorId,
+					// mentorId: data.slot.mentorId,
 					sessionTitle: data.session.name,
-					userId: data.slot.lockedBy,
+					// userId: data.slot.lockedBy,
+					mentor: { connect: { userId: data.slot.mentorId } },
+					user: { connect: { id: data.slot.lockedBy } },
 					slot: {
 						connect: {
 							id: data.slot.id,
