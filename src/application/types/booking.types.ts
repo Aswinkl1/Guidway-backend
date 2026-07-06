@@ -46,9 +46,15 @@ export interface MenteeBookingDetailsOutput {
 	endDateTime: Date;
 	user: {
 		name: string;
-		profileImageKey: string;
+		profileImageKey: string | null;
 	};
 	note: string | null;
+	userId: string;
+	mentorId: string;
+	amount: number;
+	currency: string;
+	status: BookingStatus;
+	id: string;
 }
 
 export interface BookingDetailsRepoOutput {
@@ -58,8 +64,8 @@ export interface BookingDetailsRepoOutput {
 	startTime: Date;
 	endTime: Date;
 	status: BookingStatus;
-	sessionId: string | null;
-	sessionTitle: string | null;
+	sessionId: string;
+	sessionTitle: string;
 	note: string | null;
 	mentorId: string;
 	userId: string;
