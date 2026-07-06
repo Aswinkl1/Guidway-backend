@@ -39,5 +39,9 @@ router.get(
 	BookingController.menteeBookingDetails,
 );
 
-router.get("/mentee/bookings/:id", isAuthenticate);
+router.get(
+	"/mentor/bookings/:id",
+	isAuthenticate,
+	BookingController.getMentorBookingDetails,
+);
 export default router;

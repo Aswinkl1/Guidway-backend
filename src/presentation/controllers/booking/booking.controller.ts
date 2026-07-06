@@ -6,6 +6,7 @@ import type { IConfirmBookingUsecase } from "@application/ports/usecase/booking/
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
 import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/booking/IGetBookingSetupDetails.usecase";
 import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
+import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMentorBookingDetails.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
 import { createSuccess } from "@presentation/helper/response.util";
@@ -23,6 +24,8 @@ export class BookingController implements IBookingController {
 		private readonly _confirmBookingUsecase: IConfirmBookingUsecase,
 		@inject(TYPES.GetMenteeBookingDetailsUsecase)
 		private readonly _getMenteeBookingDetailsUsecase: IGetMenteeBookingDetailsUsecase,
+		@inject(TYPES.GetMentorBookingDetailsUsecase)
+		private readonly _getMentorBookingDetailsUsecase: IGetMentorBookingDetailsUsecase,
 	) {}
 
 	createBookingIntent = async (req: Request, res: Response): Promise<void> => {
@@ -76,6 +79,25 @@ export class BookingController implements IBookingController {
 		}
 
 		const data = await this._getMenteeBookingDetailsUsecase.execute(
+			parsed.data,
+		);
+
+		res.status(200).json(createSuccess("success", data));
+	};
+
+	getMentorBookingDetails = async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		const { id } = req.params;
+		const userId = req.user?.userId;
+
+		const parsed = getBookingDetailsSchema.safeParse({ userId, bookingId: id });
+		if (!parsed.success) {
+			throw new CustomZodValidationError(parsed.error);
+		}
+
+		const data = await this._getMentorBookingDetailsUsecase.execute(
 			parsed.data,
 		);
 

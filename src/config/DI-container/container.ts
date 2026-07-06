@@ -34,6 +34,7 @@ import type { IConfirmBookingUsecase } from "@application/ports/usecase/booking/
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
 import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/booking/IGetBookingSetupDetails.usecase";
 import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
+import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMentorBookingDetails.usecase";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import type { IListMentorsUsecase } from "@application/ports/usecase/IListMentor.usecase";
@@ -86,6 +87,7 @@ import { ConfirmBookingUsecase } from "@application/useCases/booking/ConfirmBook
 import { CreateBookingIntentUsecase } from "@application/useCases/booking/CreateBookingIntent.usecase";
 import { GetBookingSetupDetailsUseCase } from "@application/useCases/booking/GetBookingSetupDetails.usecase";
 import { GetMenteeBookingDetailsUsecase } from "@application/useCases/booking/GetMenteeBookingsDetails.usecase";
+import { GetMentorBookingDetailsUsecase } from "@application/useCases/booking/GetMentorBookingDetails.usecase";
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
 import { DeleteAchievementUsecase } from "@application/useCases/mentor/achievements/Delete-Achievement.usecase";
 import { EditAchievementUsecase } from "@application/useCases/mentor/achievements/Edit-Achievement.usecase";
@@ -277,6 +279,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IGetMentorBookingDetailsUsecase>(TYPES.GetMentorBookingDetailsUsecase)
+	.to(GetMentorBookingDetailsUsecase)
+	.inSingletonScope();
 container
 	.bind<IGetMenteeBookingDetailsUsecase>(TYPES.GetMenteeBookingDetailsUsecase)
 	.to(GetMenteeBookingDetailsUsecase)
