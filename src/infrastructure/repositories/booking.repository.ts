@@ -112,9 +112,11 @@ export default class BookingRepository
 					currency: data.bookingIntent.currency,
 					startTime: data.startTime,
 					endTime: data.endTime,
-					mentorId: data.slot.mentorId,
+					// mentorId: data.slot.mentorId,
 					sessionTitle: data.session.name,
-					userId: data.slot.lockedBy,
+					// userId: data.slot.lockedBy,
+					mentor: { connect: { userId: data.slot.mentorId } },
+					user: { connect: { id: data.slot.lockedBy } },
 					slot: {
 						connect: {
 							id: data.slot.id,
