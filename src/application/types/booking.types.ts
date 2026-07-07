@@ -78,3 +78,16 @@ export interface BookingDetailsRepoOutput {
 		profileImageKey: string | null;
 	};
 }
+
+export interface getAllBookingOutput {
+	id: string;
+	sessionTitle: string;
+	status: BookingStatus;
+	startTime: Date;
+	endTime: Date;
+	duration: number;
+	user: {
+		name: string;
+		profileImageKey: string | null;
+	};
+}
