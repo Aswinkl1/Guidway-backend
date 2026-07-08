@@ -7,6 +7,7 @@ import type {
 	BookingIntentAggregate,
 	BookingOwnerFilter,
 	getAllBookingOutput,
+	getAllBookingRepoOutput,
 } from "@application/types/booking.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { BOOKING_STATUS, Booking } from "@domain/booking/booking.entity";
@@ -17,6 +18,7 @@ import type {
 	PrismaClient,
 } from "generated/prisma/client";
 import { inject } from "inversify";
+import { toDotPath } from "zod/v4/core";
 import { BaseRepository } from "./BaseRepository";
 
 export default class BookingRepository
@@ -148,7 +150,7 @@ export default class BookingRepository
 	async findAllOf(
 		owner: BookingOwnerFilter,
 		dto: getAllBookingDto,
-	): Promise<Omit<getAllBookingOutput, "duration">[]> {
+	): Promise<Omit<getAllBookingRepoOutput, "duration">> {
 		let sortOrder: Prisma.SortOrder = "asc";
 
 		const where: Prisma.BookingWhereInput = { ...owner };
@@ -198,19 +200,30 @@ export default class BookingRepository
 			this._prisma.booking.count({ where }),
 		]);
 
-		return records.map((v) => {
-			return {
-				id: v.id,
-				startTime: v.startTime,
-				endTime: v.endTime,
-				sessionTitle: v.sessionTitle,
-				status: v.status,
-				user: {
-					name: v.user.name,
-					profileImageKey: v.user.profileImageKey,
-				},
-			};
-		});
+		return {
+			data: records.map((v) => {
+				return {
+					id: v.id,
+					startTime: v.startTime,
+					endTime: v.endTime,
+					sessionTitle: v.sessionTitle,
+					status: v.status,
+					user: {
+						name: "userId" in owner ? v.mentor.user.name : v.user.name,
+						profileImageKey:
+							"userId" in owner
+								? v.mentor.user.profileImageKey
+								: v.user.profileImageKey,
+					},
+				};
+			}),
+			meta: {
+				limit: dto.limit,
+				page: dto.page,
+				totalCount: count,
+				totalPages: Math.floor(count / dto.limit),
+			},
+		};
 	}
 
 	protected toDomain(record: PrismaBooking): Booking {

@@ -79,17 +79,29 @@ export interface BookingDetailsRepoOutput {
 	};
 }
 
-export interface getAllBookingOutput {
-	id: string;
-	sessionTitle: string;
-	status: BookingStatus;
-	startTime: Date;
-	endTime: Date;
-	duration: number;
-	user: {
-		name: string;
-		profileImageKey: string | null;
+export interface getAllBookingRepoOutput {
+	data: {
+		id: string;
+		sessionTitle: string;
+		status: BookingStatus;
+		startTime: Date;
+		endTime: Date;
+		duration?: number;
+		user: {
+			name: string;
+			profileImageKey: string | null;
+		};
+	}[];
+	meta: {
+		totalPages: number;
+		page: number;
+		limit: number;
+		totalCount: number;
 	};
 }
+
+export type getAllBookingOutput = Omit<getAllBookingRepoOutput, "mentor"> & {
+	mentor: { name: string; profileImageKey: string | null };
+};
 
 export type BookingOwnerFilter = { userId: string } | { mentorId: string };
