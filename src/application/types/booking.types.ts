@@ -91,3 +91,5 @@ export interface getAllBookingOutput {
 		profileImageKey: string | null;
 	};
 }
+
+export type BookingOwnerFilter = { userId: string } | { mentorId: string };

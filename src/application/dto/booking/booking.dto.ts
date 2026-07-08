@@ -4,7 +4,7 @@ import z from "zod";
 const getAllBookingSchema = z.object({
 	search: z.string(),
 	page: z.number(),
-	limit: z.string(),
+	limit: z.number(),
 	status: z.enum(BOOKING_STATUS),
 });
 

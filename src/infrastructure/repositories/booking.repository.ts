@@ -1,16 +1,20 @@
+import { stopCoverage } from "node:v8";
+import type { getAllBookingDto } from "@application/dto/booking/booking.dto";
 import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.dto";
 import type { IBookingRepository } from "@application/ports/repository/IBooking.repository";
 import type {
 	BookingDetailsRepoOutput,
 	BookingIntentAggregate,
+	BookingOwnerFilter,
+	getAllBookingOutput,
 } from "@application/types/booking.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { BOOKING_STATUS, Booking } from "@domain/booking/booking.entity";
 import { SLOT_STATUS } from "@domain/booking/entities/slot.entity";
-import {
+import type {
 	Prisma,
-	type Booking as PrismaBooking,
-	type PrismaClient,
+	Booking as PrismaBooking,
+	PrismaClient,
 } from "generated/prisma/client";
 import { inject } from "inversify";
 import { BaseRepository } from "./BaseRepository";
@@ -139,6 +143,74 @@ export default class BookingRepository
 		});
 
 		return record;
+	}
+
+	async findAllOf(
+		owner: BookingOwnerFilter,
+		dto: getAllBookingDto,
+	): Promise<Omit<getAllBookingOutput, "duration">[]> {
+		let sortOrder: Prisma.SortOrder = "asc";
+
+		const where: Prisma.BookingWhereInput = { ...owner };
+		if (
+			dto.status === BOOKING_STATUS.COMPLETED ||
+			dto.status === BOOKING_STATUS.CANCELLED
+		) {
+			sortOrder = "desc";
+		}
+		if (dto.status) {
+			where.status = dto.status;
+		}
+
+		if (dto.search) {
+			where.OR = [
+				{
+					sessionTitle: {
+						contains: dto.search,
+						mode: "insensitive",
+					},
+				},
+				"userId" in owner
+					? {
+							mentor: {
+								user: { name: { contains: dto.search, mode: "insensitive" } },
+							},
+						}
+					: { user: { name: { contains: dto.search, mode: "insensitive" } } },
+			];
+		}
+
+		const [records, count] = await Promise.all([
+			this._prisma.booking.findMany({
+				where,
+				skip: (dto.page - 1) * dto.limit,
+				orderBy: { startTime: sortOrder },
+				take: dto.limit,
+				include: {
+					user: { select: { name: true, profileImageKey: true } },
+					mentor: {
+						include: {
+							user: { select: { name: true, profileImageKey: true } },
+						},
+					},
+				},
+			}),
+			this._prisma.booking.count({ where }),
+		]);
+
+		return records.map((v) => {
+			return {
+				id: v.id,
+				startTime: v.startTime,
+				endTime: v.endTime,
+				sessionTitle: v.sessionTitle,
+				status: v.status,
+				user: {
+					name: v.user.name,
+					profileImageKey: v.user.profileImageKey,
+				},
+			};
+		});
 	}
 
 	protected toDomain(record: PrismaBooking): Booking {
