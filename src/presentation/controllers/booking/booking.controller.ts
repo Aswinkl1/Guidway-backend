@@ -1,13 +1,16 @@
+import type { getAllBookingDto } from "@application/dto/booking/booking.dto";
 import { getBookingDetailsSchema } from "@application/dto/booking/bookingDetails.dto";
 import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.dto";
 import type { GetBookingSetupInputDto } from "@application/dto/booking/getBookingSetup.dto";
 import type { HoldSlotDto } from "@application/dto/booking/slotHold.dto";
 import type { IConfirmBookingUsecase } from "@application/ports/usecase/booking/IConfirmBooking.usecase";
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
+import type { IGetAllMenteeBookingUsecase } from "@application/ports/usecase/booking/IGetAllMenteeBooking.usecase";
 import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/booking/IGetBookingSetupDetails.usecase";
 import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
 import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMentorBookingDetails.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
+import { NotFoundError } from "@domain/errors/UserError";
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
 import { createSuccess } from "@presentation/helper/response.util";
 import type { IBookingController } from "@presentation/interface/controllers/booking/IBookingController";
@@ -26,6 +29,8 @@ export class BookingController implements IBookingController {
 		private readonly _getMenteeBookingDetailsUsecase: IGetMenteeBookingDetailsUsecase,
 		@inject(TYPES.GetMentorBookingDetailsUsecase)
 		private readonly _getMentorBookingDetailsUsecase: IGetMentorBookingDetailsUsecase,
+		@inject(TYPES.GetAllMenteeBookingUsecase)
+		private readonly _getAllBookingMenteeUsecase: IGetAllMenteeBookingUsecase,
 	) {}
 
 	createBookingIntent = async (req: Request, res: Response): Promise<void> => {
@@ -100,6 +105,18 @@ export class BookingController implements IBookingController {
 		const data = await this._getMentorBookingDetailsUsecase.execute(
 			parsed.data,
 		);
+
+		res.status(200).json(createSuccess("success", data));
+	};
+	getAllMenteeBooking = async (req: Request, res: Response): Promise<void> => {
+		const parsed = req.validated?.query as getAllBookingDto;
+		const userId = req.user?.userId;
+
+		if (!userId) {
+			throw new NotFoundError("user not found");
+		}
+
+		const data = await this._getAllBookingMenteeUsecase.execute(userId, parsed);
 
 		res.status(200).json(createSuccess("success", data));
 	};
