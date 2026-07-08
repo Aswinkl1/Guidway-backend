@@ -7,7 +7,6 @@ import type {
 	BookingIntentAggregate,
 	BookingOwnerFilter,
 	getAllBookingOutput,
-	getAllBookingRepoOutput,
 } from "@application/types/booking.types";
 import { TYPES } from "@config/DI-container/TYPES";
 import { BOOKING_STATUS, Booking } from "@domain/booking/booking.entity";
@@ -18,7 +17,7 @@ import type {
 	PrismaClient,
 } from "generated/prisma/client";
 import { inject } from "inversify";
-import { toDotPath } from "zod/v4/core";
+
 import { BaseRepository } from "./BaseRepository";
 
 export default class BookingRepository
@@ -147,10 +146,10 @@ export default class BookingRepository
 		return record;
 	}
 
-	async findAllOf(
+	async findAll(
 		owner: BookingOwnerFilter,
 		dto: getAllBookingDto,
-	): Promise<Omit<getAllBookingRepoOutput, "duration">> {
+	): Promise<Omit<getAllBookingOutput, "duration">> {
 		let sortOrder: Prisma.SortOrder = "asc";
 
 		const where: Prisma.BookingWhereInput = { ...owner };

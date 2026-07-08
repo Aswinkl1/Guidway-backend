@@ -79,14 +79,14 @@ export interface BookingDetailsRepoOutput {
 	};
 }
 
-export interface getAllBookingRepoOutput {
+export interface getAllBookingOutput {
 	data: {
 		id: string;
 		sessionTitle: string;
 		status: BookingStatus;
 		startTime: Date;
 		endTime: Date;
-		duration?: number;
+		duration?: string;
 		user: {
 			name: string;
 			profileImageKey: string | null;
@@ -100,8 +100,6 @@ export interface getAllBookingRepoOutput {
 	};
 }
 
-export type getAllBookingOutput = Omit<getAllBookingRepoOutput, "mentor"> & {
-	mentor: { name: string; profileImageKey: string | null };
-};
+// export type getAllBookingOutput = getAllBookingRepoOutput;
 
 export type BookingOwnerFilter = { userId: string } | { mentorId: string };
