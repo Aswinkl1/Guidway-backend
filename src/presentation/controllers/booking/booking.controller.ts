@@ -111,13 +111,13 @@ export class BookingController implements IBookingController {
 	getAllMenteeBooking = async (req: Request, res: Response): Promise<void> => {
 		const parsed = req.validated?.query as getAllBookingDto;
 		const userId = req.user?.userId;
-
+		console.log(parsed);
 		if (!userId) {
 			throw new NotFoundError("user not found");
 		}
 
 		const data = await this._getAllBookingMenteeUsecase.execute(userId, parsed);
-
+		console.log(data);
 		res.status(200).json(createSuccess("success", data));
 	};
 }

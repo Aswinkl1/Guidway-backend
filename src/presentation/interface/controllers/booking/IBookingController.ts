@@ -6,4 +6,5 @@ export interface IBookingController {
 	confirmBooking(req: Request, res: Response): Promise<void>;
 	menteeBookingDetails(req: Request, res: Response): Promise<void>;
 	getMentorBookingDetails(req: Request, res: Response): Promise<void>;
+	getAllMenteeBooking(req: Request, res: Response): Promise<void>;
 }

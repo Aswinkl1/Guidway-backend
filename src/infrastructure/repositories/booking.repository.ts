@@ -151,7 +151,7 @@ export default class BookingRepository
 		dto: getAllBookingDto,
 	): Promise<Omit<getAllBookingOutput, "duration">> {
 		let sortOrder: Prisma.SortOrder = "asc";
-
+		console.log(dto);
 		const where: Prisma.BookingWhereInput = { ...owner };
 		if (
 			dto.status === BOOKING_STATUS.COMPLETED ||
