@@ -53,4 +53,11 @@ router.get(
 	validatetor(getAllBookingSchema, "query"),
 	BookingController.getAllMenteeBooking,
 );
+
+router.get(
+	"/mentor/bookings",
+	isAuthenticate,
+	validatetor(getAllBookingSchema, "query"),
+	BookingController.getAllMenteeBooking,
+);
 export default router;
