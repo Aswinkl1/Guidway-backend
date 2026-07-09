@@ -1,7 +1,10 @@
+import type { getAllBookingDto } from "@application/dto/booking/booking.dto";
 import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.dto";
 import type {
 	BookingDetailsRepoOutput,
 	BookingIntentAggregate,
+	BookingOwnerFilter,
+	getAllBookingOutput,
 } from "@application/types/booking.types";
 import type { Booking } from "@domain/booking/booking.entity";
 import type { IBaseRepository } from "./IBaseRepository";
@@ -13,4 +16,8 @@ export interface IBookingRepository
 		config: VerifyPaymentDto,
 	): Promise<{ bookingId: string }>;
 	findByIdWithUserDetails(id: string): Promise<BookingDetailsRepoOutput | null>;
+	findAll(
+		owner: BookingOwnerFilter,
+		dto: getAllBookingDto,
+	): Promise<Omit<getAllBookingOutput, "duration">>;
 }

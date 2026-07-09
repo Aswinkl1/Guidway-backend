@@ -78,3 +78,28 @@ export interface BookingDetailsRepoOutput {
 		profileImageKey: string | null;
 	};
 }
+
+export interface getAllBookingOutput {
+	data: {
+		id: string;
+		sessionTitle: string;
+		status: BookingStatus;
+		startTime: Date;
+		endTime: Date;
+		duration?: string;
+		user: {
+			name: string;
+			profileImageKey: string | null;
+		};
+	}[];
+	meta: {
+		totalPages: number;
+		page: number;
+		limit: number;
+		totalCount: number;
+	};
+}
+
+// export type getAllBookingOutput = getAllBookingRepoOutput;
+
+export type BookingOwnerFilter = { userId: string } | { mentorId: string };

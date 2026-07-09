@@ -32,6 +32,8 @@ import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdat
 import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
 import type { IConfirmBookingUsecase } from "@application/ports/usecase/booking/IConfirmBooking.usecase";
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
+import type { IGetAllMenteeBookingUsecase } from "@application/ports/usecase/booking/IGetAllMenteeBooking.usecase";
+import type { IGetAllMentorBookingUsecase } from "@application/ports/usecase/booking/IGetAllMentorBooking.usecase";
 import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/booking/IGetBookingSetupDetails.usecase";
 import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
 import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMentorBookingDetails.usecase";
@@ -85,6 +87,8 @@ import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
 import { ConfirmBookingUsecase } from "@application/useCases/booking/ConfirmBooking.usecase";
 import { CreateBookingIntentUsecase } from "@application/useCases/booking/CreateBookingIntent.usecase";
+import { GetAllMenteeBookingUsecase } from "@application/useCases/booking/GetAllMenteeBooking.usecase";
+import { GetAllMentorBookingUsecase } from "@application/useCases/booking/GetAllMentorBooking.usecase";
 import { GetBookingSetupDetailsUseCase } from "@application/useCases/booking/GetBookingSetupDetails.usecase";
 import { GetMenteeBookingDetailsUsecase } from "@application/useCases/booking/GetMenteeBookingsDetails.usecase";
 import { GetMentorBookingDetailsUsecase } from "@application/useCases/booking/GetMentorBookingDetails.usecase";
@@ -279,6 +283,14 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IGetAllMentorBookingUsecase>(TYPES.GetAllMentorBookingUsecase)
+	.to(GetAllMentorBookingUsecase)
+	.inSingletonScope();
+container
+	.bind<IGetAllMenteeBookingUsecase>(TYPES.GetAllMenteeBookingUsecase)
+	.to(GetAllMenteeBookingUsecase)
+	.inSingletonScope();
 container
 	.bind<IGetMentorBookingDetailsUsecase>(TYPES.GetMentorBookingDetailsUsecase)
 	.to(GetMentorBookingDetailsUsecase)
