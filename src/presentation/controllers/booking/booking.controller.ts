@@ -6,6 +6,7 @@ import type { HoldSlotDto } from "@application/dto/booking/slotHold.dto";
 import type { IConfirmBookingUsecase } from "@application/ports/usecase/booking/IConfirmBooking.usecase";
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
 import type { IGetAllMenteeBookingUsecase } from "@application/ports/usecase/booking/IGetAllMenteeBooking.usecase";
+import type { IGetAllMentorBookingUsecase } from "@application/ports/usecase/booking/IGetAllMentorBooking.usecase";
 import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/booking/IGetBookingSetupDetails.usecase";
 import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
 import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMentorBookingDetails.usecase";
@@ -31,6 +32,8 @@ export class BookingController implements IBookingController {
 		private readonly _getMentorBookingDetailsUsecase: IGetMentorBookingDetailsUsecase,
 		@inject(TYPES.GetAllMenteeBookingUsecase)
 		private readonly _getAllBookingMenteeUsecase: IGetAllMenteeBookingUsecase,
+		@inject(TYPES.GetAllMentorBookingUsecase)
+		private readonly _getAllMentorBookingUsecase: IGetAllMentorBookingUsecase,
 	) {}
 
 	createBookingIntent = async (req: Request, res: Response): Promise<void> => {
@@ -117,6 +120,19 @@ export class BookingController implements IBookingController {
 		}
 
 		const data = await this._getAllBookingMenteeUsecase.execute(userId, parsed);
+		console.log(data);
+		res.status(200).json(createSuccess("success", data));
+	};
+
+	getAllMentorBooking = async (req: Request, res: Response): Promise<void> => {
+		const parsed = req.validated?.query as getAllBookingDto;
+		const userId = req.user?.userId;
+		console.log(parsed);
+		if (!userId) {
+			throw new NotFoundError("user not found");
+		}
+
+		const data = await this._getAllMentorBookingUsecase.execute(userId, parsed);
 		console.log(data);
 		res.status(200).json(createSuccess("success", data));
 	};

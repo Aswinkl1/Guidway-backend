@@ -12,6 +12,7 @@ import userRouter from "./user/user.routes";
 const route = Router();
 
 route.use(authRoute);
+route.use("/", bookingRouter);
 route.use("/admin", adminRouter);
 route.use("/mentor", availabilityRouter);
 route.use("/mentor", profileRoutes);
@@ -19,5 +20,4 @@ route.use("/user", userRouter);
 route.use("/mentor", settingRoutes);
 route.use("/mentor", sessionRouter);
 route.use("/mentor", mentorRouter);
-route.use("/", bookingRouter);
 export default route;
