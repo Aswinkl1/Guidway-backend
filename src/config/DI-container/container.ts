@@ -30,6 +30,7 @@ import type { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdmin
 import type { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
 import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdateBlockStatus";
 import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
+import type { ICancelBookingByUserUsecase } from "@application/ports/usecase/booking/ICancelBookingByUser.usecase";
 import type { IConfirmBookingUsecase } from "@application/ports/usecase/booking/IConfirmBooking.usecase";
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
 import type { IGetAllMenteeBookingUsecase } from "@application/ports/usecase/booking/IGetAllMenteeBooking.usecase";
@@ -85,6 +86,7 @@ import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecas
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
+import { CancelBookingByUserUsecase } from "@application/useCases/booking/CancelBookingByUser.usecase";
 import { ConfirmBookingUsecase } from "@application/useCases/booking/ConfirmBooking.usecase";
 import { CreateBookingIntentUsecase } from "@application/useCases/booking/CreateBookingIntent.usecase";
 import { GetAllMenteeBookingUsecase } from "@application/useCases/booking/GetAllMenteeBooking.usecase";
@@ -283,6 +285,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<ICancelBookingByUserUsecase>(TYPES.CancelBookingByUserUsecase)
+	.to(CancelBookingByUserUsecase)
+	.inSingletonScope();
 container
 	.bind<IGetAllMentorBookingUsecase>(TYPES.GetAllMentorBookingUsecase)
 	.to(GetAllMentorBookingUsecase)
