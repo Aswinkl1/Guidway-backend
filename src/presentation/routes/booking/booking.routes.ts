@@ -60,4 +60,10 @@ router.get(
 	validatetor(getAllBookingSchema, "query"),
 	BookingController.getAllMentorBooking,
 );
+
+router.put(
+	"/user/bookings/:id/cancel",
+	isAuthenticate,
+	BookingController.cancelBookingByUser,
+);
 export default router;

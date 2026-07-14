@@ -140,7 +140,7 @@ export class BookingController implements IBookingController {
 		res.status(200).json(createSuccess("success", data));
 	};
 
-	cancellBookingByUser = async (req: Request, res: Response) => {
+	cancelBookingByUser = async (req: Request, res: Response): Promise<void> => {
 		const userId = req.user?.userId;
 		if (!userId) {
 			throw new NotFoundError("user not found");
