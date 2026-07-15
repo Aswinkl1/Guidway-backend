@@ -1,6 +1,7 @@
 import { stopCoverage } from "node:v8";
 import type { getAllBookingDto } from "@application/dto/booking/booking.dto";
 import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.dto";
+import type { rescheduleBookingDto } from "@application/dto/booking/rescheduleBooking.dto";
 import type { IBookingRepository } from "@application/ports/repository/IBooking.repository";
 import type {
 	BookingDetailsRepoOutput,
@@ -253,6 +254,7 @@ export default class BookingRepository
 		};
 	}
 
+	rescheduleBooking = async (data: rescheduleBookingDto) => {};
 	protected toDomain(record: PrismaBooking): Booking {
 		return Booking.create(record);
 	}
