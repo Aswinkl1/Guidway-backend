@@ -18,6 +18,8 @@ export class CancelBookingByUserUsecase implements ICancelBookingByUserUsecase {
 		if (!booking) {
 			throw new NotFoundError("Booking not found");
 		}
+
+		booking.cancel();
 		const CANCELLATION_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 		const cancellationDeadline = new Date(Date.now() + CANCELLATION_WINDOW_MS);
