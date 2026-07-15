@@ -11,13 +11,14 @@ import type {
 import { TYPES } from "@config/DI-container/TYPES";
 import { BOOKING_STATUS, Booking } from "@domain/booking/booking.entity";
 import { SLOT_STATUS } from "@domain/booking/entities/slot.entity";
+import { ConflictError } from "@domain/errors/ConflictError";
+import { NotFoundError } from "@domain/errors/UserError";
 import type {
 	Prisma,
 	Booking as PrismaBooking,
 	PrismaClient,
 } from "generated/prisma/client";
 import { inject } from "inversify";
-
 import { BaseRepository } from "./BaseRepository";
 
 export default class BookingRepository
@@ -31,6 +32,33 @@ export default class BookingRepository
 {
 	constructor(@inject(TYPES.PrismaClient) private _prisma: PrismaClient) {
 		super(_prisma.booking);
+	}
+
+	async cancelBooking(userId: string, bookingId: string): Promise<void> {
+		const result = await this._prisma.$transaction(async (tx) => {
+			const res = await tx.booking.updateMany({
+				where: { id: bookingId, status: BOOKING_STATUS.CONFIRMED },
+				data: { status: BOOKING_STATUS.CANCELLED },
+			});
+
+			if (res.count === 0) {
+				throw new ConflictError(
+					"Booking cannot be cancelled in its current state",
+				);
+			}
+
+			const booking = await tx.booking.findFirst({ where: { id: bookingId } });
+
+			if (!booking) {
+				throw new NotFoundError("booking not found");
+			}
+			await tx.slots.update({
+				where: { id: booking?.slotId },
+				data: { status: "CANCELLED" },
+			});
+		});
+
+		return result;
 	}
 
 	async findByIdWithUserDetails(

@@ -20,4 +20,5 @@ export interface IBookingRepository
 		owner: BookingOwnerFilter,
 		dto: getAllBookingDto,
 	): Promise<Omit<getAllBookingOutput, "duration">>;
+	cancelBooking(userId: string, bookingId: string): Promise<void>;
 }

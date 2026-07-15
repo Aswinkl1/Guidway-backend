@@ -8,4 +8,6 @@ export interface IBookingController {
 	getMentorBookingDetails(req: Request, res: Response): Promise<void>;
 	getAllMenteeBooking(req: Request, res: Response): Promise<void>;
 	getAllMentorBooking(req: Request, res: Response): Promise<void>;
+	cancelBookingByUser(req: Request, res: Response): Promise<void>;
+	cancelBookingByMentor(req: Request, res: Response): Promise<void>;
 }
