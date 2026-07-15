@@ -3,6 +3,7 @@ import { getBookingDetailsSchema } from "@application/dto/booking/bookingDetails
 import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.dto";
 import type { GetBookingSetupInputDto } from "@application/dto/booking/getBookingSetup.dto";
 import type { HoldSlotDto } from "@application/dto/booking/slotHold.dto";
+import type { ICancelBookingByMentorUsecase } from "@application/ports/usecase/booking/ICancelBookingByMentor.usecase";
 import type { ICancelBookingByUserUsecase } from "@application/ports/usecase/booking/ICancelBookingByUser.usecase";
 import type { IConfirmBookingUsecase } from "@application/ports/usecase/booking/IConfirmBooking.usecase";
 import type { ICreateBookingIntentUsecase } from "@application/ports/usecase/booking/ICreateBookingIntent.usecase";
@@ -37,6 +38,8 @@ export class BookingController implements IBookingController {
 		private readonly _getAllMentorBookingUsecase: IGetAllMentorBookingUsecase,
 		@inject(TYPES.CancelBookingByUserUsecase)
 		private readonly _cancelBookingByUserUsecase: ICancelBookingByUserUsecase,
+		@inject(TYPES.CancelBookingByMentorUsecase)
+		private readonly _cancelBookingByMentorUsecase: ICancelBookingByMentorUsecase,
 	) {}
 
 	createBookingIntent = async (req: Request, res: Response): Promise<void> => {
@@ -152,6 +155,24 @@ export class BookingController implements IBookingController {
 		}
 
 		await this._cancelBookingByUserUsecase.execute(userId, bookingId);
+		res.status(200).json(createSuccess("success", {}));
+	};
+
+	cancelBookingByMentor = async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		const userId = req.user?.userId;
+		if (!userId) {
+			throw new NotFoundError("user not found");
+		}
+		const bookingId = req.params.id;
+
+		if (!bookingId || typeof bookingId !== "string") {
+			throw new NotFoundError("bookingId not found");
+		}
+
+		await this._cancelBookingByMentorUsecase.execute(userId, bookingId);
 		res.status(200).json(createSuccess("success", {}));
 	};
 }

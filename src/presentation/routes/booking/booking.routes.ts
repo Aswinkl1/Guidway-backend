@@ -66,4 +66,10 @@ router.put(
 	isAuthenticate,
 	BookingController.cancelBookingByUser,
 );
+
+router.put(
+	"/mentor/bookings/:id/cancel",
+	isAuthenticate,
+	BookingController.cancelBookingByMentor,
+);
 export default router;
