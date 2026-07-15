@@ -9,15 +9,17 @@ import type {
 	BookingOwnerFilter,
 	getAllBookingOutput,
 } from "@application/types/booking.types";
+import { createDateTime } from "@application/utils/date.utils";
 import { TYPES } from "@config/DI-container/TYPES";
 import { BOOKING_STATUS, Booking } from "@domain/booking/booking.entity";
 import { SLOT_STATUS } from "@domain/booking/entities/slot.entity";
 import { ConflictError } from "@domain/errors/ConflictError";
 import { NotFoundError } from "@domain/errors/UserError";
-import type {
+import { withTransactionRetry } from "@infrastructure/helpers/withTransactionRetry";
+import {
 	Prisma,
-	Booking as PrismaBooking,
-	PrismaClient,
+	type Booking as PrismaBooking,
+	type PrismaClient,
 } from "generated/prisma/client";
 import { inject } from "inversify";
 import { BaseRepository } from "./BaseRepository";
@@ -254,7 +256,80 @@ export default class BookingRepository
 		};
 	}
 
-	rescheduleBooking = async (data: rescheduleBookingDto) => {};
+	rescheduleBooking = async (
+		data: rescheduleBookingDto,
+	): Promise<{ bookingId: string }> => {
+		const record = await withTransactionRetry(async () => {
+			const record = await this._prisma.$transaction(
+				async (tx) => {
+					const booking = await tx.booking.findUnique({
+						where: { id: data.bookingId },
+					});
+
+					if (!booking) {
+						throw new NotFoundError("booking not found");
+					}
+					const oldSlotId = booking.slotId;
+
+					const overlap = await tx.slots.findFirst({
+						where: {
+							mentorId: booking.mentorId,
+							date: data.date,
+							startTime: { lt: data.endTime },
+							endTime: { gt: data.startTime },
+							expiresAt: { gt: new Date() },
+							status: { not: "CANCELLED" },
+						},
+					});
+
+					if (overlap) {
+						console.log("hello");
+						throw new ConflictError("slot is not avaliable");
+					}
+
+					const slotData = await tx.slots.create({
+						data: {
+							date: data.date,
+							startTime: data.startTime,
+							endTime: data.endTime,
+							expiresAt: new Date(Date.now() + 15 * 60 * 1000), // expires in 15 minutes
+							mentorId: booking.mentorId,
+							status: SLOT_STATUS.BOOKED,
+							lockedBy: booking.userId,
+						},
+					});
+
+					const updatedBooking = await tx.booking.updateMany({
+						where: { id: data.bookingId, status: BOOKING_STATUS.CONFIRMED },
+						data: {
+							slotId: slotData.id,
+							startTime: createDateTime(data.date, data.startTime),
+							endTime: createDateTime(data.date, data.endTime),
+						},
+					});
+					if (updatedBooking.count === 0) {
+						throw new ConflictError(
+							"Booking was cancelled or changed before reschedule completed",
+						);
+					}
+
+					await tx.slots.update({
+						where: { id: oldSlotId },
+						data: { status: SLOT_STATUS.CANCELLED },
+					});
+
+					return { bookingId: data.bookingId };
+				},
+				{
+					isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+				},
+			);
+
+			return record;
+		});
+		return record;
+	};
+
 	protected toDomain(record: PrismaBooking): Booking {
 		return Booking.create(record);
 	}

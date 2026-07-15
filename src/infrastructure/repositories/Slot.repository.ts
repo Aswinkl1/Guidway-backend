@@ -4,10 +4,10 @@ import { TYPES } from "@config/DI-container/TYPES";
 import { Slot } from "@domain/booking/entities/slot.entity";
 import { ConflictError } from "@domain/errors/ConflictError";
 import { withTransactionRetry } from "@infrastructure/helpers/withTransactionRetry";
-import type {
+import {
 	Prisma,
-	PrismaClient,
-	Slots as PrismaSlots,
+	type PrismaClient,
+	type Slots as PrismaSlots,
 } from "generated/prisma/client";
 import { inject } from "inversify";
 import { BaseRepository } from "./BaseRepository";
@@ -30,49 +30,54 @@ export class SlotRepository
 		data: HoldSlotDto & { provider?: string; orderId?: string },
 	): Promise<{ slotId: string }> {
 		const record = await withTransactionRetry(async () => {
-			const record = await this._prisma.$transaction(async (tx) => {
-				const overlap = await tx.slots.findFirst({
-					where: {
-						mentorId: data.mentorId,
-						date: data.date,
-						startTime: { lt: data.endTime },
-						endTime: { gt: data.startTime },
-						expiresAt: { gt: new Date() },
-						status: { not: "CANCELLED" },
-					},
-				});
+			const record = await this._prisma.$transaction(
+				async (tx) => {
+					const overlap = await tx.slots.findFirst({
+						where: {
+							mentorId: data.mentorId,
+							date: data.date,
+							startTime: { lt: data.endTime },
+							endTime: { gt: data.startTime },
+							expiresAt: { gt: new Date() },
+							status: { not: "CANCELLED" },
+						},
+					});
 
-				if (overlap) {
-					console.log("hello");
-					throw new ConflictError("slot is not avaliable");
-				}
-				const slotData = await tx.slots.create({
-					data: {
-						date: data.date,
-						startTime: data.startTime,
-						endTime: data.endTime,
-						expiresAt: new Date(Date.now() + 15 * 60 * 1000), // expires in 15 minutes
-						mentorId: data.mentorId,
-						status: "LOCKED",
-						lockedBy: userId,
-					},
-				});
+					if (overlap) {
+						console.log("hello");
+						throw new ConflictError("slot is not avaliable");
+					}
+					const slotData = await tx.slots.create({
+						data: {
+							date: data.date,
+							startTime: data.startTime,
+							endTime: data.endTime,
+							expiresAt: new Date(Date.now() + 15 * 60 * 1000), // expires in 15 minutes
+							mentorId: data.mentorId,
+							status: "LOCKED",
+							lockedBy: userId,
+						},
+					});
 
-				const bookingIntentData = await tx.bookingIntent.create({
-					data: {
-						slotId: slotData.id,
-						sessionId: data.sessionId,
-						price: data.price,
-						currency: data.currency,
-						note: data.note ?? null,
-						gatewayOrderId: data.orderId ?? null,
-						paymentProvider: data.provider ?? null,
-					},
-				});
-				console.log("why this kolavari");
+					const bookingIntentData = await tx.bookingIntent.create({
+						data: {
+							slotId: slotData.id,
+							sessionId: data.sessionId,
+							price: data.price,
+							currency: data.currency,
+							note: data.note ?? null,
+							gatewayOrderId: data.orderId ?? null,
+							paymentProvider: data.provider ?? null,
+						},
+					});
+					console.log("why this kolavari");
 
-				return { slotId: slotData.id };
-			});
+					return { slotId: slotData.id };
+				},
+				{
+					isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+				},
+			);
 
 			return record;
 		});
