@@ -1,3 +1,4 @@
+import { ConflictError } from "@domain/errors/ConflictError";
 import type { Currency } from "./entities/bookingIntent.entity";
 
 export const BOOKING_STATUS = {
@@ -108,7 +109,10 @@ export class Booking {
 
 	cancel(): void {
 		if (this.props.status === BOOKING_STATUS.COMPLETED) {
-			throw new Error("Cannot cancel a completed booking.");
+			throw new ConflictError("Cannot cancel a completed booking.");
+		}
+		if (this.props.status === BOOKING_STATUS.CANCELLED) {
+			throw new ConflictError("Booking is already cancelled.");
 		}
 		this.props.status = BOOKING_STATUS.CANCELLED;
 		this.touch();
