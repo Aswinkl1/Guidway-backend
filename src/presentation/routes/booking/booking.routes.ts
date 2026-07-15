@@ -72,4 +72,10 @@ router.put(
 	isAuthenticate,
 	BookingController.cancelBookingByMentor,
 );
+
+router.put(
+	"/user/bookings/:id/reschedule",
+	isAuthenticate,
+	BookingController.rescheduleBooking,
+);
 export default router;
