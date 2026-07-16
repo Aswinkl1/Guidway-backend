@@ -80,4 +80,10 @@ router.put(
 	validatetor(rescheduleBookingSchema, "body"),
 	BookingController.rescheduleBooking,
 );
+
+router.patch(
+	"/slots/:id/release",
+	isAuthenticate,
+	BookingController.releaseBookingSlot,
+);
 export default router;

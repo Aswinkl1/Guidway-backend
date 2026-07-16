@@ -4,6 +4,7 @@ import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.d
 import type { GetBookingSetupInputDto } from "@application/dto/booking/getBookingSetup.dto";
 import type { rescheduleBookingDto } from "@application/dto/booking/rescheduleBooking.dto";
 import type { HoldSlotDto } from "@application/dto/booking/slotHold.dto";
+import type { IBookingPaymentFailureUsecase } from "@application/ports/usecase/booking/IBookingPaymentFailure.usecase";
 import type { ICancelBookingByMentorUsecase } from "@application/ports/usecase/booking/ICancelBookingByMentor.usecase";
 import type { ICancelBookingByUserUsecase } from "@application/ports/usecase/booking/ICancelBookingByUser.usecase";
 import type { IConfirmBookingUsecase } from "@application/ports/usecase/booking/IConfirmBooking.usecase";
@@ -16,6 +17,7 @@ import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase
 import type { IRescheduleBookingUsecase } from "@application/ports/usecase/booking/IRescheduleBooking.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { NotFoundError } from "@domain/errors/UserError";
+import HTTPSTATUS from "@presentation/constants/httpStatus";
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
 import { createSuccess } from "@presentation/helper/response.util";
 import type { IBookingController } from "@presentation/interface/controllers/booking/IBookingController";
@@ -44,14 +46,33 @@ export class BookingController implements IBookingController {
 		private readonly _cancelBookingByMentorUsecase: ICancelBookingByMentorUsecase,
 		@inject(TYPES.RescheduleBookingUsecase)
 		private readonly _rescheduleBookingUsecase: IRescheduleBookingUsecase,
+		@inject(TYPES.BookingPaymentFailureUsecase)
+		private readonly _bookingPaymentFailureUsecase: IBookingPaymentFailureUsecase,
 	) {}
+
+	releaseBookingSlot = async (req: Request, res: Response): Promise<void> => {
+		const id = req.params.id;
+		const userId = req.user?.userId;
+
+		if (!userId) {
+			throw new NotFoundError("User not found");
+		}
+
+		if (!id || typeof id !== "string") {
+			throw new NotFoundError("slotId not found");
+		}
+
+		await this._bookingPaymentFailureUsecase.execute(userId, id);
+
+		res.status(HTTPSTATUS.OK).json(createSuccess("success", {}));
+	};
 
 	createBookingIntent = async (req: Request, res: Response): Promise<void> => {
 		const userId = req.user?.userId;
 		const data = req.validated?.body as HoldSlotDto;
 
 		if (!userId) {
-			throw new Error("User not found");
+			throw new NotFoundError("User not found");
 		}
 
 		const result = await this._createBookingIntentUsecase.execute(userId, data);
