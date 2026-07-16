@@ -10,7 +10,7 @@ import type { IGetAvailableSlotsByDate } from "@application/ports/usecase/mentor
 import { SlotGenerationService } from "@application/services/slotGenration.service";
 import { getDayOfWeek, toUTCMidnight } from "@application/utils/date.utils";
 import { TYPES } from "@config/DI-container/TYPES";
-import type { SlotsVO } from "@domain/booking/slot.vo";
+
 import { NotFoundError } from "@domain/errors/UserError";
 import { inject, injectable } from "inversify";
 

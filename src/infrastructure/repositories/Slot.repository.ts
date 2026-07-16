@@ -59,7 +59,7 @@ export class SlotRepository
 						},
 					});
 
-					const bookingIntentData = await tx.bookingIntent.create({
+					await tx.bookingIntent.create({
 						data: {
 							slotId: slotData.id,
 							sessionId: data.sessionId,
