@@ -4,7 +4,6 @@ import {
 	type EducationOutputDto,
 } from "@application/mappers/education.mapper";
 import type { IEducationRepository } from "@application/ports/repository/IEducation.repository";
-import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IAddEducationUsecase } from "@application/ports/usecase/mentor/education/IAdd-Education.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Education } from "@domain/mentor/entities/education.entity";
@@ -13,8 +12,6 @@ import { inject, injectable } from "inversify";
 @injectable()
 export class AddEducationUsecase implements IAddEducationUsecase {
 	constructor(
-		@inject(TYPES.MentorRepository)
-		private readonly _mentorRepository: IMentorRepository,
 		@inject(TYPES.EducationRepository)
 		private readonly _educationRepository: IEducationRepository,
 	) {}

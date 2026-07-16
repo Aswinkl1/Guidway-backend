@@ -37,6 +37,7 @@ export default class BookingRepository
 	}
 
 	async cancelBooking(userId: string, bookingId: string): Promise<void> {
+		console.log(userId);
 		const result = await this._prisma.$transaction(async (tx) => {
 			const res = await tx.booking.updateMany({
 				where: { id: bookingId, status: BOOKING_STATUS.CONFIRMED },
