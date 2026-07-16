@@ -20,4 +20,6 @@ export interface ISlotRepository
 		mentorId: string,
 		date: Date,
 	): Promise<{ startTime: number; endTime: number }[]>;
+
+	handlePaymentFailure(slotId: string): Promise<void>;
 }

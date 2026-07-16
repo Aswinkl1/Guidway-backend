@@ -8,4 +8,5 @@ export type CreateOrderResponse = {
 	orderId: string;
 	amount_due: number;
 	currency: string;
+	slotId: string;
 };

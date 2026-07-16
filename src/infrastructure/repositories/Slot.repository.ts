@@ -110,6 +110,16 @@ export class SlotRepository
 			endTime: slot.endTime,
 		}));
 	}
+	async handlePaymentFailure(slotId: string): Promise<void> {
+		const record = await this._prisma.slots.updateMany({
+			where: { id: slotId, status: SLOT_STATUS.LOCKED },
+			data: { status: SLOT_STATUS.CANCELLED },
+		});
+
+		if (record.count === 0) {
+			throw new ConflictError("conflict with id or status of the slot ");
+		}
+	}
 
 	async checkOverlap(
 		mentorId: string,
