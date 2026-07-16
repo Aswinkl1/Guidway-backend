@@ -1,6 +1,7 @@
 import { getAllBookingSchema } from "@application/dto/booking/booking.dto";
 import { verifyPaymentSchema } from "@application/dto/booking/confirmBooking.dto";
 import { getBookingSetupSchema } from "@application/dto/booking/getBookingSetup.dto";
+import { rescheduleBookingSchema } from "@application/dto/booking/rescheduleBooking.dto";
 import { holdSlotSchema } from "@application/dto/booking/slotHold.dto";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
@@ -76,6 +77,7 @@ router.put(
 router.put(
 	"/user/bookings/:id/reschedule",
 	isAuthenticate,
+	validatetor(rescheduleBookingSchema, "body"),
 	BookingController.rescheduleBooking,
 );
 export default router;

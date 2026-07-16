@@ -43,6 +43,17 @@ export class RescheduleBookingUsecase implements IRescheduleBookingUsecase {
 			throw new ForbiddenError("Unauthorized to reschedule this booking");
 		}
 
+		const currentSlotDuration = Math.floor(
+			booking.endTime.getTime() - booking.startTime.getTime() / (1000 * 60),
+		); // Duration in minutes
+		const newSlotDuration = Math.floor(data.endTime - data.startTime);
+
+		if (currentSlotDuration !== newSlotDuration) {
+			throw new ConflictError(
+				"New slot duration must match the original slot duration",
+			);
+		}
+
 		const result = await this.bookingRepository.rescheduleBooking(data);
 
 		return result;
