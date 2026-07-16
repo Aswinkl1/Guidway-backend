@@ -11,4 +11,5 @@ export interface IBookingController {
 	cancelBookingByUser(req: Request, res: Response): Promise<void>;
 	cancelBookingByMentor(req: Request, res: Response): Promise<void>;
 	rescheduleBooking(req: Request, res: Response): Promise<void>;
+	releaseBookingSlot(req: Request, res: Response): Promise<void>;
 }

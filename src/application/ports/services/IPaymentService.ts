@@ -5,5 +5,7 @@ import type {
 
 export interface IPaymentService {
 	getPaymentProviderName(): string;
-	createOrder(config: CreateOrderConfig): Promise<CreateOrderResponse>;
+	createOrder(
+		config: CreateOrderConfig,
+	): Promise<Omit<CreateOrderResponse, "slotId">>;
 }

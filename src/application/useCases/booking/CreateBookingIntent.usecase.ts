@@ -51,11 +51,12 @@ export class CreateBookingIntentUsecase implements ICreateBookingIntentUsecase {
 			provider: this._paymentService.getPaymentProviderName(),
 		};
 
-		await this._slotRepository.transactionallySaveSlotAndBookingIntent(
-			userId,
-			finalData,
-		);
+		const res =
+			await this._slotRepository.transactionallySaveSlotAndBookingIntent(
+				userId,
+				finalData,
+			);
 
-		return order;
+		return { ...order, slotId: res.slotId };
 	}
 }

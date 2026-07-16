@@ -20,7 +20,9 @@ export class PaymentService implements IPaymentService {
 	getPaymentProviderName(): string {
 		return "Razorpay";
 	}
-	async createOrder(config: CreateOrderConfig): Promise<CreateOrderResponse> {
+	async createOrder(
+		config: CreateOrderConfig,
+	): Promise<Omit<CreateOrderResponse, "slotId">> {
 		try {
 			const order = await this.razorpay.orders.create({
 				amount: config.amount,
