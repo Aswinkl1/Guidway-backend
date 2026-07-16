@@ -2,6 +2,7 @@ import type { getAllBookingDto } from "@application/dto/booking/booking.dto";
 import { getBookingDetailsSchema } from "@application/dto/booking/bookingDetails.dto";
 import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.dto";
 import type { GetBookingSetupInputDto } from "@application/dto/booking/getBookingSetup.dto";
+import type { rescheduleBookingDto } from "@application/dto/booking/rescheduleBooking.dto";
 import type { HoldSlotDto } from "@application/dto/booking/slotHold.dto";
 import type { ICancelBookingByMentorUsecase } from "@application/ports/usecase/booking/ICancelBookingByMentor.usecase";
 import type { ICancelBookingByUserUsecase } from "@application/ports/usecase/booking/ICancelBookingByUser.usecase";
@@ -12,6 +13,7 @@ import type { IGetAllMentorBookingUsecase } from "@application/ports/usecase/boo
 import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/booking/IGetBookingSetupDetails.usecase";
 import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
 import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMentorBookingDetails.usecase";
+import type { IRescheduleBookingUsecase } from "@application/ports/usecase/booking/IRescheduleBooking.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { NotFoundError } from "@domain/errors/UserError";
 import { CustomZodValidationError } from "@presentation/errors/customZodValidationError";
@@ -40,6 +42,8 @@ export class BookingController implements IBookingController {
 		private readonly _cancelBookingByUserUsecase: ICancelBookingByUserUsecase,
 		@inject(TYPES.CancelBookingByMentorUsecase)
 		private readonly _cancelBookingByMentorUsecase: ICancelBookingByMentorUsecase,
+		@inject(TYPES.RescheduleBookingUsecase)
+		private readonly _rescheduleBookingUsecase: IRescheduleBookingUsecase,
 	) {}
 
 	createBookingIntent = async (req: Request, res: Response): Promise<void> => {
@@ -174,5 +178,18 @@ export class BookingController implements IBookingController {
 
 		await this._cancelBookingByMentorUsecase.execute(userId, bookingId);
 		res.status(200).json(createSuccess("success", {}));
+	};
+	rescheduleBooking = async (req: Request, res: Response): Promise<void> => {
+		const userId = req.user?.userId;
+		if (!userId) {
+			throw new NotFoundError("user not found");
+		}
+		const data = req.validated?.body as rescheduleBookingDto;
+
+		const result = await this._rescheduleBookingUsecase.execute(userId, data);
+
+		res
+			.status(200)
+			.json(createSuccess("Booking rescheduled successfully", result));
 	};
 }

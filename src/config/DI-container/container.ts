@@ -39,6 +39,7 @@ import type { IGetAllMentorBookingUsecase } from "@application/ports/usecase/boo
 import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/booking/IGetBookingSetupDetails.usecase";
 import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
 import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMentorBookingDetails.usecase";
+import type { IRescheduleBookingUsecase } from "@application/ports/usecase/booking/IRescheduleBooking.usecase";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import type { IListMentorsUsecase } from "@application/ports/usecase/IListMentor.usecase";
@@ -96,6 +97,7 @@ import { GetAllMentorBookingUsecase } from "@application/useCases/booking/GetAll
 import { GetBookingSetupDetailsUseCase } from "@application/useCases/booking/GetBookingSetupDetails.usecase";
 import { GetMenteeBookingDetailsUsecase } from "@application/useCases/booking/GetMenteeBookingsDetails.usecase";
 import { GetMentorBookingDetailsUsecase } from "@application/useCases/booking/GetMentorBookingDetails.usecase";
+import { RescheduleBookingUsecase } from "@application/useCases/booking/RescheduleBooking.usecase";
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
 import { DeleteAchievementUsecase } from "@application/useCases/mentor/achievements/Delete-Achievement.usecase";
 import { EditAchievementUsecase } from "@application/useCases/mentor/achievements/Edit-Achievement.usecase";
@@ -287,6 +289,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IRescheduleBookingUsecase>(TYPES.RescheduleBookingUsecase)
+	.to(RescheduleBookingUsecase)
+	.inSingletonScope();
 container
 	.bind<ICancelBookingByMentorUsecase>(TYPES.CancelBookingByMentorUsecase)
 	.to(CancelBookingByMentorUsecase)

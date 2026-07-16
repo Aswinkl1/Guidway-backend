@@ -1,5 +1,6 @@
 import type { getAllBookingDto } from "@application/dto/booking/booking.dto";
 import type { VerifyPaymentDto } from "@application/dto/booking/confirmBooking.dto";
+import type { rescheduleBookingDto } from "@application/dto/booking/rescheduleBooking.dto";
 import type {
 	BookingDetailsRepoOutput,
 	BookingIntentAggregate,
@@ -21,4 +22,5 @@ export interface IBookingRepository
 		dto: getAllBookingDto,
 	): Promise<Omit<getAllBookingOutput, "duration">>;
 	cancelBooking(userId: string, bookingId: string): Promise<void>;
+	rescheduleBooking(data: rescheduleBookingDto): Promise<{ bookingId: string }>;
 }
