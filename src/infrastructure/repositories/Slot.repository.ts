@@ -1,7 +1,7 @@
 import type { HoldSlotDto } from "@application/dto/booking/slotHold.dto";
 import type { ISlotRepository } from "@application/ports/repository/ISlot.repository";
 import { TYPES } from "@config/DI-container/TYPES";
-import { Slot } from "@domain/booking/entities/slot.entity";
+import { SLOT_STATUS, Slot } from "@domain/booking/entities/slot.entity";
 import { ConflictError } from "@domain/errors/ConflictError";
 import { withTransactionRetry } from "@infrastructure/helpers/withTransactionRetry";
 import {
@@ -83,6 +83,32 @@ export class SlotRepository
 		});
 
 		return record;
+	}
+
+	async findBookedAndLockedSlotsByMentorIdAndDate(
+		mentorId: string,
+		date: Date,
+	): Promise<{ startTime: number; endTime: number }[]> {
+		const record = await this._prisma.slots.findMany({
+			where: {
+				mentorId,
+				date,
+				OR: [
+					{
+						status: SLOT_STATUS.BOOKED,
+					},
+					{ status: SLOT_STATUS.LOCKED, expiresAt: { gt: new Date() } },
+				],
+			},
+			select: { startTime: true, endTime: true },
+		});
+
+		console.log(record, "record");
+
+		return record.map((slot) => ({
+			startTime: slot.startTime,
+			endTime: slot.endTime,
+		}));
 	}
 
 	async checkOverlap(

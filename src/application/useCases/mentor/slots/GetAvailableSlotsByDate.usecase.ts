@@ -5,9 +5,10 @@ import {
 } from "@application/mappers/slots.mapper";
 import type { IAvailabilityRepository } from "@application/ports/repository/IAvailability.repository";
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
+import type { ISlotRepository } from "@application/ports/repository/ISlot.repository";
 import type { IGetAvailableSlotsByDate } from "@application/ports/usecase/mentor/slot/IGetAvailableSlotsByDate.usecase";
 import { SlotGenerationService } from "@application/services/slotGenration.service";
-import { getDayOfWeek } from "@application/utils/date.utils";
+import { getDayOfWeek, toUTCMidnight } from "@application/utils/date.utils";
 import { TYPES } from "@config/DI-container/TYPES";
 import type { SlotsVO } from "@domain/booking/slot.vo";
 import { NotFoundError } from "@domain/errors/UserError";
@@ -20,6 +21,8 @@ export class GetAvailableSlotsByDate implements IGetAvailableSlotsByDate {
 		private readonly _availabilityRepo: IAvailabilityRepository,
 		@inject(TYPES.MentorRepository)
 		private readonly _mentorRepository: IMentorRepository,
+		@inject(TYPES.SlotRepository)
+		private readonly _slotRepository: ISlotRepository,
 	) {}
 	async execute(mentorId: string, dto: getSlotDto): Promise<ISlotResponse[]> {
 		const mentor = await this._mentorRepository.findMentorByUserId(mentorId);
@@ -37,6 +40,14 @@ export class GetAvailableSlotsByDate implements IGetAvailableSlotsByDate {
 		if (availability.length === 0) {
 			return [];
 		}
+		const date = toUTCMidnight(dto.date);
+		console.log("date", date);
+		const bookedSlots =
+			await this._slotRepository.findBookedAndLockedSlotsByMentorIdAndDate(
+				mentorId,
+				date,
+			);
+		console.log("bookedSlots", bookedSlots);
 
 		const slots = SlotGenerationService.generate(availability, slotDuration);
 
