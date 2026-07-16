@@ -49,7 +49,11 @@ export class GetAvailableSlotsByDate implements IGetAvailableSlotsByDate {
 			);
 		console.log("bookedSlots", bookedSlots);
 
-		const slots = SlotGenerationService.generate(availability, slotDuration);
+		const slots = SlotGenerationService.generate(
+			availability,
+			slotDuration,
+			bookedSlots,
+		);
 
 		return SlotsMapper.toResponse(slots);
 	}
