@@ -8,7 +8,7 @@ import type {
 	BookingOwnerFilter,
 	getAllBookingOutput,
 } from "@application/types/booking.types";
-import { createDateTime } from "@application/utils/date.utils";
+import { createDateTime, toUTCMidnight } from "@application/utils/date.utils";
 import { TYPES } from "@config/DI-container/TYPES";
 import { BOOKING_STATUS, Booking } from "@domain/booking/booking.entity";
 import { SLOT_STATUS } from "@domain/booking/entities/slot.entity";
@@ -288,7 +288,7 @@ export default class BookingRepository
 
 					const slotData = await tx.slots.create({
 						data: {
-							date: data.date,
+							date: toUTCMidnight(data.date),
 							startTime: data.startTime,
 							endTime: data.endTime,
 							expiresAt: new Date(Date.now() + 15 * 60 * 1000), // expires in 15 minutes

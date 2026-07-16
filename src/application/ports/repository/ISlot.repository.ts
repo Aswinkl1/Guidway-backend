@@ -15,4 +15,9 @@ export interface ISlotRepository
 		requestStartTime: number,
 		requestEndTime: number,
 	): Promise<Slot | null>;
+
+	findBookedAndLockedSlotsByMentorIdAndDate(
+		mentorId: string,
+		date: Date,
+	): Promise<{ startTime: number; endTime: number }[]>;
 }
