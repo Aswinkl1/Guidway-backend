@@ -95,6 +95,7 @@ export const TYPES = {
 	ToggleAvailabilityUsecase: Symbol.for("ToggleAvailabilityUsecase"),
 	GetAvailableSlotsByDate: Symbol.for("GetAvailableSlotsByDate"),
 	//controller
+	ReviewController: Symbol.for("ReviewController"),
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
 	AdminLoginUseCase: Symbol.for("AdminLoginUseCase"),

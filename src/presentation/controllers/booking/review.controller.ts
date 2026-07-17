@@ -1,13 +1,18 @@
 import type { addReviewDto } from "@application/dto/booking/review.dto";
 import type { IAddReviewUsecase } from "@application/ports/usecase/booking/Review/IAddReview.usecase";
+import { TYPES } from "@config/DI-container/TYPES";
 import { NotFoundError } from "@domain/errors/UserError";
 import HTTPSTATUS from "@presentation/constants/httpStatus";
 import { createSuccess } from "@presentation/helper/response.util";
 import type { IReviewController } from "@presentation/interface/controllers/booking/IReview.constroller";
 import type { Request, Response } from "express";
-
+import { inject, injectable } from "inversify";
+@injectable()
 export class ReviewController implements IReviewController {
-	constructor(private readonly _addReviewUsecase: IAddReviewUsecase) {}
+	constructor(
+		@inject(TYPES.AddReviewUsecase)
+		private readonly _addReviewUsecase: IAddReviewUsecase,
+	) {}
 
 	addReview = async (req: Request, res: Response): Promise<void> => {
 		const userId = req.user?.userId;
