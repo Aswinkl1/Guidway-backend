@@ -1,12 +1,14 @@
 import type { IReviewRepository } from "@application/ports/repository/IReview.repository";
+import { TYPES } from "@config/DI-container/TYPES";
 import { Review } from "@domain/booking/entities/Review.entity";
 import type {
 	Prisma,
 	PrismaClient,
 	Review as PrismaReview,
 } from "generated/prisma/client";
+import { inject, injectable } from "inversify";
 import { BaseRepository } from "./BaseRepository";
-
+@injectable()
 export class ReviewRepository
 	extends BaseRepository<
 		PrismaReview,
@@ -16,7 +18,9 @@ export class ReviewRepository
 	>
 	implements IReviewRepository
 {
-	constructor(private readonly _prisma: PrismaClient) {
+	constructor(
+		@inject(TYPES.PrismaClient) private readonly _prisma: PrismaClient,
+	) {
 		super(_prisma.review);
 	}
 

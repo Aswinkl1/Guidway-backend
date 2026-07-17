@@ -3,12 +3,16 @@ import { ForbiddenError } from "@application/errors/ForbidenError";
 import type { IBookingRepository } from "@application/ports/repository/IBooking.repository";
 import type { IReviewRepository } from "@application/ports/repository/IReview.repository";
 import type { IAddReviewUsecase } from "@application/ports/usecase/booking/Review/IAddReview.usecase";
+import { TYPES } from "@config/DI-container/TYPES";
 import { Review } from "@domain/booking/entities/Review.entity";
 import { NotFoundError } from "@domain/errors/UserError";
-
+import { inject, injectable } from "inversify";
+@injectable()
 export class AddReviewUsecase implements IAddReviewUsecase {
 	constructor(
+		@inject(TYPES.BookingRepository)
 		private readonly _bookingRepository: IBookingRepository,
+		@inject(TYPES.ReviewRepository)
 		private readonly _reviewRepository: IReviewRepository,
 	) {}
 

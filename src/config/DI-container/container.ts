@@ -15,6 +15,7 @@ import type { IMentorLanguageRepository } from "@application/ports/repository/IM
 import type { IMentorRepository } from "@application/ports/repository/IMentorRepository";
 import type { IMentorSkillRepository } from "@application/ports/repository/IMentorSkill.repository";
 import type { IPaymentRepository } from "@application/ports/repository/IPayment.repository";
+import type { IReviewRepository } from "@application/ports/repository/IReview.repository";
 import type { ISessionRepository } from "@application/ports/repository/ISession.respository";
 import type { ISkillRepository } from "@application/ports/repository/ISkill.repository";
 import type { ISlotRepository } from "@application/ports/repository/ISlot.repository";
@@ -41,6 +42,7 @@ import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/
 import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
 import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMentorBookingDetails.usecase";
 import type { IRescheduleBookingUsecase } from "@application/ports/usecase/booking/IRescheduleBooking.usecase";
+import type { IAddReviewUsecase } from "@application/ports/usecase/booking/Review/IAddReview.usecase";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import type { IListMentorsUsecase } from "@application/ports/usecase/IListMentor.usecase";
@@ -100,6 +102,7 @@ import { GetBookingSetupDetailsUseCase } from "@application/useCases/booking/Get
 import { GetMenteeBookingDetailsUsecase } from "@application/useCases/booking/GetMenteeBookingsDetails.usecase";
 import { GetMentorBookingDetailsUsecase } from "@application/useCases/booking/GetMentorBookingDetails.usecase";
 import { RescheduleBookingUsecase } from "@application/useCases/booking/RescheduleBooking.usecase";
+import { AddReviewUsecase } from "@application/useCases/booking/Review/AddReview.usecase";
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
 import { DeleteAchievementUsecase } from "@application/useCases/mentor/achievements/Delete-Achievement.usecase";
 import { EditAchievementUsecase } from "@application/useCases/mentor/achievements/Edit-Achievement.usecase";
@@ -165,6 +168,7 @@ import { MentorLanguageRepository } from "@infrastructure/repositories/MentorLan
 import { MentorSkillRepository } from "@infrastructure/repositories/MentorSkill.repository";
 import MentorRepository from "@infrastructure/repositories/mentor.repository";
 import PaymentRepository from "@infrastructure/repositories/payment.repository";
+import { ReviewRepository } from "@infrastructure/repositories/Review.respository";
 import { SessionRepository } from "@infrastructure/repositories/Session.repository";
 import { SkillRepository } from "@infrastructure/repositories/Skill.repository";
 import { SlotRepository } from "@infrastructure/repositories/Slot.repository";
@@ -205,6 +209,10 @@ container
 	.inSingletonScope();
 
 //Repository
+container
+	.bind<IReviewRepository>(TYPES.ReviewRepository)
+	.to(ReviewRepository)
+	.inSingletonScope();
 container
 	.bind<IBookingRepository>(TYPES.BookingRepository)
 	.to(BookingRepository)
@@ -291,6 +299,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IAddReviewUsecase>(TYPES.AddReviewUsecase)
+	.to(AddReviewUsecase)
+	.inSingletonScope();
 container
 	.bind<IBookingPaymentFailureUsecase>(TYPES.BookingPaymentFailureUsecase)
 	.to(BookingPaymentFailureUsecase)

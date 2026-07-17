@@ -3,7 +3,7 @@ export const TYPES = {
 	CacheService: Symbol.for("CacheService"),
 
 	//repository
-
+	ReviewRepository: Symbol.for("ReviewRepository"),
 	UserRepository: Symbol.for("UserRepository"),
 	TokenRepository: Symbol.for("TokenRepository"),
 	MentorRepository: Symbol.for("MentorRepository"),
@@ -32,6 +32,7 @@ export const TYPES = {
 	//queries
 	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
+	AddReviewUsecase: Symbol.for("AddReviewUsecase"),
 	BookingPaymentFailureUsecase: Symbol.for("BookingPaymentFailureUsecase"),
 	RescheduleBookingUsecase: Symbol.for("RescheduleBookingUsecase"),
 	CancelBookingByMentorUsecase: Symbol.for("CancelBookingByMentorUsecase"),
