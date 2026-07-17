@@ -18,6 +18,6 @@ router.post(
 	ReviewController.addReview,
 );
 
-router.delete("/review", isAuthenticate, ReviewController.deleteReview);
+router.delete("/review/:id", isAuthenticate, ReviewController.deleteReview);
 
 export default router;
