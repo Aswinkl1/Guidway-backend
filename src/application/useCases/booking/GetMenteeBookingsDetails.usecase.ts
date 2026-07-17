@@ -32,6 +32,8 @@ export class GetMenteeBookingDetailsUsecase
 			throw new ForbiddenError("you dont have access to this booking ");
 		}
 
+		console.log("this is reord ", record);
+
 		return {
 			amount: record.amount,
 			currency: record.currency,
@@ -48,6 +50,8 @@ export class GetMenteeBookingDetailsUsecase
 				name: record.mentor.name,
 				profileImageKey: record.mentor.profileImageKey,
 			},
+
+			review: record.review,
 		};
 	}
 }
