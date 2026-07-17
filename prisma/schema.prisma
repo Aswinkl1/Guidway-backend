@@ -86,6 +86,8 @@ model User {
 
   mentor Mentor?
   // booking Booking[]
+  review               Review[]
+
   slots Slots[]
   @@index([role])
   // @@index([deletedAt])
@@ -135,6 +137,7 @@ model Mentor {
   sessions             Session[]
   availability         Availability[]
   slots                Slots[]
+  review               Review[]
 
   // booking Booking[]
   @@index([status])
@@ -493,6 +496,7 @@ model Booking {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   payment Payment @relation(fields: [paymentId],references: [id])
+  review Review?
   @@map("bookings")
 }
 
@@ -526,4 +530,25 @@ enum PaymentStatus {
   PENDING
   SUCCESS
   FAILED
+}
+
+
+
+model Review {
+  id        String    @id @default(uuid())
+  bookingId String    @unique
+  booking   Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  mentorId  String
+  mentor    Mentor    @relation(fields: [mentorId], references: [userId])
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  rating    Int
+  comment   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([mentorId])
+  // @@index([userId])
+  @@index([createdAt])
 }
