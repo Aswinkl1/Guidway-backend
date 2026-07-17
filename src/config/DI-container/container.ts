@@ -43,6 +43,7 @@ import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase
 import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMentorBookingDetails.usecase";
 import type { IRescheduleBookingUsecase } from "@application/ports/usecase/booking/IRescheduleBooking.usecase";
 import type { IAddReviewUsecase } from "@application/ports/usecase/booking/Review/IAddReview.usecase";
+import type { IDeleteReviewUsecase } from "@application/ports/usecase/booking/Review/IDeleteReview.usecase";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
 import type { IForgetPasswordUsecase } from "@application/ports/usecase/IForgetPassword.usercase";
 import type { IListMentorsUsecase } from "@application/ports/usecase/IListMentor.usecase";
@@ -103,6 +104,7 @@ import { GetMenteeBookingDetailsUsecase } from "@application/useCases/booking/Ge
 import { GetMentorBookingDetailsUsecase } from "@application/useCases/booking/GetMentorBookingDetails.usecase";
 import { RescheduleBookingUsecase } from "@application/useCases/booking/RescheduleBooking.usecase";
 import { AddReviewUsecase } from "@application/useCases/booking/Review/AddReview.usecase";
+import { DeleteReviewUsecase } from "@application/useCases/booking/Review/DeleteReview.usecase";
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
 import { DeleteAchievementUsecase } from "@application/useCases/mentor/achievements/Delete-Achievement.usecase";
 import { EditAchievementUsecase } from "@application/useCases/mentor/achievements/Edit-Achievement.usecase";
@@ -301,6 +303,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IDeleteReviewUsecase>(TYPES.DeleteReviewUsecase)
+	.to(DeleteReviewUsecase)
+	.inSingletonScope();
 container
 	.bind<IAddReviewUsecase>(TYPES.AddReviewUsecase)
 	.to(AddReviewUsecase)
