@@ -24,6 +24,15 @@ export class ReviewRepository
 		super(_prisma.review);
 	}
 
+	async findByBookingId(id: string): Promise<Review | null> {
+		const record = await this._prisma.review.findFirst({
+			where: { bookingId: id },
+		});
+		if (!record) {
+			return null;
+		}
+		return this.toDomain(record);
+	}
 	protected toDomain(record: PrismaReview): Review {
 		return Review.create(record);
 	}

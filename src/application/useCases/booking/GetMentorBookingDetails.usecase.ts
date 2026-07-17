@@ -48,6 +48,7 @@ export class GetMentorBookingDetailsUsecase
 				name: record.mentor.name,
 				profileImageKey: record.mentor.profileImageKey,
 			},
+			review: record.review,
 		};
 	}
 }

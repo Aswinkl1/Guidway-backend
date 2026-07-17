@@ -70,6 +70,14 @@ export default class BookingRepository
 		const record = await this._prisma.booking.findUnique({
 			where: { id },
 			select: {
+				review: {
+					where: { deletedAt: null },
+					select: {
+						rating: true,
+						comment: true,
+						id: true,
+					},
+				},
 				amount: true,
 				id: true,
 				currency: true,
@@ -104,6 +112,8 @@ export default class BookingRepository
 			return null;
 		}
 
+		// console.log(record);
+
 		return {
 			id: record.id,
 			amount: record.amount,
@@ -124,6 +134,13 @@ export default class BookingRepository
 			sessionId: record.sessionId,
 			sessionTitle: record.sessionTitle,
 			status: record.status,
+			review: record.review?.rating
+				? {
+						rating: record.review?.rating,
+						comment: record.review?.comment,
+						id: record.review.id,
+					}
+				: undefined,
 		};
 	}
 	async createBookingTransaction(

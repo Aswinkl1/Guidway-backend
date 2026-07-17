@@ -5,6 +5,7 @@ import type { IReviewRepository } from "@application/ports/repository/IReview.re
 import type { IAddReviewUsecase } from "@application/ports/usecase/booking/Review/IAddReview.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
 import { Review } from "@domain/booking/entities/Review.entity";
+import { ConflictError } from "@domain/errors/ConflictError";
 import { NotFoundError } from "@domain/errors/UserError";
 import { inject, injectable } from "inversify";
 @injectable()
@@ -25,6 +26,13 @@ export class AddReviewUsecase implements IAddReviewUsecase {
 
 		if (booking.userId !== userId) {
 			throw new ForbiddenError("you cannot add review to this booking");
+		}
+		const reviewEntity = await this._reviewRepository.findByBookingId(
+			booking.id,
+		);
+
+		if (reviewEntity) {
+			throw new ConflictError("review already exits");
 		}
 		const review = Review.create({
 			...dto,
