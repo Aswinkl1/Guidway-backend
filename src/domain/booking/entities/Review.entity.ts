@@ -15,6 +15,7 @@ export interface IReview {
 export interface CreateReviewProps
 	extends Omit<IReview, "createdAt" | "updatedAt" | "deletedAt" | "id"> {
 	id?: string;
+
 	createdAt?: Date;
 	updatedAt?: Date;
 	deletedAt?: Date | null;
