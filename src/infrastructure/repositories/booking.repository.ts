@@ -112,7 +112,7 @@ export default class BookingRepository
 			return null;
 		}
 
-		// console.log(record);
+		console.log(" record from the repo", record);
 
 		return {
 			id: record.id,
@@ -134,11 +134,11 @@ export default class BookingRepository
 			sessionId: record.sessionId,
 			sessionTitle: record.sessionTitle,
 			status: record.status,
-			review: record.review?.rating
+			review: record?.review[0]?.rating
 				? {
-						rating: record.review?.rating,
-						comment: record.review?.comment,
-						id: record.review.id,
+						rating: record.review[0].rating,
+						comment: record.review[0].comment,
+						id: record.review[0].id,
 					}
 				: undefined,
 		};

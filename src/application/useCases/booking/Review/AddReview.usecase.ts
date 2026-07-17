@@ -34,6 +34,7 @@ export class AddReviewUsecase implements IAddReviewUsecase {
 		if (reviewEntity) {
 			throw new ConflictError("review already exits");
 		}
+
 		const review = Review.create({
 			...dto,
 			userId,
