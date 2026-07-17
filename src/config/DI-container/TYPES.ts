@@ -3,7 +3,7 @@ export const TYPES = {
 	CacheService: Symbol.for("CacheService"),
 
 	//repository
-
+	ReviewRepository: Symbol.for("ReviewRepository"),
 	UserRepository: Symbol.for("UserRepository"),
 	TokenRepository: Symbol.for("TokenRepository"),
 	MentorRepository: Symbol.for("MentorRepository"),
@@ -32,6 +32,8 @@ export const TYPES = {
 	//queries
 	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
+	DeleteReviewUsecase: Symbol.for("DeleteReviewUsecase"),
+	AddReviewUsecase: Symbol.for("AddReviewUsecase"),
 	BookingPaymentFailureUsecase: Symbol.for("BookingPaymentFailureUsecase"),
 	RescheduleBookingUsecase: Symbol.for("RescheduleBookingUsecase"),
 	CancelBookingByMentorUsecase: Symbol.for("CancelBookingByMentorUsecase"),
@@ -94,6 +96,8 @@ export const TYPES = {
 	ToggleAvailabilityUsecase: Symbol.for("ToggleAvailabilityUsecase"),
 	GetAvailableSlotsByDate: Symbol.for("GetAvailableSlotsByDate"),
 	//controller
+
+	ReviewController: Symbol.for("ReviewController"),
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),
 	AdminLoginUseCase: Symbol.for("AdminLoginUseCase"),

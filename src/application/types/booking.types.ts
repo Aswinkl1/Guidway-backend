@@ -55,6 +55,11 @@ export interface MenteeBookingDetailsOutput {
 	currency: string;
 	status: BookingStatus;
 	id: string;
+	review?: {
+		rating: number;
+		comment: string | null;
+		id: string;
+	};
 }
 
 export interface BookingDetailsRepoOutput {
@@ -76,6 +81,11 @@ export interface BookingDetailsRepoOutput {
 	user: {
 		name: string;
 		profileImageKey: string | null;
+	};
+	review?: {
+		rating: number;
+		comment: string | null;
+		id: string;
 	};
 }
 
