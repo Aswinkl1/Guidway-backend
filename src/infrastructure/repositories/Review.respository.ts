@@ -26,7 +26,7 @@ export class ReviewRepository
 
 	async findByBookingId(id: string): Promise<Review | null> {
 		const record = await this._prisma.review.findFirst({
-			where: { bookingId: id },
+			where: { bookingId: id, deletedAt: null },
 		});
 		if (!record) {
 			return null;

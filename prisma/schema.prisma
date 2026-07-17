@@ -496,7 +496,7 @@ model Booking {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   payment Payment @relation(fields: [paymentId],references: [id])
-  review Review?
+  review Review[]
   @@map("bookings")
 }
 
@@ -536,7 +536,7 @@ enum PaymentStatus {
 
 model Review {
   id        String    @id @default(uuid())
-  bookingId String    @unique
+  bookingId String
   booking   Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
   mentorId  String
   mentor    Mentor    @relation(fields: [mentorId], references: [userId])
