@@ -28,6 +28,7 @@ import type { IPaymentService } from "@application/ports/services/IPaymentServic
 import type { IS3Service } from "@application/ports/services/IS3Service";
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdminLogin.usecase";
+import type { IGetAdminBookingDetailsUsecase } from "@application/ports/usecase/admin/IGetBookingDetails.usecase";
 import type { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
 import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdateBlockStatus";
 import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
@@ -90,6 +91,7 @@ import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills
 import type { IGetAvailableSlotsByDate } from "@application/ports/usecase/mentor/slot/IGetAvailableSlotsByDate.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
+import { GetAdminBookingDetailsUsecase } from "@application/useCases/admin/getBookingDetails.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
 import { BookingPaymentFailureUsecase } from "@application/useCases/booking/BookingPaymentFailure.usecase";
@@ -182,6 +184,7 @@ import { PassportConfig } from "@infrastructure/services/PassportService";
 import { PaymentService } from "@infrastructure/services/PaymentService";
 import { S3Service } from "@infrastructure/services/S3Service";
 import { TokenService } from "@infrastructure/services/TokenServices";
+import { AdminBookingManagementController } from "@presentation/controllers/admin/booking.controller";
 import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
 import { AuthController } from "@presentation/controllers/auth.controller";
 import { BookingController } from "@presentation/controllers/booking/booking.controller";
@@ -191,6 +194,7 @@ import { ProfileController } from "@presentation/controllers/mentor/Profile.cont
 import { SessionController } from "@presentation/controllers/mentor/Session.controller";
 import { SettingController } from "@presentation/controllers/mentor/Settings.controller";
 import { UserController } from "@presentation/controllers/user/user.controller";
+import type { IAdminBookingManagementController } from "@presentation/interface/controllers/admin/booking.controller";
 import type { IBookingController } from "@presentation/interface/controllers/booking/IBookingController";
 import type { IReviewController } from "@presentation/interface/controllers/booking/IReview.constroller";
 import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
@@ -303,6 +307,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IGetAdminBookingDetailsUsecase>(TYPES.GetAdminBookingDetailsUsecase)
+	.to(GetAdminBookingDetailsUsecase)
+	.inSingletonScope();
 container
 	.bind<IDeleteReviewUsecase>(TYPES.DeleteReviewUsecase)
 	.to(DeleteReviewUsecase)
@@ -600,6 +608,12 @@ container
 	.inSingletonScope();
 
 //controller
+container
+	.bind<IAdminBookingManagementController>(
+		TYPES.AdminBookingManagementController,
+	)
+	.to(AdminBookingManagementController)
+	.inSingletonScope();
 container
 	.bind<IReviewController>(TYPES.ReviewController)
 	.to(ReviewController)

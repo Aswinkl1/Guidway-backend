@@ -32,6 +32,7 @@ export const TYPES = {
 	//queries
 	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
+	GetAdminBookingDetailsUsecase: Symbol.for("GetAdminBookingDetailsUsecase"),
 	DeleteReviewUsecase: Symbol.for("DeleteReviewUsecase"),
 	AddReviewUsecase: Symbol.for("AddReviewUsecase"),
 	BookingPaymentFailureUsecase: Symbol.for("BookingPaymentFailureUsecase"),
@@ -96,7 +97,9 @@ export const TYPES = {
 	ToggleAvailabilityUsecase: Symbol.for("ToggleAvailabilityUsecase"),
 	GetAvailableSlotsByDate: Symbol.for("GetAvailableSlotsByDate"),
 	//controller
-
+	AdminBookingManagementController: Symbol.for(
+		"AdminBookingManagementController",
+	),
 	ReviewController: Symbol.for("ReviewController"),
 	AuthController: Symbol.for("AuthController"),
 	UserManagementController: Symbol.for("UserManagementController"),

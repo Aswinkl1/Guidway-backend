@@ -89,6 +89,7 @@ model User {
   review               Review[]
 
   slots Slots[]
+  bookingEvent BookingEvent[]
   @@index([role])
   // @@index([deletedAt])
   // @@index([isBlocked])
@@ -497,6 +498,7 @@ model Booking {
   updatedAt DateTime @updatedAt
   payment Payment @relation(fields: [paymentId],references: [id])
   review Review[]
+  bookingEvent BookingEvent[]
   @@map("bookings")
 }
 
@@ -551,4 +553,26 @@ model Review {
   @@index([mentorId])
   // @@index([userId])
   @@index([createdAt])
+}
+
+model BookingEvent {
+  id          String          @id @default(uuid())
+  bookingId   String
+  booking     Booking         @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  type        BookingEventType
+  actorId     String
+  actor       User            @relation(fields: [actorId], references: [id])
+  reason      String?
+  metadata    Json?           // shape depends on `type`
+  createdAt   DateTime        @default(now())
+
+  @@map("booking_events")
+  @@index([bookingId])
+}
+
+enum BookingEventType {
+  RESCHEDULED
+  NOTE_ADDED
+  REFUND_ISSUED
+  CANCELLED
 }

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import adminBookingRouter from "./admin/bookingMangement.routes";
 import adminRouter from "./admin/userManagement.routes";
 import authRoute from "./auth.routes";
 import bookingRouter from "./booking/booking.routes";
@@ -22,4 +23,5 @@ route.use("/mentor", settingRoutes);
 route.use("/mentor", sessionRouter);
 route.use("/mentor", mentorRouter);
 route.use("/", reviewRouter);
+route.use("/admin", adminBookingRouter);
 export default route;

@@ -55,7 +55,7 @@ export class RescheduleBookingUsecase implements IRescheduleBookingUsecase {
 			);
 		}
 
-		const result = await this.bookingRepository.rescheduleBooking(data);
+		const result = await this.bookingRepository.rescheduleBooking(data, userId);
 
 		return result;
 	}
