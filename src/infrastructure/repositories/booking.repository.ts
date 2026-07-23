@@ -328,13 +328,15 @@ export default class BookingRepository
 							lockedBy: booking.userId,
 						},
 					});
+					const updatedStartTime = createDateTime(data.date, data.startTime);
+					const updatedEndTime = createDateTime(data.date, data.endTime);
 
 					const updatedBooking = await tx.booking.updateMany({
 						where: { id: data.bookingId, status: BOOKING_STATUS.CONFIRMED },
 						data: {
 							slotId: slotData.id,
-							startTime: createDateTime(data.date, data.startTime),
-							endTime: createDateTime(data.date, data.endTime),
+							startTime: updatedStartTime,
+							endTime: updatedEndTime,
 						},
 					});
 					if (updatedBooking.count === 0) {
@@ -356,8 +358,8 @@ export default class BookingRepository
 							metadata: {
 								oldStartTIme: booking.startTime,
 								oldEndTime: booking.endTime,
-								newStartTime: data.startTime,
-								newEndTime: data.endTime,
+								newStartTime: updatedStartTime,
+								newEndTime: updatedEndTime,
 							},
 						},
 					});
