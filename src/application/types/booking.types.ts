@@ -1,4 +1,7 @@
-import type { BookingStatus } from "@domain/booking/booking.entity";
+import type {
+	BookingEventType,
+	BookingStatus,
+} from "@domain/booking/booking.entity";
 import type { BookingIntent } from "@domain/booking/entities/bookingIntent.entity";
 import type { Slot } from "@domain/booking/entities/slot.entity";
 import type { Session } from "@domain/session/session.entitiy";
@@ -62,6 +65,40 @@ export interface MenteeBookingDetailsOutput {
 	};
 }
 
+export interface AdminBookingDetailsOutput {
+	sessionTitle: string;
+	duration: string;
+	startDateTime: Date;
+	endDateTime: Date;
+	user: {
+		name: string;
+		profileImageKey: string | null;
+	};
+	mentor: {
+		name: string;
+		profileImageKey: string | null;
+	};
+	note: string | null;
+	userId: string;
+	mentorId: string;
+	amount: number;
+	currency: string;
+	status: BookingStatus;
+	id: string;
+	review?: {
+		rating: number;
+		comment: string | null;
+		id: string;
+	};
+	bookingEvent?: {
+		id: string;
+		actorName: string;
+		actorId: string;
+		type: BookingEventType;
+		metadata?: Record<string, string>;
+	}[];
+}
+
 export interface BookingDetailsRepoOutput {
 	id: string;
 	amount: number;
@@ -87,6 +124,13 @@ export interface BookingDetailsRepoOutput {
 		comment: string | null;
 		id: string;
 	};
+	bookingEvent?: {
+		id: string;
+		actorName: string;
+		actorId: string;
+		type: BookingEventType;
+		metadata?: Record<string, string>;
+	}[];
 }
 
 export interface getAllBookingOutput {

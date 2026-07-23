@@ -117,6 +117,19 @@ export default class BookingRepository
 				note: true,
 				startTime: true,
 				status: true,
+				bookingEvent: {
+					select: {
+						id: true,
+						actor: {
+							select: {
+								name: true,
+							},
+						},
+						type: true,
+						metadata: true,
+						actorId: true,
+					},
+				},
 			},
 		});
 
@@ -153,6 +166,16 @@ export default class BookingRepository
 						id: record.review[0].id,
 					}
 				: undefined,
+
+			bookingEvent: record.bookingEvent.map((be) => {
+				return {
+					id: be.id,
+					type: be.type,
+					metaData: be.metadata,
+					actorId: be.actorId,
+					actorName: be.actor.name,
+				};
+			}),
 		};
 	}
 	async createBookingTransaction(
