@@ -22,5 +22,8 @@ export interface IBookingRepository
 		dto: getAllBookingDto,
 	): Promise<Omit<getAllBookingOutput, "duration">>;
 	cancelBooking(userId: string, bookingId: string): Promise<void>;
-	rescheduleBooking(data: rescheduleBookingDto): Promise<{ bookingId: string }>;
+	rescheduleBooking(
+		data: rescheduleBookingDto,
+		userId: string,
+	): Promise<{ bookingId: string }>;
 }

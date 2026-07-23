@@ -10,7 +10,11 @@ import type {
 } from "@application/types/booking.types";
 import { createDateTime, toUTCMidnight } from "@application/utils/date.utils";
 import { TYPES } from "@config/DI-container/TYPES";
-import { BOOKING_STATUS, Booking } from "@domain/booking/booking.entity";
+import {
+	BOOKING_EVENT_TYPES,
+	BOOKING_STATUS,
+	Booking,
+} from "@domain/booking/booking.entity";
 import { SLOT_STATUS } from "@domain/booking/entities/slot.entity";
 import { ConflictError } from "@domain/errors/ConflictError";
 import { NotFoundError } from "@domain/errors/UserError";
@@ -58,6 +62,14 @@ export default class BookingRepository
 			await tx.slots.update({
 				where: { id: booking?.slotId },
 				data: { status: "CANCELLED" },
+			});
+
+			await tx.bookingEvent.create({
+				data: {
+					type: BOOKING_EVENT_TYPES.CANCELLED,
+					actorId: userId,
+					bookingId: bookingId,
+				},
 			});
 		});
 
@@ -275,6 +287,7 @@ export default class BookingRepository
 
 	rescheduleBooking = async (
 		data: rescheduleBookingDto,
+		userId: string,
 	): Promise<{ bookingId: string }> => {
 		const record = await withTransactionRetry(async () => {
 			const record = await this._prisma.$transaction(
@@ -333,6 +346,20 @@ export default class BookingRepository
 					await tx.slots.update({
 						where: { id: oldSlotId },
 						data: { status: SLOT_STATUS.CANCELLED },
+					});
+
+					await tx.bookingEvent.create({
+						data: {
+							type: BOOKING_EVENT_TYPES.RESCHEDULED,
+							actorId: userId,
+							bookingId: data.bookingId,
+							metadata: {
+								oldStartTIme: booking.startTime,
+								oldEndTime: booking.endTime,
+								newStartTime: data.startTime,
+								newEndTime: data.endTime,
+							},
+						},
 					});
 
 					return { bookingId: data.bookingId };
