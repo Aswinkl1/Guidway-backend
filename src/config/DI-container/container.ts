@@ -184,6 +184,7 @@ import { PassportConfig } from "@infrastructure/services/PassportService";
 import { PaymentService } from "@infrastructure/services/PaymentService";
 import { S3Service } from "@infrastructure/services/S3Service";
 import { TokenService } from "@infrastructure/services/TokenServices";
+import { AdminBookingManagementController } from "@presentation/controllers/admin/booking.controller";
 import { UserManagementController } from "@presentation/controllers/admin/UserManagement.controller";
 import { AuthController } from "@presentation/controllers/auth.controller";
 import { BookingController } from "@presentation/controllers/booking/booking.controller";
@@ -193,6 +194,7 @@ import { ProfileController } from "@presentation/controllers/mentor/Profile.cont
 import { SessionController } from "@presentation/controllers/mentor/Session.controller";
 import { SettingController } from "@presentation/controllers/mentor/Settings.controller";
 import { UserController } from "@presentation/controllers/user/user.controller";
+import type { IAdminBookingManagementController } from "@presentation/interface/controllers/admin/booking.controller";
 import type { IBookingController } from "@presentation/interface/controllers/booking/IBookingController";
 import type { IReviewController } from "@presentation/interface/controllers/booking/IReview.constroller";
 import type { IAuthController } from "@presentation/interface/controllers/IAuthController";
@@ -606,6 +608,12 @@ container
 	.inSingletonScope();
 
 //controller
+container
+	.bind<IAdminBookingManagementController>(
+		TYPES.AdminBookingManagementController,
+	)
+	.to(AdminBookingManagementController)
+	.inSingletonScope();
 container
 	.bind<IReviewController>(TYPES.ReviewController)
 	.to(ReviewController)
