@@ -10,6 +10,17 @@ export const BOOKING_STATUS = {
 export type BookingStatus =
 	(typeof BOOKING_STATUS)[keyof typeof BOOKING_STATUS];
 
+export const BOOKING_EVENT_TYPES = {
+	CREATED: "CREATED",
+	CANCELLED: "CANCELLED",
+	RESCHEDULED: "RESCHEDULED",
+	NOTE_ADDED: "NOTE_ADDED",
+	REFUND_ISSUED: "REFUND_ISSUED",
+	COMPLETED: "COMPLETED",
+} as const;
+
+export type BookingEventType =
+	(typeof BOOKING_EVENT_TYPES)[keyof typeof BOOKING_EVENT_TYPES];
 export interface IBooking {
 	id: string;
 	slotId: string;

@@ -10,7 +10,11 @@ import type {
 } from "@application/types/booking.types";
 import { createDateTime, toUTCMidnight } from "@application/utils/date.utils";
 import { TYPES } from "@config/DI-container/TYPES";
-import { BOOKING_STATUS, Booking } from "@domain/booking/booking.entity";
+import {
+	BOOKING_EVENT_TYPES,
+	BOOKING_STATUS,
+	Booking,
+} from "@domain/booking/booking.entity";
 import { SLOT_STATUS } from "@domain/booking/entities/slot.entity";
 import { ConflictError } from "@domain/errors/ConflictError";
 import { NotFoundError } from "@domain/errors/UserError";
@@ -59,6 +63,14 @@ export default class BookingRepository
 				where: { id: booking?.slotId },
 				data: { status: "CANCELLED" },
 			});
+
+			await tx.bookingEvent.create({
+				data: {
+					type: BOOKING_EVENT_TYPES.CANCELLED,
+					actorId: userId,
+					bookingId: bookingId,
+				},
+			});
 		});
 
 		return result;
@@ -105,6 +117,19 @@ export default class BookingRepository
 				note: true,
 				startTime: true,
 				status: true,
+				bookingEvent: {
+					select: {
+						id: true,
+						actor: {
+							select: {
+								name: true,
+							},
+						},
+						type: true,
+						metadata: true,
+						actorId: true,
+					},
+				},
 			},
 		});
 
@@ -141,6 +166,16 @@ export default class BookingRepository
 						id: record.review[0].id,
 					}
 				: undefined,
+
+			bookingEvent: record.bookingEvent.map((be) => {
+				return {
+					id: be.id,
+					type: be.type,
+					metaData: be.metadata,
+					actorId: be.actorId,
+					actorName: be.actor.name,
+				};
+			}),
 		};
 	}
 	async createBookingTransaction(
@@ -275,6 +310,7 @@ export default class BookingRepository
 
 	rescheduleBooking = async (
 		data: rescheduleBookingDto,
+		userId: string,
 	): Promise<{ bookingId: string }> => {
 		const record = await withTransactionRetry(async () => {
 			const record = await this._prisma.$transaction(
@@ -315,13 +351,15 @@ export default class BookingRepository
 							lockedBy: booking.userId,
 						},
 					});
+					const updatedStartTime = createDateTime(data.date, data.startTime);
+					const updatedEndTime = createDateTime(data.date, data.endTime);
 
 					const updatedBooking = await tx.booking.updateMany({
 						where: { id: data.bookingId, status: BOOKING_STATUS.CONFIRMED },
 						data: {
 							slotId: slotData.id,
-							startTime: createDateTime(data.date, data.startTime),
-							endTime: createDateTime(data.date, data.endTime),
+							startTime: updatedStartTime,
+							endTime: updatedEndTime,
 						},
 					});
 					if (updatedBooking.count === 0) {
@@ -333,6 +371,20 @@ export default class BookingRepository
 					await tx.slots.update({
 						where: { id: oldSlotId },
 						data: { status: SLOT_STATUS.CANCELLED },
+					});
+
+					await tx.bookingEvent.create({
+						data: {
+							type: BOOKING_EVENT_TYPES.RESCHEDULED,
+							actorId: userId,
+							bookingId: data.bookingId,
+							metadata: {
+								oldStartTIme: booking.startTime,
+								oldEndTime: booking.endTime,
+								newStartTime: updatedStartTime,
+								newEndTime: updatedEndTime,
+							},
+						},
 					});
 
 					return { bookingId: data.bookingId };
