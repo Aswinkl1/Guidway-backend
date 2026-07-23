@@ -32,6 +32,7 @@ export const TYPES = {
 	//queries
 	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
+	GetAdminBookingDetailsUsecase: Symbol.for("GetAdminBookingDetailsUsecase"),
 	DeleteReviewUsecase: Symbol.for("DeleteReviewUsecase"),
 	AddReviewUsecase: Symbol.for("AddReviewUsecase"),
 	BookingPaymentFailureUsecase: Symbol.for("BookingPaymentFailureUsecase"),

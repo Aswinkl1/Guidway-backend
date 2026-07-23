@@ -28,6 +28,7 @@ import type { IPaymentService } from "@application/ports/services/IPaymentServic
 import type { IS3Service } from "@application/ports/services/IS3Service";
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import type { IAdminLoginUsecase } from "@application/ports/usecase/admin/IAdminLogin.usecase";
+import type { IGetAdminBookingDetailsUsecase } from "@application/ports/usecase/admin/IGetBookingDetails.usecase";
 import type { IGetUsersUsecase } from "@application/ports/usecase/admin/IGetUsers.usecase";
 import type { IUpdateBlockStatus } from "@application/ports/usecase/admin/IUpdateBlockStatus";
 import type IVerifyMentorUsecase from "@application/ports/usecase/admin/IVerifyMentor.usecase";
@@ -90,6 +91,7 @@ import type { IGetSkillsUsecase } from "@application/ports/usecase/mentor/skills
 import type { IGetAvailableSlotsByDate } from "@application/ports/usecase/mentor/slot/IGetAvailableSlotsByDate.usecase";
 import { AdminLoginUsecase } from "@application/useCases/admin/adminLogin.usecase";
 import { GetUsersUsecase } from "@application/useCases/admin/GetUsers.usecase";
+import { GetAdminBookingDetailsUsecase } from "@application/useCases/admin/getBookingDetails.usecase";
 import { UpdateBlockStatus } from "@application/useCases/admin/updateBlockStatus.usecase";
 import VerifyMentorUsecase from "@application/useCases/admin/verifyMentor.usecase";
 import { BookingPaymentFailureUsecase } from "@application/useCases/booking/BookingPaymentFailure.usecase";
@@ -303,6 +305,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IGetAdminBookingDetailsUsecase>(TYPES.GetAdminBookingDetailsUsecase)
+	.to(GetAdminBookingDetailsUsecase)
+	.inSingletonScope();
 container
 	.bind<IDeleteReviewUsecase>(TYPES.DeleteReviewUsecase)
 	.to(DeleteReviewUsecase)
