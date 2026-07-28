@@ -1,16 +1,29 @@
 import type { IVedioCallUsecase } from "@application/ports/usecase/booking/IVedioCall.usecase";
+import { TYPES } from "@config/DI-container/TYPES";
+import { inject, injectable } from "inversify";
 import type { Socket } from "socket.io";
-
+import type { signalingMessagePaylod } from "../Types/webrtc.types";
+@injectable()
 export class WebrtcHandler implements IWebRtcHandler {
-	constructor(private readonly _vediocallUsecase: IVedioCallUsecase) {}
+	constructor(
+		@inject(TYPES.VedioCallUsecase)
+		private readonly _vediocallUsecase: IVedioCallUsecase,
+	) {}
 	handleUserJoin = async (socket: Socket, bookingId: string) => {
 		const { userId } = socket.data;
 		await this._vediocallUsecase.execute(userId, bookingId);
 		socket.join(bookingId);
 		socket.to(bookingId).emit("user-joined");
 	};
+	handleSignalling = async (
+		socket: Socket,
+		data: signalingMessagePaylod,
+	): Promise<void> => {
+		socket.to(data.bookingId).emit("signaling-message", data.message);
+	};
 }
 
 export interface IWebRtcHandler {
 	handleUserJoin(socket: Socket, bookingId: string): Promise<void>;
+	handleSignalling(socket: Socket, data: signalingMessagePaylod): Promise<void>;
 }

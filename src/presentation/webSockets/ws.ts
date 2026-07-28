@@ -18,10 +18,12 @@ export const initSocket = (server: httpServer) => {
 	});
 
 	io.on("connection", async (socket: Socket) => {
+		console.log("socket conneted");
 		// chage this to a separate middleware
 		const accessToken = await socket.handshake.auth.token;
 		if (!accessToken) {
-			throw new NotFoundError("access token not found");
+			console.log("no token in the socket");
+			return;
 		}
 		const payload = tokenService.verifyAccessToken(accessToken);
 		socket.data = payload;

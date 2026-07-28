@@ -1,7 +1,8 @@
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
 import type { Socket } from "socket.io";
-import { type IWebRtcHandler, WebrtcHandler } from "../handler/wetrtcHandler";
+import type { IWebRtcHandler } from "../handler/wetrtcHandler";
+import type { signalingMessagePaylod } from "../Types/webrtc.types";
 
 export class WebrtcEvent {
 	private handler: IWebRtcHandler;
@@ -13,5 +14,12 @@ export class WebrtcEvent {
 		this.socket.on("user-joined", async (bookingId: string) => {
 			await this.handler.handleUserJoin(this.socket, bookingId);
 		});
+
+		this.socket.on(
+			"signaling-message",
+			async (data: signalingMessagePaylod) => {
+				await this.handler.handleSignalling(this.socket, data);
+			},
+		);
 	}
 }
