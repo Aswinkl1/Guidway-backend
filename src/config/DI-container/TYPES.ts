@@ -1,7 +1,8 @@
 export const TYPES = {
 	// cache
 	CacheService: Symbol.for("CacheService"),
-
+	// socket ido handler
+	WebrtcHandler: Symbol.for("WebrtcHandler"),
 	//repository
 	ReviewRepository: Symbol.for("ReviewRepository"),
 	UserRepository: Symbol.for("UserRepository"),

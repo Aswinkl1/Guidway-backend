@@ -206,6 +206,10 @@ import type { ISettingsController } from "@presentation/interface/controllers/IS
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
 import type { IAvailabilityController } from "@presentation/interface/controllers/mentor/IAvailability.controller";
 import type { IUserController } from "@presentation/interface/controllers/user/IUser.controller";
+import {
+	type IWebRtcHandler,
+	WebrtcHandler,
+} from "@presentation/webSockets/handler/wetrtcHandler";
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
 import { TYPES } from "./TYPES";
@@ -218,6 +222,11 @@ container
 	.to(CacheService)
 	.inSingletonScope();
 
+// socketio handler
+container
+	.bind<IWebRtcHandler>(TYPES.WebrtcHandler)
+	.to(WebrtcHandler)
+	.inSingletonScope();
 //Repository
 container
 	.bind<IReviewRepository>(TYPES.ReviewRepository)
