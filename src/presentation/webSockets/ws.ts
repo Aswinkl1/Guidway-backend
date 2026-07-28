@@ -2,7 +2,6 @@ import type { Server as httpServer } from "node:http";
 import type { ITokenService } from "@application/ports/services/ITokenService";
 import { container } from "@config/DI-container/container";
 import { TYPES } from "@config/DI-container/TYPES";
-import { NotFoundError } from "@domain/errors/UserError";
 
 import { Server, type Socket } from "socket.io";
 import { WebrtcEvent } from "./events/webrtcEvent";
