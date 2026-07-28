@@ -2,6 +2,7 @@ import { ForbiddenError } from "@application/errors/ForbidenError";
 import type { IBookingRepository } from "@application/ports/repository/IBooking.repository";
 import type { IVedioCallUsecase } from "@application/ports/usecase/booking/IVedioCall.usecase";
 import { TYPES } from "@config/DI-container/TYPES";
+import { BOOKING_STATUS } from "@domain/booking/booking.entity";
 import { NotFoundError } from "@domain/errors/UserError";
 import { inject, injectable } from "inversify";
 @injectable()
@@ -20,6 +21,10 @@ export class VedioCallUsecase implements IVedioCallUsecase {
 
 		if (booking.userId !== userId || booking.mentorId !== userId) {
 			throw new ForbiddenError("you dont have access to this request");
+		}
+
+		if (booking.status !== BOOKING_STATUS.CONFIRMED) {
+			throw new ForbiddenError("booking is not confirmed");
 		}
 	}
 }
