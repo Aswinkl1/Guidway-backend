@@ -19,7 +19,7 @@ export class VedioCallUsecase implements IVedioCallUsecase {
 			throw new NotFoundError("booking not found");
 		}
 
-		if (booking.userId !== userId || booking.mentorId !== userId) {
+		if (booking.userId !== userId && booking.mentorId !== userId) {
 			throw new ForbiddenError("you dont have access to this request");
 		}
 

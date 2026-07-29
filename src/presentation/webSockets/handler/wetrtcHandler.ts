@@ -11,6 +11,7 @@ export class WebrtcHandler implements IWebRtcHandler {
 		private readonly _vediocallUsecase: IVedioCallUsecase,
 	) {}
 	handleUserJoin = async (socket: Socket, bookingId: string) => {
+		console.log("hi user joingd", socket.data);
 		const { userId } = socket.data;
 		await this._vediocallUsecase.execute(userId, bookingId);
 		socket.join(bookingId);
@@ -20,6 +21,7 @@ export class WebrtcHandler implements IWebRtcHandler {
 		socket: Socket,
 		data: signalingMessagePaylod,
 	): Promise<void> => {
+		console.log("got singnal ", data);
 		socket
 			.to(data.bookingId)
 			.emit(WEBRTC_EVENTS.SIGNALING_MESSAGE, data.message);

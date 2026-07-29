@@ -12,9 +12,13 @@ export class WebrtcEvent {
 	}
 
 	register() {
-		this.socket.on(WEBRTC_EVENTS.USER_JOINED, async (bookingId: string) => {
-			await this.handler.handleUserJoin(this.socket, bookingId);
-		});
+		this.socket.on(
+			WEBRTC_EVENTS.USER_JOINED,
+			async (data: { bookingId: string }) => {
+				console.log(data);
+				await this.handler.handleUserJoin(this.socket, data.bookingId);
+			},
+		);
 
 		this.socket.on(
 			WEBRTC_EVENTS.SIGNALING_MESSAGE,

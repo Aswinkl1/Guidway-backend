@@ -212,8 +212,8 @@ export default class MentorRepository
 		if (!record.sessions || record.sessions.length === 0) {
 			return null;
 		}
-
 		const sessionData = record.sessions[0];
+		console.log(record);
 
 		return {
 			mentor: {

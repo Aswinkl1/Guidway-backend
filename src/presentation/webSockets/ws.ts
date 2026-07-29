@@ -27,7 +27,7 @@ export const initSocket = (server: httpServer) => {
 		const payload = tokenService.verifyAccessToken(accessToken);
 		socket.data = payload;
 
-		new WebrtcEvent(socket);
+		new WebrtcEvent(socket).register();
 
 		// Handle disconnections
 		socket.on("disconnect", () => {
