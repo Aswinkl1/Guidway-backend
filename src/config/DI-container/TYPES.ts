@@ -1,7 +1,8 @@
 export const TYPES = {
 	// cache
 	CacheService: Symbol.for("CacheService"),
-
+	// socket ido handler
+	WebrtcHandler: Symbol.for("WebrtcHandler"),
 	//repository
 	ReviewRepository: Symbol.for("ReviewRepository"),
 	UserRepository: Symbol.for("UserRepository"),
@@ -32,6 +33,7 @@ export const TYPES = {
 	//queries
 	MentorQuery: Symbol.for("MentorQuery"),
 	// usecases
+	VedioCallUsecase: Symbol.for("VedioCallUsecase"),
 	GetAdminBookingDetailsUsecase: Symbol.for("GetAdminBookingDetailsUsecase"),
 	DeleteReviewUsecase: Symbol.for("DeleteReviewUsecase"),
 	AddReviewUsecase: Symbol.for("AddReviewUsecase"),

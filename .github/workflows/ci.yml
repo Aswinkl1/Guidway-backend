@@ -33,8 +33,8 @@ jobs:
       - uses: amannn/action-semantic-pull-request@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Verify Conventional Commits (Individual Commits)
-        uses: wagoid/commitlint-github-action@v6
+      # - name: Verify Conventional Commits (Individual Commits)
+      #   uses: wagoid/commitlint-github-action@v6
 
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6

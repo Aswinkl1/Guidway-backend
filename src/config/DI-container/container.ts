@@ -43,6 +43,7 @@ import type { IGetBookingSetupDetailsUseCase } from "@application/ports/usecase/
 import type { IGetMenteeBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMenteeBookingDetails.usecase";
 import type { IGetMentorBookingDetailsUsecase } from "@application/ports/usecase/booking/IGetMentorBookingDetails.usecase";
 import type { IRescheduleBookingUsecase } from "@application/ports/usecase/booking/IRescheduleBooking.usecase";
+import type { IVedioCallUsecase } from "@application/ports/usecase/booking/IVedioCall.usecase";
 import type { IAddReviewUsecase } from "@application/ports/usecase/booking/Review/IAddReview.usecase";
 import type { IDeleteReviewUsecase } from "@application/ports/usecase/booking/Review/IDeleteReview.usecase";
 import type { IEditUserProfileUsecase } from "@application/ports/usecase/IEditUserProfile.usecase";
@@ -107,6 +108,7 @@ import { GetMentorBookingDetailsUsecase } from "@application/useCases/booking/Ge
 import { RescheduleBookingUsecase } from "@application/useCases/booking/RescheduleBooking.usecase";
 import { AddReviewUsecase } from "@application/useCases/booking/Review/AddReview.usecase";
 import { DeleteReviewUsecase } from "@application/useCases/booking/Review/DeleteReview.usecase";
+import { VedioCallUsecase } from "@application/useCases/booking/VedioCall.usecase";
 import { AddAchievementUsecase } from "@application/useCases/mentor/achievements/Add-Achievement.usecase";
 import { DeleteAchievementUsecase } from "@application/useCases/mentor/achievements/Delete-Achievement.usecase";
 import { EditAchievementUsecase } from "@application/useCases/mentor/achievements/Edit-Achievement.usecase";
@@ -204,6 +206,10 @@ import type { ISettingsController } from "@presentation/interface/controllers/IS
 import type { IUserManagementController } from "@presentation/interface/controllers/IUserManagement.controller";
 import type { IAvailabilityController } from "@presentation/interface/controllers/mentor/IAvailability.controller";
 import type { IUserController } from "@presentation/interface/controllers/user/IUser.controller";
+import {
+	type IWebRtcHandler,
+	WebrtcHandler,
+} from "@presentation/webSockets/handler/wetrtcHandler";
 import type { PrismaClient } from "generated/prisma/client";
 import { Container } from "inversify";
 import { TYPES } from "./TYPES";
@@ -216,6 +222,11 @@ container
 	.to(CacheService)
 	.inSingletonScope();
 
+// socketio handler
+container
+	.bind<IWebRtcHandler>(TYPES.WebrtcHandler)
+	.to(WebrtcHandler)
+	.inSingletonScope();
 //Repository
 container
 	.bind<IReviewRepository>(TYPES.ReviewRepository)
@@ -307,6 +318,10 @@ container
 	.inSingletonScope();
 
 //usecase
+container
+	.bind<IVedioCallUsecase>(TYPES.VedioCallUsecase)
+	.to(VedioCallUsecase)
+	.inSingletonScope();
 container
 	.bind<IGetAdminBookingDetailsUsecase>(TYPES.GetAdminBookingDetailsUsecase)
 	.to(GetAdminBookingDetailsUsecase)
