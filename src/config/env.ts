@@ -2,6 +2,8 @@ import { z } from "zod";
 
 const envSchema = z.object({
 	DATABASE_URL: z.url("DATABASE_URL must be a valid connection string"),
+	REDIS_URL: z.url("Redis url must be a valid connection string"),
+
 	NODE_ENV: z
 		.enum(["development", "production", "test"])
 		.default("development"),
@@ -56,6 +58,9 @@ export class EnvConfig {
 	// --- Core Server ---
 	static get NODE_ENV(): string {
 		return parsedEnv.NODE_ENV;
+	}
+	static get REDIS_URL(): string {
+		return parsedEnv.REDIS_URL;
 	}
 	static get RAZORPAY_KEY_ID(): string {
 		return parsedEnv.RAZORPAY_KEY_ID;
