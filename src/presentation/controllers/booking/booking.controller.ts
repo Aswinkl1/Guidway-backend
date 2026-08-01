@@ -78,7 +78,7 @@ export class BookingController implements IBookingController {
 		const result = await this._createBookingIntentUsecase.execute(userId, data);
 
 		res
-			.status(201)
+			.status(HTTPSTATUS.CREATED)
 			.json(createSuccess("Booking intent created successfully", result));
 	};
 

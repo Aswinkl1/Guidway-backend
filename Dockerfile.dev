@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apk add --no-cache curl gnupg \
   && curl -Ls https://cli.doppler.com/install.sh | sh
 
-# pnpm via corepack (ships with node 20, no separate install needed)
+# pnpm via corepack (ships with node 24, no separate install needed)
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 COPY package.json pnpm-lock.yaml ./
@@ -16,7 +16,7 @@ RUN pnpm install
 
 COPY . .
 
-RUN npx prisma generate
+RUN pnpm exec prisma generate
 
 EXPOSE 3000
 
