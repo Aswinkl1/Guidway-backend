@@ -1,0 +1,23 @@
+FROM node:24-alpine
+
+WORKDIR /app
+
+# Doppler CLI so we can run `doppler run --` inside the container
+RUN apk add --no-cache curl gnupg \
+  && curl -Ls https://cli.doppler.com/install.sh | sh
+
+# pnpm via corepack (ships with node 24, no separate install needed)
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+COPY package.json pnpm-lock.yaml ./
+COPY prisma ./prisma
+
+RUN pnpm install
+
+COPY . .
+
+RUN pnpm exec prisma generate
+
+EXPOSE 3000
+
+CMD ["pnpm", "dev"]

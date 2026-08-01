@@ -30,7 +30,7 @@ export class CreateBookingIntentUsecase implements ICreateBookingIntentUsecase {
 			data.startTime,
 			data.endTime,
 		);
-
+		console.log("mentor vailable", availability);
 		if (!availability) {
 			throw new ConflictError("Mentor is unavailable for the requested time");
 		}
